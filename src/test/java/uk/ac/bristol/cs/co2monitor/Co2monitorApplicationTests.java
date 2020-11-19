@@ -8,6 +8,11 @@ class Co2monitorApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
+    }
+    
+    @Test
+    void exampleTest() {
+        assert(true);
+    }
 
 }
