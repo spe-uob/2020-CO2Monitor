@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -37,11 +39,41 @@ class DataChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
-        seriesList,
-    animate: animate,
-    dateTimeFactory: const charts.LocalDateTimeFactory(),
+    return MaterialApp(
+      title: "CO2 Monitor",
+          home: Scaffold(
+            appBar: AppBar(
+              title: Text("CO2 Monitor")
+            ),
+            body: Column(
+              children: <Widget>[
+              Text(
+                'Hello, How are you?',
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              // Expanded(
+              //   flex: 100,
+                Container(
+                  height: 10,
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  decoration: BoxDecoration(color: Colors.lightBlueAccent),
+                  constraints: BoxConstraints.tight(Size(350,550)),
+                  alignment: Alignment.center,
+                  child: charts.TimeSeriesChart(
+                    seriesList,
+                    animate: animate,
+                    dateTimeFactory: const charts.LocalDateTimeFactory(),
+                  ),
+                ),
+              // ),
+           ]),
+          ),
+          //   ]
+          // ),
     );
+
   }
 
   static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData(){
