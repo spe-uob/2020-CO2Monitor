@@ -1,30 +1,33 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:co2_monitor/dataChart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:co2_monitor/main.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Page Displayed', (WidgetTester tester) async {
     await tester.pumpWidget(DataChart());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final chartFinder = find.byType(charts.TimeSeriesChart);
+    expect(chartFinder,findsOneWidget);
+    final titleFinder = find.text("CO2 Monitor");
+    expect(titleFinder, findsOneWidget);
+    final fieldFinder = find.text("Current CO2 Level:");
+    expect(fieldFinder, findsOneWidget);
+    final entryFinder = find.byWidgetPredicate((widget) => widget is Text && widget.data.contains("ppm"));
+    expect(entryFinder, findsOneWidget);
   });
+  // testWidgets('Data Displayed', (WidgetTester tester) async {
+  //   List<TimeSeriesLevels> data = [
+  //     new TimeSeriesLevels(new DateTime(2020, 11, 20, 16, 12), 550),
+  //     new TimeSeriesLevels(new DateTime(2020, 11, 20, 15, 12), 700),
+  //     new TimeSeriesLevels(new DateTime(2020, 11, 20, 14, 42), 1000),
+  //     new TimeSeriesLevels(new DateTime(2020, 11, 20, 13, 37), 825),
+  //   ];
+  //   DataSet dataSet = new DataSet(4, data);
+  //   await tester.pumpWidget(DataChart());
+  //   final chartFinder = find.byType(charts.TimeSeriesChart);
+  //   await tester.pumpWidget(tester.widget(chartFinder));
+  //   expect(chartFinder, findsOneWidget);
+  //   final entryFinder = find.byWidgetPredicate((widget) => widget is Text && widget.data == '$currentCO2 ppm');
+  //   expect(entryFinder, findsOneWidget);
+  // });
 }
