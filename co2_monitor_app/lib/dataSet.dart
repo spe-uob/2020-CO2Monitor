@@ -30,6 +30,24 @@ class DataSet {
     ];
   }
 
+  @override
+  bool operator ==(Object other) {
+    bool equals = true;
+    if (!(other is DataSet)){
+      equals = false;
+      DataSet otherData = other;
+      for (int i = 0; i < data.length; i++) {
+        if (data[i] != otherData.data[i]){
+          equals = false;
+        }
+      }
+    }
+    return equals;
+  }
+
+  @override
+  int get hashCode => data.hashCode;
+
   bool appendEntry(TimeSeriesLevels entry) {
     bool valid = entry.time.isAfter(DateTime.now().subtract(maxAge));
     if (valid) {

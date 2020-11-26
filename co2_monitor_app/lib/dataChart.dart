@@ -6,8 +6,9 @@ import 'package:co2_monitor/dataSet.dart';
 
 int currentCO2 = 600;
 
-void main({bool test = false}){
-  return runApp(DataChart());
+void main(){
+  const test = String.fromEnvironment("Test", defaultValue: "true");
+  return runApp(DataChart(test: test == "true"));
 }
 
 class DataChart extends StatefulWidget {
@@ -50,6 +51,20 @@ class DataChartState extends State<DataChart> {
     setState(() {
       seriesList.add(newData);
     });
+  }
+
+  Widget chartBuilder(){
+    Widget newWidget;
+    if (seriesList.length != 0){
+      newWidget= charts.TimeSeriesChart(
+        seriesList,
+        animate: animate,
+      );
+    }
+    else{
+      newWidget = Container();
+    }
+    return newWidget;
   }
 
   Widget build(BuildContext context) {
@@ -107,10 +122,7 @@ class DataChartState extends State<DataChart> {
                   // constraints: BoxConstraints.tight(Size(350, 550)),
                   // alignment: Alignment.center,
                   key: Key('Graph Container'),
-                  child: charts.TimeSeriesChart(
-                    seriesList,
-                    animate: animate,
-                  ),
+                  child: chartBuilder()
                 ),
               // ),
             ]),
