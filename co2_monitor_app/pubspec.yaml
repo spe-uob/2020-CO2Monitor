@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  json_annotation: ^3.1.1
   charts_flutter: ^0.9.0
   flutter_test:
     sdk: flutter
@@ -35,6 +36,8 @@ dependencies:
 dev_dependencies:
   flutter_driver:
     sdk: flutter
+  build_runner: ^1.10.6
+  json_serializable: ^3.5.0
   test: any
 
 # For information on the generic Dart part of this file, see the
