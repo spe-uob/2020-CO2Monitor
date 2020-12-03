@@ -14,7 +14,7 @@ void main(){
 class DataChart extends StatefulWidget {
   final bool animate;
   final bool test;
-  final DataSet dataSet = DataSet();
+  final DataSet dataSet = DataSet.usingSampleSeries();
   DataChart({Key key, this.animate, this.test}): super(key: key);
 
   @override
@@ -99,7 +99,7 @@ class DataChartState extends State<DataChart> {
                       // constraints: BoxConstraints.tight(Size(70, 50)),
                       // decoration: BoxDecoration(color: Color(0xffd7e5f7)),
                       child: Text(
-                        '$currentCO2 ppm',
+                        '${seriesList[0].data[0].levels} ppm',
                         key: Key('Current Entry'),
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
