@@ -9,8 +9,12 @@ class Reading {
   int value;
 
   Reading(this.takenAt, this.isCritical, this.value);
-  factory Reading.fromJson(Map<String, dynamic> json) =>
-      _$ReadingFromJson(json);
+  factory Reading.fromJson(Map<String, dynamic> json) {
+    var self = _$ReadingFromJson(json);
+    // Readings should be positive but Dart has no unsigned integer type
+    assert(self.value >= 0);
+    return self;
+  }
 
   Map<String, dynamic> toJson() => _$ReadingToJson(this);
 }
