@@ -1,14 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:ffi';
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:co2_monitor/dataSet.dart';
 
 void main() {
   test("Test appendEntry()", () {
-    DataSet dataSetA = DataSet(new List<TimeSeriesLevels>());
+    DataSet dataSetA = DataSet();
     TimeSeriesLevels entry =
-        new TimeSeriesLevels(new DateTime(2020, 11, 20, 16, 12), 750);
-    DataSet dataSetB = DataSet(List<TimeSeriesLevels>.from({entry}));
+    new TimeSeriesLevels(new DateTime(2020, 11, 20, 16, 12), 750);
+    DataSet dataSetB = DataSet.fromSeriesList(
+        List<TimeSeriesLevels>.from({entry}));
     dataSetA.appendEntry(entry);
     expect(dataSetA, dataSetB);
   });
@@ -21,16 +24,17 @@ void main() {
       new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 6)), 450),
       new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 8)), 500),
     ];
-    DataSet dataSetA = DataSet(dataA);
+    DataSet dataSetA = DataSet.fromSeriesList(dataA);
     final List<TimeSeriesLevels> dataB = [
       new TimeSeriesLevels(DateTime.now(), 550),
       new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 1)), 700),
       new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 4)), 1000),
     ];
-    DataSet dataSetB = DataSet(dataB);
+    DataSet dataSetB = DataSet.fromSeriesList(dataB);
     dataSetA.purgeOldEntries();
     expect(dataSetA, dataSetB);
   });
-
-  // TODO: Work out how to check if two dataSets have equal data.
 }
+
+
+

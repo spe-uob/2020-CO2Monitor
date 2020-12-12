@@ -14,6 +14,7 @@ void main(){
 class DataChart extends StatefulWidget {
   final bool animate;
   final bool test;
+  final DataSet dataSet = DataSet.usingSampleSeries();
   DataChart({Key key, this.animate, this.test}): super(key: key);
 
   @override
@@ -36,22 +37,17 @@ class DataChartState extends State<DataChart> {
 
   void initState() {
     super.initState();
-    if (widget.test){
-      seriesList  = DataSet.createSampleSeries();
-    }
-    else{
-      seriesList = new List<charts.Series<TimeSeriesLevels,DateTime>>.empty(growable: true);
-    }
+    seriesList = widget.dataSet.createSeries();
   }
 
-  void updateData(charts.Series<TimeSeriesLevels, DateTime> newData){
-    if (seriesList.length >= maxDataLength){
-      seriesList.removeAt(0);
-    }
-    setState(() {
-      seriesList.add(newData);
-    });
-  }
+  // void updateData(charts.Series<TimeSeriesLevels, DateTime> newData){
+  //   if (seriesList.length >= maxDataLength){
+  //     seriesList.removeAt(0);
+  //   }
+  //   setState(() {
+  //     seriesList.add(newData);
+  //   });
+  // }
 
   Widget chartBuilder(){
     Widget newWidget;
@@ -103,7 +99,7 @@ class DataChartState extends State<DataChart> {
                       // constraints: BoxConstraints.tight(Size(70, 50)),
                       // decoration: BoxDecoration(color: Color(0xffd7e5f7)),
                       child: Text(
-                        '$currentCO2 ppm',
+                        '${seriesList[0].data[0].levels} ppm',
                         key: Key('Current Entry'),
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
