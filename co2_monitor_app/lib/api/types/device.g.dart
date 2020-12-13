@@ -11,10 +11,6 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
   return Device(
     json['id'] as int,
     json['name'] as String,
-    (json['readings'] as List)
-        ?.map((e) =>
-            e == null ? null : Reading.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
     (json['lat'] as num)?.toDouble(),
     (json['long'] as num)?.toDouble(),
   );
@@ -23,7 +19,6 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'readings': instance.readings?.map((e) => e?.toJson())?.toList(),
       'lat': instance.lat,
       'long': instance.long,
     };

@@ -1,3 +1,4 @@
+import 'package:co2_monitor/api/client.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'reading.g.dart';
 
@@ -7,6 +8,9 @@ class Reading {
   DateTime takenAt;
   bool isCritical;
   int value;
+
+  @JsonKey(ignore: true)
+  ApiClient _client = ApiClient();
 
   Reading(this.takenAt, this.isCritical, this.value);
   factory Reading.fromJson(Map<String, dynamic> json) {

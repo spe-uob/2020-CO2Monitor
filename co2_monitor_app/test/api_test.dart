@@ -63,46 +63,20 @@ void main() {
 
     group("Serialize Devices", () {
       test("Parse Data", () {
-        const jsonReading = """
+        const jsonDevice = """
       {
         "id": 2,
         "name": "MVB-02",
-        "readings": [],
         "lat": 21.01,
         "long": -25.31
       }
       """;
 
-        var device = Device.fromJson(jsonDecode(jsonReading));
+        var device = Device.fromJson(jsonDecode(jsonDevice));
         assert(device.id == 2);
         assert(device.name == "MVB-02");
-        assert(device.readings.isEmpty);
         assert(device.lat == 21.01);
         assert(device.long == -25.31);
-      });
-
-      test("Parse Readings", () {
-        const jsonReading = """
-      {
-        "id": 3,
-        "readings": [
-          {
-            "takenAt": "2020-02-02",
-            "isCritical": false,
-            "value": 213
-          },
-          {
-            "takenAt": "2020-02-03",
-            "isCritical": true,
-            "value": 415
-          }
-        ]
-      }
-      """;
-
-        var device = Device.fromJson(jsonDecode(jsonReading));
-        assert(device.id == 3);
-        assert(device.readings.length == 2);
       });
     });
   });

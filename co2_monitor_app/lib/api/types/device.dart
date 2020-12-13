@@ -1,3 +1,4 @@
+import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/reading.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'device.g.dart';
@@ -8,13 +9,19 @@ class Device {
   @JsonKey(required: true)
   int id;
   String name;
-  List<Reading> readings;
   // Longitude and latitude provided by API for GPS location.
   double lat;
   double long;
 
-  Device(this.id, this.name, this.readings, this.lat, this.long);
+  @JsonKey(ignore: true)
+  ApiClient _client = ApiClient();
+
+  Device(this.id, this.name, this.lat, this.long);
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
+
+  Future<List<Reading>> readings() => _client.getReadings("");
+
+  Future<Reading> reading(int id) => _client.getReading("");
 }
