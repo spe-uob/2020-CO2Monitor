@@ -19,6 +19,9 @@ class Device {
   Device(this.id, this.name, this.lat, this.long);
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 
+  // Mock value, can be used for testing and mocking UI
+  factory Device.mock() => Device(0, "Mock Device", 10, 10);
+
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
   Future<List<Reading>> readings() => _client.getReadings("");

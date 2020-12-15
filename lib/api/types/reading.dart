@@ -20,5 +20,8 @@ class Reading {
     return self;
   }
 
+  // Mock value, can be used for testing and mocking UI
+  factory Reading.mock() => Reading(DateTime.now(), false, 100);
+
   Map<String, dynamic> toJson() => _$ReadingToJson(this);
 }

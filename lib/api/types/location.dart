@@ -18,6 +18,9 @@ class Location {
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);
 
+  // Mock value, can be used for testing and mocking UI
+  factory Location.mock() => Location("Dummy Location");
+
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
   Future<List<Device>> devices() => _client.getDevices("");
