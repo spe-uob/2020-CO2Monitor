@@ -56,7 +56,7 @@ class DataSet {
     return [
       new charts.Series<TimeSeriesLevels, DateTime>(
         id: 'CO2 Levels',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         domainFn: (TimeSeriesLevels levels, _) => levels.time,
         measureFn: (TimeSeriesLevels levels, _) => levels.levels,
         data: _data,

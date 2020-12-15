@@ -1,4 +1,4 @@
-import 'package:co2_monitor/dataChart.dart';
+import 'file:///C:/Users/Ivo/Documents/University%20Work/CO2Monitor/lib/pages/dataChart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:charts_flutter/flutter.dart' as charts;

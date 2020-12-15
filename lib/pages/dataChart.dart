@@ -33,7 +33,7 @@ class DataChartState extends State<DataChart> {
   // }
   List<charts.Series<TimeSeriesLevels, DateTime>> seriesList;
   int maxDataLength;
-  bool animate = false;
+  bool animate = true;
 
   void initState() {
     super.initState();
@@ -115,10 +115,11 @@ class DataChartState extends State<DataChart> {
                   // constraints: BoxConstraints.tight(Size(350, 550)),
                   // alignment: Alignment.center,
                   key: Key('Graph Container'),
-                  child: chartBuilder()),
+                  child: chartBuilder()
+              ),
               // ),
-            ]),
-      ),
+        ]),
+     ),
     );
   }
 }

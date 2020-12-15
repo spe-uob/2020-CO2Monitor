@@ -1,7 +1,8 @@
+import 'package:co2_monitor/pages/deviceManager.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
-import 'dataChart.dart';
+import 'pages/dataChart.dart';
 
 void main() => runApp(App());
 
@@ -34,10 +35,6 @@ class _MainViewState extends State<MainView> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Sample"),
-          backgroundColor: Colors.grey[100],
-        ),
         body: _pages.elementAt(_index).item1,
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
