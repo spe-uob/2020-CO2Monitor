@@ -1,3 +1,4 @@
+import 'package:co2_monitor/pages/deviceManager.dart';
 import 'package:co2_monitor/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
@@ -29,7 +30,7 @@ class _MainViewState extends State<MainView> {
     Tuple2(DataChart(test: true),
         BottomNavigationBarItem(icon: Icon(Icons.data_usage), label: "Data")),
     // BottomNavigationBar requires at least two items, add a junk one
-    Tuple2(Text("Test"),
+    Tuple2(DeviceManager(),
         BottomNavigationBarItem(icon: Icon(Icons.keyboard), label: "Test")),
   ];
 
