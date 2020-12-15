@@ -1,4 +1,3 @@
-import 'package:co2_monitor/pages/deviceManager.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
