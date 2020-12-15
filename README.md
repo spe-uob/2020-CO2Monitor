@@ -4,12 +4,12 @@
 
 This project is intended to be an open-source CO2 air-exchange monitoring and alerting system, used with the Smart Citizen IoT platform. It will provide an android application which users can download to interactively check effective CO2 levels and airflow data in supported buildings near their location. Users will be able to add and remove devices, to view at-a-glance or detailed analysis of CO2 readings, and to receive push notifications when anomalous levels are detected.
 
-## What components does it have?
+## What is this component?
 
-As well as an android application (written in Dart/Flutter), we will provide a server component (in Java/Spring Boot) to control it and provide data; and additionally a "control panel" website that allows configuring parts of the server from a non-technical point of view is planned.
+This component is the control panel, designed to make the admin task easier. The most basic form is just displaying a graph of all sensors online, and we will (hopefully) be adding more features such as turning sensors on and off later.
 
 
-# Getting Started with Create React App
+# Running the code
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
