@@ -1,3 +1,4 @@
+import 'package:co2_monitor/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
@@ -10,7 +11,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      MaterialApp(home: MainView(), title: _title);
+      MaterialApp(home: MainView(), title: _title, theme: appTheme);
 }
 
 // This widget is the 'glue' that sticks together all the pages of the app.
@@ -24,7 +25,7 @@ class _MainViewState extends State<MainView> {
   int _index = 0;
 
   // Hold (page, icon) pairs.
-  static List<Tuple2<Widget, BottomNavigationBarItem>> _pages = [
+  List<Tuple2<Widget, BottomNavigationBarItem>> _pages = [
     Tuple2(DataChart(test: true),
         BottomNavigationBarItem(icon: Icon(Icons.data_usage), label: "Data")),
     // BottomNavigationBar requires at least two items, add a junk one
@@ -36,14 +37,11 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Sample"),
-          backgroundColor: Colors.grey[100],
         ),
         body: _pages.elementAt(_index).item1,
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
           items: _pages.map((p) => p.item2).toList(),
           currentIndex: _index,
-          selectedItemColor: Colors.green,
           onTap: (index) => setState(() => _index = index),
         ));
   }
