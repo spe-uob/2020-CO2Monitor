@@ -1,4 +1,4 @@
-import 'file:///C:/Users/Ivo/Documents/University%20Work/CO2Monitor/lib/pages/dataChart.dart';
+import 'package:co2_monitor/pages/dataChart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -7,12 +7,13 @@ void main() {
   testWidgets('Page Displayed', (WidgetTester tester) async {
     await tester.pumpWidget(DataChart());
     final chartFinder = find.byType(charts.TimeSeriesChart);
-    expect(chartFinder,findsOneWidget);
+    expect(chartFinder, findsOneWidget);
     final titleFinder = find.text("CO2 Monitor");
     expect(titleFinder, findsOneWidget);
     final fieldFinder = find.text("Current CO2 Level:");
     expect(fieldFinder, findsOneWidget);
-    final entryFinder = find.byWidgetPredicate((widget) => widget is Text && widget.data.contains("ppm"));
+    final entryFinder = find.byWidgetPredicate(
+        (widget) => widget is Text && widget.data.contains("ppm"));
     expect(entryFinder, findsOneWidget);
   });
   // testWidgets('Data Displayed', (WidgetTester tester) async {

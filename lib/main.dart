@@ -1,3 +1,4 @@
+import 'package:co2_monitor/pages/codeEntry.dart';
 import 'package:co2_monitor/pages/deviceManager.dart';
 import 'package:co2_monitor/theme.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +28,12 @@ class _MainViewState extends State<MainView> {
 
   // Hold (page, icon) pairs.
   List<Tuple2<Widget, BottomNavigationBarItem>> _pages = [
+    Tuple2(CodeEntry(),
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: "Code")),
     Tuple2(DataChart(test: true),
         BottomNavigationBarItem(icon: Icon(Icons.data_usage), label: "Data")),
     // BottomNavigationBar requires at least two items, add a junk one
-    Tuple2(DeviceManager(),
+    Tuple2(Manager(),
         BottomNavigationBarItem(icon: Icon(Icons.keyboard), label: "Test")),
   ];
 

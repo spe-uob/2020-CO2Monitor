@@ -66,7 +66,6 @@ class DataChartState extends State<DataChart> {
     return MaterialApp(
       title: "CO2 Monitor",
       home: Scaffold(
-        appBar: AppBar(title: Text("CO2 Monitor")),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -115,11 +114,10 @@ class DataChartState extends State<DataChart> {
                   // constraints: BoxConstraints.tight(Size(350, 550)),
                   // alignment: Alignment.center,
                   key: Key('Graph Container'),
-                  child: chartBuilder()
-              ),
+                  child: chartBuilder()),
               // ),
-        ]),
-     ),
+            ]),
+      ),
     );
   }
 }
