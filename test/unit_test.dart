@@ -1,17 +1,13 @@
-import 'dart:ffi';
-import 'dart:typed_data';
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:co2_monitor/dataSet.dart';
 
 void main() {
   test("Test appendEntry()", () {
     DataSet dataSetA = DataSet();
     TimeSeriesLevels entry =
-    new TimeSeriesLevels(new DateTime(2020, 11, 20, 16, 12), 750);
-    DataSet dataSetB = DataSet.fromSeriesList(
-        List<TimeSeriesLevels>.from({entry}));
+        new TimeSeriesLevels(new DateTime(2020, 11, 20, 16, 12), 750);
+    DataSet dataSetB =
+        DataSet.fromSeriesList(List<TimeSeriesLevels>.from({entry}));
     dataSetA.appendEntry(entry);
     expect(dataSetA, dataSetB);
   });
@@ -35,6 +31,3 @@ void main() {
     expect(dataSetA, dataSetB);
   });
 }
-
-
-

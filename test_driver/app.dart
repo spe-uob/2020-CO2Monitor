@@ -1,7 +1,7 @@
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:co2_monitor/dataChart.dart' as app;
+import 'package:co2_monitor/main.dart' as app;
 
-void main(){
+void main() {
   enableFlutterDriverExtension();
 
   app.main();

@@ -6,16 +6,16 @@ import 'package:co2_monitor/dataSet.dart';
 
 int currentCO2 = 600;
 
-void main(){
-  const test = String.fromEnvironment("Test", defaultValue: "true");
-  return runApp(DataChart(test: test == "true"));
-}
+// void main(){
+//   const test = String.fromEnvironment("Test", defaultValue: "true");
+//   return runApp(DataChart(test: test == "true"));
+// }
 
 class DataChart extends StatefulWidget {
   final bool animate;
   final bool test;
   final DataSet dataSet = DataSet.usingSampleSeries();
-  DataChart({Key key, this.animate, this.test}): super(key: key);
+  DataChart({Key key, this.animate, this.test}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -31,7 +31,7 @@ class DataChartState extends State<DataChart> {
   //     animate: false,
   //   );
   // }
-  List<charts.Series<TimeSeriesLevels,DateTime>> seriesList;
+  List<charts.Series<TimeSeriesLevels, DateTime>> seriesList;
   int maxDataLength;
   bool animate = false;
 
@@ -49,15 +49,14 @@ class DataChartState extends State<DataChart> {
   //   });
   // }
 
-  Widget chartBuilder(){
+  Widget chartBuilder() {
     Widget newWidget;
-    if (seriesList.length != 0){
-      newWidget= charts.TimeSeriesChart(
+    if (seriesList.length != 0) {
+      newWidget = charts.TimeSeriesChart(
         seriesList,
         animate: animate,
       );
-    }
-    else{
+    } else {
       newWidget = Container();
     }
     return newWidget;
@@ -67,9 +66,7 @@ class DataChartState extends State<DataChart> {
     return MaterialApp(
       title: "CO2 Monitor",
       home: Scaffold(
-        appBar: AppBar(
-            title: Text("CO2 Monitor")
-        ),
+        appBar: AppBar(title: Text("CO2 Monitor")),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -109,7 +106,7 @@ class DataChartState extends State<DataChart> {
                   ]),
               // Center(
               //   child:
-                Expanded(
+              Expanded(
                   flex: 1,
                   // height: 10,
                   // padding: const EdgeInsets.symmetric(
@@ -118,8 +115,7 @@ class DataChartState extends State<DataChart> {
                   // constraints: BoxConstraints.tight(Size(350, 550)),
                   // alignment: Alignment.center,
                   key: Key('Graph Container'),
-                  child: chartBuilder()
-                ),
+                  child: chartBuilder()),
               // ),
             ]),
       ),

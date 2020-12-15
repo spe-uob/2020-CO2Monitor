@@ -1,8 +1,7 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
-import 'package:co2_monitor/dataChart.dart';
 
-void main(){
+void main() {
   group('CO2 Monitor', () {
     final fieldFinder = find.byValueKey('Field Label');
     final entryFinder = find.byValueKey('Current Entry');
