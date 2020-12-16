@@ -8,7 +8,7 @@ import {
   LineSeries
 } from 'react-vis';
 
-const data = [
+const data1 = [
   {x: 0, y: 8},
   {x: 1, y: 5},
   {x: 2, y: 4},
@@ -21,11 +21,36 @@ const data = [
   {x: 9, y: 0}
 ];
 
+const data2 = [
+  {x: 0, y: 4},
+  {x: 1, y: 3},
+  {x: 2, y: 8},
+  {x: 3, y: 4},
+  {x: 4, y: 0},
+  {x: 5, y: 3},
+  {x: 6, y: 5},
+  {x: 7, y: 9},
+  {x: 8, y: 6},
+  {x: 9, y: 7}
+];
+
+const data3 = [
+  {x: 0, y: 3},
+  {x: 1, y: 8},
+  {x: 2, y: 4},
+  {x: 3, y: 9},
+  {x: 4, y: 4},
+  {x: 5, y: 7},
+  {x: 6, y: 2},
+  {x: 7, y: 5},
+  {x: 8, y: 0},
+  {x: 9, y: 1}
+];
+
 function App() {
   return (
     <div className="App">
       <div className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <Grid container 
           spacing={0}
           direction="row"
@@ -33,15 +58,19 @@ function App() {
           alignItems="center"
         >
           <Grid item>
-            <Paper>Another graph</Paper>
-          </Grid>
-          <Grid item>
-            <XYPlot height={300} width={800}>
-              <LineSeries data={data} />
+            <XYPlot height={300} width={500}>
+              <LineSeries data={data1} />
             </XYPlot>
           </Grid>
           <Grid item>
-            <Paper>Maybe some buttons</Paper>
+            <XYPlot height={300} width={500}>
+              <LineSeries data={data2} />
+            </XYPlot>
+          </Grid>
+          <Grid item>
+            <XYPlot height={300} width={500}>
+              <LineSeries data={data3} />
+            </XYPlot>
           </Grid>
         </Grid>
       </div>
