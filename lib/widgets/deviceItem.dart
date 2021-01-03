@@ -1,37 +1,31 @@
 import 'package:co2_monitor/api/types/device.dart';
 import 'package:flutter/material.dart';
 
-// A card that displays information about a device.
 // Eventually, this should probably contain a device...
-class DeviceItem extends StatelessWidget {
-  int id;
+/// A card that displays information about a device.
+class DeviceItem extends StatefulWidget {
+  @override
+  _DeviceItemState createState() => _DeviceItemState();
+}
 
-  DeviceItem(this.id);
+class _DeviceItemState extends State<DeviceItem> {
+  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            leading: Icon(Icons.developer_board),
-            title: Text("MVB $id"),
+          Divider(),
+          CheckboxListTile(
+            secondary: Icon(Icons.developer_board),
+            title: Text("Test Id"),
             subtitle: Text("Example text, just testing."),
+            value: isSelected,
+            // Register to user's saved devices
+            onChanged: (b) => setState(() => isSelected = b),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                child: Text("REGISTER"),
-                onPressed: () => {},
-              ),
-              TextButton(
-                child: Text("VIEW"),
-                onPressed: () => {},
-              )
-            ],
-          )
         ],
       ),
     );

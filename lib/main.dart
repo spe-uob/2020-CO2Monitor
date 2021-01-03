@@ -1,12 +1,35 @@
 import 'package:co2_monitor/pages/codeEntry.dart';
-import 'package:co2_monitor/pages/deviceManager.dart';
+import 'package:co2_monitor/pages/locationList.dart';
 import 'package:co2_monitor/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart';
+import 'package:timezone/data/latest.dart';
 
 import 'pages/dataChart.dart';
 
-void main() => runApp(App());
+void main() async {
+  runApp(App());
+
+  // FlutterLocalNotificationsPlugin notifPlugin =
+  //     FlutterLocalNotificationsPlugin();
+  // const AndroidInitializationSettings settings =
+  //     AndroidInitializationSettings('');
+  // final InitializationSettings init = InitializationSettings(android: settings);
+  // // TODO: Eventually this should navigate user to a warning page
+  // notifPlugin.initialize(init);
+
+  // const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+  //     'repeating channel id',
+  //     'repeating channel name',
+  //     'repeating description');
+  // const NotificationDetails details =
+  //     NotificationDetails(android: androidDetails);
+  // await notifPlugin.periodicallyShow(0, 'repeating title', 'repeating body',
+  //     RepeatInterval.everyMinute, details,
+  //     androidAllowWhileIdle: true);
+}
 
 class App extends StatelessWidget {
   static const String _title = "Air Monitor";
@@ -33,7 +56,7 @@ class _MainViewState extends State<MainView> {
     Tuple2(DataChart(test: true),
         BottomNavigationBarItem(icon: Icon(Icons.data_usage), label: "Data")),
     // BottomNavigationBar requires at least two items, add a junk one
-    Tuple2(Manager(),
+    Tuple2(LocationList(),
         BottomNavigationBarItem(icon: Icon(Icons.keyboard), label: "Test")),
   ];
 
