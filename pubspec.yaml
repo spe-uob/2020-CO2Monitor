@@ -28,6 +28,7 @@ dependencies:
   flutter_local_notifications: ^3.0.2
   http: ^0.12.2
   tuple: ^1.0.3
+  path_provider: ^1.6.24
   flutter_test:
     sdk: flutter
   quiver: ^2.1.5
