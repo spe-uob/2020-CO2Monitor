@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:co2_monitor/pages/codeEntry.dart';
 import 'package:co2_monitor/pages/locationList.dart';
 import 'package:co2_monitor/theme.dart';
@@ -12,23 +14,21 @@ import 'pages/dataChart.dart';
 void main() async {
   runApp(App());
 
-  // FlutterLocalNotificationsPlugin notifPlugin =
-  //     FlutterLocalNotificationsPlugin();
-  // const AndroidInitializationSettings settings =
-  //     AndroidInitializationSettings('');
-  // final InitializationSettings init = InitializationSettings(android: settings);
-  // // TODO: Eventually this should navigate user to a warning page
-  // notifPlugin.initialize(init);
+  // TODO: Configure notifications for release (see docs)
+  FlutterLocalNotificationsPlugin notifPlugin =
+      FlutterLocalNotificationsPlugin();
+  final AndroidInitializationSettings settings =
+      AndroidInitializationSettings("@mipmap/ic_launcher");
+  final InitializationSettings init = InitializationSettings(android: settings);
+  notifPlugin.initialize(init);
+  // TODO: Eventually this should navigate user to a warning page
 
-  // const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-  //     'repeating channel id',
-  //     'repeating channel name',
-  //     'repeating description');
-  // const NotificationDetails details =
-  //     NotificationDetails(android: androidDetails);
-  // await notifPlugin.periodicallyShow(0, 'repeating title', 'repeating body',
-  //     RepeatInterval.everyMinute, details,
-  //     androidAllowWhileIdle: true);
+  const AndroidNotificationDetails androidDetails =
+      AndroidNotificationDetails('channel id', 'channel name', 'description');
+  const NotificationDetails details =
+      NotificationDetails(android: androidDetails);
+  await notifPlugin.periodicallyShow(new Random().nextInt(100000), 'title',
+      'body', RepeatInterval.everyMinute, details);
 }
 
 class App extends StatelessWidget {
