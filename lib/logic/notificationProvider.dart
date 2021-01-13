@@ -1,6 +1,6 @@
-import 'dart:html';
+import 'dart:convert';
 
-import 'package:co2_monitor/logic/subscriptionProvider.dart';
+import 'package:co2_monitor/api/types/location.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 /// This class wraps notification logic, additionally providing:
@@ -27,7 +27,9 @@ class NotificationProvider {
 
   Future<dynamic> _onNotif(String payload) async {
     if (payload == null) return null;
-    // TODO: Display a page of all (new?) high-priority
+    List<Location> locations = jsonDecode(payload).cast<Location>();
+    // TODO: Display a page of all (new?) high-priority alerts
+    // Likely a page of `locationItem` widgets sorted by priority
   }
 
   /// Fire a one-off notification with a specified body.
@@ -44,18 +46,21 @@ class NotificationProvider {
   /// Clicking on this notification will redirect the user to a designated page.
   /// This will allow them to see details of
   Future alert(List<Location> critical) async {
+    if (critical.isEmpty) return;
     const AndroidNotificationDetails android = AndroidNotificationDetails(
-        'critical',
-        'High eCO₂ Alerts',
-        'Notifications that are sent when eCO₂ surpass a recommended value.');
+        "critical",
+        "High eCO₂ Alerts",
+        """Alert notifications that are sent when eCO₂ levels 
+        surpass a recommended value in 
+        locations you are subscribed to notifications for.""");
     const NotificationDetails details = NotificationDetails(android: android);
     await _notifPlugin.show(
         0,
         "Critical eCO₂ Alert",
-        """Effective CO₂ levels have surpassed the recommended level in
-        ${critical.length} location(s) you have registered interest in.
+        """Effective CO₂ levels have surpassed the recommended level in 
+        ${critical.length} location(s) you have registered interest in. 
         Click here to view them.""",
         details,
-        payload: critical.toString());
+        payload: jsonEncode(critical));
   }
 }

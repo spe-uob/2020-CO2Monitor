@@ -26,5 +26,7 @@ class Device {
 
   Future<List<Reading>> readings() => _client.getReadings("");
 
+  Future<Reading> latestReading() => _client.getReading("");
+
   Future<Reading> reading(int id) => _client.getReading("");
 }
