@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CO2Monitor.iml" filepath="$PROJECT_DIR$/.idea/CO2Monitor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/co2monitor.iml" filepath="$PROJECT_DIR$/co2monitor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api-server.iml" filepath="$PROJECT_DIR$/api-server.iml" />
     </modules>
   </component>
 </project>
