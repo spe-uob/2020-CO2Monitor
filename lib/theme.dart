@@ -6,7 +6,7 @@ ThemeData appTheme = ThemeData(
     backgroundColor: Colors.white,
     primaryColor: Colors.green,
     accentColor: Colors.green[800],
-    textTheme: Typography.blackCupertino,
+    // textTheme: Typography.blackCupertino,
     iconTheme: iconTheme,
     bottomNavigationBarTheme:
         BottomNavigationBarThemeData(selectedItemColor: Colors.green),
