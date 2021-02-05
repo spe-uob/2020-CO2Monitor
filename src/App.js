@@ -1,79 +1,115 @@
-import logo from './logo.svg';
 import React from 'react';
-import './App.css';
-import { Grid, Paper } from '@material-ui/core';
 import '../node_modules/react-vis/dist/style.css';
-import {
-  XYPlot,
-  LineSeries
-} from 'react-vis';
+import { Grid } from '@material-ui/core';
+import './App.css';
+import Room from './components/Room.js'
 
-const data1 = [
-  {x: 0, y: 8},
-  {x: 1, y: 5},
-  {x: 2, y: 4},
-  {x: 3, y: 9},
-  {x: 4, y: 1},
-  {x: 5, y: 7},
-  {x: 6, y: 6},
-  {x: 7, y: 3},
-  {x: 8, y: 2},
-  {x: 9, y: 0}
-];
+/* do list of solid graphs (min-max of sensors) which pop out to
+list of all sensors in the room */
 
-const data2 = [
-  {x: 0, y: 4},
-  {x: 1, y: 3},
-  {x: 2, y: 8},
-  {x: 3, y: 4},
-  {x: 4, y: 0},
-  {x: 5, y: 3},
-  {x: 6, y: 5},
-  {x: 7, y: 9},
-  {x: 8, y: 6},
-  {x: 9, y: 7}
-];
+var rooms = [
+  {
+    id: 1,
+    name: "2.3",
+    sensors: [
+      {
+        id: 0,
+        sensorId: 15,
+        description: "Back of room"
+      },
+      {
+        id: 1,
+        sensorId: 16,
+        description: "Front of room"
+      }
+    ],
+    data: [
+      {x: 0, y: 8},
+      {x: 1, y: 5},
+      {x: 2, y: 4},
+      {x: 3, y: 9},
+      {x: 4, y: 1},
+      {x: 5, y: 7},
+      {x: 6, y: 6},
+      {x: 7, y: 3},
+      {x: 8, y: 2},
+      {x: 9, y: 0}
+    ]
+  },
+  {
+    id: 2,
+    name: "2.1",
+    sensors: [
+      {
+        id: 0,
+        sensorId: 15,
+        description: "Back of room"
+      },
+      {
+        id: 1,
+        sensorId: 16,
+        description: "Front of room"
+      }
+    ],
+    data: [
+      {x: 0, y: 4},
+      {x: 1, y: 3},
+      {x: 2, y: 8},
+      {x: 3, y: 4},
+      {x: 4, y: 0},
+      {x: 5, y: 3},
+      {x: 6, y: 5},
+      {x: 7, y: 9},
+      {x: 8, y: 6},
+      {x: 9, y: 7}
+    ]
+  },
+  {
+    id: 3,
+    name: "1.5",
+    sensors: [
+      {
+        id: 0,
+        sensorId: 15,
+        description: "Back of room"
+      },
+      {
+        id: 1,
+        sensorId: 16,
+        description: "Front of room"
+      }
+    ],
+    data: [
+      {x: 0, y: 3},
+      {x: 1, y: 8},
+      {x: 2, y: 4},
+      {x: 3, y: 9},
+      {x: 4, y: 4},
+      {x: 5, y: 7},
+      {x: 6, y: 2},
+      {x: 7, y: 5},
+      {x: 8, y: 0},
+      {x: 9, y: 1}
+    ]
+  }
+]
 
-const data3 = [
-  {x: 0, y: 3},
-  {x: 1, y: 8},
-  {x: 2, y: 4},
-  {x: 3, y: 9},
-  {x: 4, y: 4},
-  {x: 5, y: 7},
-  {x: 6, y: 2},
-  {x: 7, y: 5},
-  {x: 8, y: 0},
-  {x: 9, y: 1}
-];
+var roomCards = rooms.map((room) => (<Grid item>
+    <Room {...room} key={room.id}/>
+  </Grid>)
+)
 
 function App() {
   return (
     <div className="App">
-      <div className="App-header">
-        <Grid container 
-          spacing={0}
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <Grid item>
-            <XYPlot height={300} width={500}>
-              <LineSeries data={data1} />
-            </XYPlot>
-          </Grid>
-          <Grid item>
-            <XYPlot height={300} width={500}>
-              <LineSeries data={data2} />
-            </XYPlot>
-          </Grid>
-          <Grid item>
-            <XYPlot height={300} width={500}>
-              <LineSeries data={data3} />
-            </XYPlot>
-          </Grid>
-        </Grid>
-      </div>
+      <Grid container 
+        spacing={1}
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        {roomCards}
+      </Grid>
     </div>
   );
 }
