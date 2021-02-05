@@ -1,6 +1,6 @@
 import React from 'react';
 import '../node_modules/react-vis/dist/style.css';
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import './App.css';
 import Room from './components/Room.js'
 
@@ -94,18 +94,24 @@ var rooms = [
   }
 ]
 
-var roomCards = rooms.map((room) => (<Grid item>
-    <Room {...room} key={room.id}/>
+var roomCards = rooms.map((room) => (
+  <Grid item xs={12} sm={6} md={4}>
+    <div className="PaddedCard">
+      <Room {...room} key={room.id}/>
+    </div>
   </Grid>)
 )
 
 function App() {
   return (
     <div className="App">
-      <Grid container 
-        spacing={1}
+      <Paper className="App-header">
+        CO2 Monitor Control Panel
+      </Paper>
+      <Grid container
+        spacing={0}
         direction="row"
-        justify="center"
+        justify="space-around"
         alignItems="center"
       >
         {roomCards}

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, CardActions, CardContent, Button} from '@material-ui/core'
+import {Card, CardActions, CardContent, CardHeader, Button} from '@material-ui/core'
 import {
   XYPlot,
   LineSeries
@@ -8,7 +8,9 @@ import {
 export default function Room(props) {
     return (
         <Card>
-            I am room {props.name}
+            <CardHeader title={"Room: " + props.name}>
+                
+            </CardHeader>
             <CardContent>
                 <XYPlot height={300} width={500}>
                     <LineSeries data={props.data} />
