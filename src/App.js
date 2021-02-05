@@ -95,7 +95,7 @@ var rooms = [
 ]
 
 var roomCards = rooms.map((room) => (
-  <Grid item xs={12} sm={6} md={4}>
+  <Grid item sm={12} md={6} lg={4}>
     <div className="PaddedCard">
       <Room {...room} key={room.id}/>
     </div>
