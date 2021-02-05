@@ -12,15 +12,7 @@ void main() {
     expect(dataSetA, dataSetB);
   });
   test("Test purgeOldEntries()", () {
-    final List<TimeSeriesLevels> dataA = [
-      new TimeSeriesLevels(DateTime.now(), 550),
-      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 1)), 700),
-      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 4)), 1000),
-      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 5)), 825),
-      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 6)), 450),
-      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 8)), 500),
-    ];
-    DataSet dataSetA = DataSet.fromSeriesList(dataA);
+    DataSet dataSetA = DataSet.usingSampleSeries();
     final List<TimeSeriesLevels> dataB = [
       new TimeSeriesLevels(DateTime.now(), 550),
       new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 1)), 700),

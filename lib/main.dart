@@ -62,7 +62,7 @@ class _MainViewState extends State<MainView> {
     Tuple2(CodeEntry(),
         BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: "Code")),
     Tuple2(DataChart(test: true),
-        BottomNavigationBarItem(icon: Icon(Icons.data_usage), label: "Data")),
+        BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: "Data")),
     // BottomNavigationBar requires at least two items, add a junk one
     Tuple2(LocationList(),
         BottomNavigationBarItem(icon: Icon(Icons.keyboard), label: "Test")),
@@ -78,6 +78,7 @@ class _MainViewState extends State<MainView> {
           items: _pages.map((p) => p.item2).toList(),
           currentIndex: _index,
           onTap: (index) => setState(() => _index = index),
-        ));
+        )
+    );
   }
 }

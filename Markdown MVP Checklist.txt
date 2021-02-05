@@ -1,0 +1,21 @@
+# Release Checklist
+
+This checklist must be submitted by each group for each release.
+
+Release Name: CO2 Monitor MVP
+
+Date: 16/12/2020
+
+Microsoft Stream Screencast URL:(Google Drive Link to .mkv file) https://drive.google.com/file/d/183An36tpKh_A-w8AFhsG5NIoG3L7KaVc/view?usp=sharing
+
+## Checks
+- [ ] 3 named User Stories implemented
+- [ ] Test cases successfully passed
+- [ ] System deployed, accessible to the client
+- [ ] Client successfully interacted with system
+
+## Notes
+Our project requires the creation of a mobile application which actually has very
+little interaction in itself. The purpose of the application is to keep the user
+informed about the levels of CO2, as such, user interaction does not form a significant part
+of our core functionality for the MVP.

@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:quiver/core.dart';
 
 class DataSet {
@@ -12,22 +13,26 @@ class DataSet {
 
   DataSet.fromSeriesList(List<TimeSeriesLevels> data) {
     _data = data;
-    _sort();
     _length = data.length;
+    _sort();
   }
   DataSet.usingSampleSeries() {
     _data = [
-      new TimeSeriesLevels(new DateTime(2020, 11, 20, 16, 12), 550),
-      new TimeSeriesLevels(new DateTime(2020, 11, 20, 15, 12), 700),
-      new TimeSeriesLevels(new DateTime(2020, 11, 20, 14, 42), 1000),
-      new TimeSeriesLevels(new DateTime(2020, 11, 20, 13, 37), 825),
+      new TimeSeriesLevels(DateTime.now(), 550),
+      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 1)), 700),
+      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 4)), 1000),
+      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 5)), 825),
+      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 6)), 450),
+      new TimeSeriesLevels(DateTime.now().subtract(Duration(hours: 8)), 500),
     ];
     _length = _data.length;
     _sort();
   }
 
   void _sort(){
-    _data.sort((TimeSeriesLevels element1, TimeSeriesLevels element2) => element2.time.compareTo(element1.time));
+    if (_length > 0){
+      _data.sort((TimeSeriesLevels element1, TimeSeriesLevels element2) => element2.time.compareTo(element1.time));
+    }
   }
 
   int get length => _length;
@@ -50,6 +55,43 @@ class DataSet {
         _length -= 1;
       }
     }
+  }
+
+  DataSet query({Duration from, Duration to = Duration.zero, bool critical = false}){
+    if (from == null){
+      from = maxAge;
+    }
+    List<TimeSeriesLevels> reqData = List<TimeSeriesLevels>.empty(growable: true);
+    for (TimeSeriesLevels entry in _data){
+      if (entry.time.isAfter(DateTime.now().subtract(from)) && entry.time.isBefore(DateTime.now().subtract(to))){
+        reqData.add(entry);
+      }
+    }
+    return DataSet.fromSeriesList(reqData);
+  }
+
+  int mean(){
+    if (_length > 0){
+      int sum = 0;
+      for (TimeSeriesLevels entry in _data){
+        sum += entry.levels;
+      }
+      return sum~/_length;
+    }
+    return 0;
+  }
+
+  TimeSeriesLevels peak(){
+    TimeSeriesLevels peak = TimeSeriesLevels(DateTime.now(), -1);
+    for (int i = 0; i < length; i++){
+      if (i == 0){
+        peak = _data[i];
+      }
+      else if (peak.levels < _data[i].levels){
+        peak = _data[i];
+      }
+    }
+    return peak;
   }
 
   List<charts.Series<TimeSeriesLevels,DateTime>> createSeries(){
