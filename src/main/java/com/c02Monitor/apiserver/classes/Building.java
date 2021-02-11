@@ -6,7 +6,8 @@ import java.util.List;
 
 public class Building {
     @JsonProperty("id")
-    private long id;
+    @Id
+    private string id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("rooms")
@@ -25,17 +26,28 @@ public class Building {
 
     public AddData(long roomId, long sensorId, Data data){ // Must be a neater way of doing this.
         tempRoom = new Room();
-        tempSensor = new Sensor();
         for x in rooms{
             if x.id == roomId{
                 tempRoom = x;
                 for y in tempRoom.sensors{
                     if y.id == sensorId{
-                        y.data.append(data)
+                        y.addData(data)
                     }
                 }
             }
         }
+    }
+
+    public AddSensor(long roomId, Sensor sensor){ // Must be a neater way of doing this.
+        for x in rooms{
+            if x.id == roomId{
+                x.addSensor(sensor)
+                }
+            }
+        }
+    }
+    public AddRoom(Room room){ // Must be a neater way of doing this.
+       rooms.append(room)
     }
 
     public long getId() {
@@ -50,3 +62,4 @@ public class Building {
         return rooms;
     }
 }
+gb
