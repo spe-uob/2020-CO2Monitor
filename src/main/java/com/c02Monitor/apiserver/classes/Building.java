@@ -23,6 +23,21 @@ public class Building {
         this.rooms = rooms;
     }
 
+    public AddData(long roomId, long sensorId, Data data){ // Must be a neater way of doing this.
+        tempRoom = new Room();
+        tempSensor = new Sensor();
+        for x in rooms{
+            if x.id == roomId{
+                tempRoom = x;
+                for y in tempRoom.sensors{
+                    if y.id == sensorId{
+                        y.data.append(data)
+                    }
+                }
+            }
+        }
+    }
+
     public long getId() {
         return id;
     }
