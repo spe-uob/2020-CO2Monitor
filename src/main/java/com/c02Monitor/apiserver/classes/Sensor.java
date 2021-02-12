@@ -24,10 +24,13 @@ public class Sensor {
         this.data = data;
     }
 
+    public addData (Data data){
+        this.data.append(data);
+    }
+
     public long getId() {
         return id;
     }
-
 
     public String getDescription() {
         return description;

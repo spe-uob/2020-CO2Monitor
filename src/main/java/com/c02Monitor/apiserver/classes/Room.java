@@ -22,6 +22,9 @@ public class Room {
         this.name = name;
         this.sensors = sensors;
     }
+    public addSensor (Sensor sensor){
+        this.sensors.append(sensor);
+    }
     public long getId() {
         return id;
     }
