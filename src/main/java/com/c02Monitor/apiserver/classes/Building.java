@@ -27,10 +27,11 @@ public class Building {
     public AddData(long roomId, long sensorId, Data data){ // Must be a neater way of doing this.
         tempRoom = new Room();
         for x in rooms{
-            if x.id == roomId{
+            if x.getId() == roomId{
                 tempRoom = x;
-                for y in tempRoom.sensors{
-                    if y.id == sensorId{
+                Sensor[] tempSensors = x.getSensors();
+                for y in tempSensors{
+                    if y.getId() == sensorId{
                         y.addData(data)
                     }
                 }
@@ -38,15 +39,15 @@ public class Building {
         }
     }
 
-    public AddSensor(long roomId, Sensor sensor){ // Must be a neater way of doing this.
+    public AddSensor(long roomId, Sensor sensor){
         for x in rooms{
-            if x.id == roomId{
+            if x.getId() == roomId{
                 x.addSensor(sensor)
                 }
             }
         }
     }
-    public AddRoom(Room room){ // Must be a neater way of doing this.
+    public AddRoom(Room room){ 
        rooms.append(room)
     }
 
@@ -62,4 +63,3 @@ public class Building {
         return rooms;
     }
 }
-gb
