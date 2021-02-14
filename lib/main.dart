@@ -71,14 +71,13 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("CO₂ Monitor"),
+          title: Text("Sample"),
         ),
         body: _pages.elementAt(_index).item1,
         bottomNavigationBar: BottomNavigationBar(
           items: _pages.map((p) => p.item2).toList(),
           currentIndex: _index,
           onTap: (index) => setState(() => _index = index),
-        )
-    );
+        ));
   }
 }

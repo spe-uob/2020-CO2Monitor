@@ -7,12 +7,14 @@ part of 'location.dart';
 // **************************************************************************
 
 Location _$LocationFromJson(Map<String, dynamic> json) {
-  $checkKeys(json, requiredKeys: const ['name']);
+  $checkKeys(json, requiredKeys: const ['id']);
   return Location(
+    json['id'] as int,
     json['name'] as String,
   );
 }
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
     };

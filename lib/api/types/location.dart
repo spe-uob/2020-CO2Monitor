@@ -8,18 +8,19 @@ part 'location.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Location {
   @JsonKey(required: true)
+  int id;
   String name;
   // List<Device> devices;
 
   @JsonKey(ignore: true)
   ApiClient _client = ApiClient();
 
-  Location(this.name);
+  Location(this.id, this.name);
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);
 
   // Mock value, can be used for testing and mocking UI
-  factory Location.mock() => Location("Dummy Location");
+  factory Location.mock() => Location(1, "Dummy Location");
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 

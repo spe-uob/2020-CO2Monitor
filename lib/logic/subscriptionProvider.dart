@@ -66,4 +66,16 @@ class SubscriptionProvider {
 
   Future<bool> isSubscribedTo(int id) async =>
       (await subscriptions()).contains(id);
+
+  /// Subscribe to a location if unsubscribed, or unsubscribe if subscribed.
+  /// This function returns the new subscription status, i.e. it returns
+  /// true if the location was not previously subscribed to, but now is.
+  Future<bool> toggleSubscription(int id) async {
+    var subbed = await isSubscribedTo(id);
+    if (subbed)
+      await unsubscribeFrom(id);
+    else
+      await subscribeTo(id);
+    return !subbed;
+  }
 }

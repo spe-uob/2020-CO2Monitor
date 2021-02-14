@@ -34,14 +34,8 @@ class _CodeEntryState extends State<CodeEntry> {
   }
 
   Widget buildQRViewer(BuildContext context) {
-    var scanArea = (MediaQuery
-        .of(context)
-        .size
-        .width < 400 ||
-        MediaQuery
-            .of(context)
-            .size
-            .height < 400)
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
         ? 150.0
         : 300.0;
     return QRView(
@@ -67,58 +61,55 @@ class _CodeEntryState extends State<CodeEntry> {
     if (result != null) {
       text = Text(
         'Location: ${result.code}',
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 18, height: 0.1),
+        style:
+            TextStyle(fontWeight: FontWeight.bold, fontSize: 18, height: 0.1),
       );
-    }
-    else {
+    } else {
       text = Text(
         'Scan a building QR code',
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 18, height: 0.1),
+        style:
+            TextStyle(fontWeight: FontWeight.bold, fontSize: 18, height: 0.1),
       );
     }
     return text;
   }
 
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (context, constraints) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: buildQRViewer(context),
-              ),
-              Container(
-                height: 60,
-                // decoration: BoxDecoration(color: Color(0xff00e5f7)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: textBuilder(),
-                ),
-              ),
-              // TextField(
-              //   textCapitalization: TextCapitalization.characters,
-              //   textAlign: TextAlign.center,
-              //   controller: _controller,
-              //   autocorrect: false,
-              //   decoration: InputDecoration(
-              //       labelText: "Code",
-              //       helperText: "Got a UoB CO₂ location code? " +
-              //           "Submit it here to automatically register your location.",
-              //       hintText: "E10385",
-              //       suffixIcon: IconButton(
-              //           icon: Icon(Icons.clear),
-              //           onPressed: () => _controller.clear())),
-              // ),
-              // RaisedButton(
-              //     child: Text("SUBMIT"),
-              //     onPressed: () => setState(() => text = _controller.text)),
-            ],
-          );
-        }
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: buildQRViewer(context),
+          ),
+          Container(
+            height: 60,
+            // decoration: BoxDecoration(color: Color(0xff00e5f7)),
+            child: Align(
+              alignment: Alignment.center,
+              child: textBuilder(),
+            ),
+          ),
+          // TextField(
+          //   textCapitalization: TextCapitalization.characters,
+          //   textAlign: TextAlign.center,
+          //   controller: _controller,
+          //   autocorrect: false,
+          //   decoration: InputDecoration(
+          //       labelText: "Code",
+          //       helperText: "Got a UoB CO₂ location code? " +
+          //           "Submit it here to automatically register your location.",
+          //       hintText: "E10385",
+          //       suffixIcon: IconButton(
+          //           icon: Icon(Icons.clear),
+          //           onPressed: () => _controller.clear())),
+          // ),
+          // RaisedButton(
+          //     child: Text("SUBMIT"),
+          //     onPressed: () => setState(() => text = _controller.text)),
+        ],
+      );
+    });
   }
 }
