@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:co2_monitor/dataSet.dart';
 
-int currentCO2 = 600;
+// int currentCO2 = 600;
 
 // void main(){
 //   const test = String.fromEnvironment("Test", defaultValue: "true");
@@ -64,35 +64,43 @@ class DataChartState extends State<DataChart> {
 
   Widget entryBuilder(String label, int data, String unit, BuildContext context, BoxConstraints constraints) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            height: 30,
+            height: 40,
+            width: ((constraints.maxWidth/2)-10),
             padding: const EdgeInsets.symmetric(
                 horizontal: 0, vertical: 10),
             // constraints: BoxConstraints.tight(Size(200, 50)),
             // decoration: BoxDecoration(color: Color(0xff00e5f7)),
-            child: Text(
-              label,
-              key: Key('Field Label'),
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, height: 0.1),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                label,
+                key: Key('Field Label'),
+                textAlign: TextAlign.right,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, height: 0.1),
+              ),
             ),
           ),
           Container(
-            height: 30,
+            height: 40,
+            width: ((constraints.maxWidth/2)-50),
             padding: const EdgeInsets.symmetric(
                 horizontal: 0, vertical: 10),
             // constraints: BoxConstraints.tight(Size(70, 50)),
             // decoration: BoxDecoration(color: Color(0xffd7e5f7)),
-            child: Text(
-              '$data $unit',
-              key: Key('Current Entry'),
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, height: 0.1),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '$data $unit',
+                key: Key('Current Entry'),
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, height: 0.1),
+              ),
             ),
           ),
         ]);
@@ -104,29 +112,27 @@ class DataChartState extends State<DataChart> {
           return ListView(
             // mainAxisAlignment: MainAxisAlignment.center,
             // mainAxisSize: MainAxisSize.min,
+              shrinkWrap: true,
               children: <Widget>[
                 entryBuilder(
-                    'Current CO2 Level:', seriesList[0].data[0].levels,
+                    'Current CO₂ Level:', seriesList[0].data[0].levels,
                     'ppm', context, constraints),
-                Center(
-                child: SizedBox(
+                Container(
                     height: (constraints.maxHeight-100),
-                    // height: 10,
-                    // padding: const EdgeInsets.symmetric(
-                    //     horizontal: 10.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 0),
                     // decoration: BoxDecoration(color: Color(0xffd7e5f7)),
                     // constraints: BoxConstraints.tight(Size(350, 550)),
-                    // alignment: Alignment.center,
+                    alignment: Alignment.center,
                     key: Key('Graph Container'),
                     child: chartBuilder()),
-                ),
                 ExpansionTile(
                   title: Text("Additional Information"),
                   children: [
                     ListView(
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 20),
+                          horizontal: 0, vertical: 10),
                       children: [
                         entryBuilder('7-day Average:', widget.dataSet.query(
                             from: Duration(days: 7)).mean(), 'ppm', context, constraints),
