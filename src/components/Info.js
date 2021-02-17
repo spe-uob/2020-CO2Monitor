@@ -27,10 +27,14 @@ export default function Info(props) {
     setOpen(false);
   };
 
+  if (props.sensors.length > 0) {
+    console.log(props.sensors[0].sensorId);
+  }
+
   const sensorGraphs = props.sensors.map((sensor) => (
     <React.Fragment key={sensor.description + sensor.sensorId}>
       <DialogContentText>
-        sensor.description + sensor.sensorId
+        {sensor.description + ' ' + sensor.sensorId}
       </DialogContentText>
       <XYPlot height={500} width={900}>
         <LineSeries data={sensor.data} />
@@ -44,7 +48,7 @@ export default function Info(props) {
                 More info
       </Button>
       <Dialog
-        maxWidth={1000}
+        maxWidth="lg"
         open={open}
         onClose={handleClose}
       >

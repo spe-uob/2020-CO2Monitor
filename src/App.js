@@ -8,20 +8,21 @@ import Room from './components/Room.js';
 list of all sensors in the room */
 
 // Populate some fake data
-const roomNum = Math.floor(Math.random() * 20);
+const roomNum = Math.floor(Math.random() * 10);
 const rooms = [];
 for (let i = 0; i < roomNum; i++) {
   const sensors = [];
-  const sensorNum = Math.floor(Math.random() * 6);
+  const sensorNum = Math.floor(Math.random() * 20);
   for (let is = 0; is < sensorNum; is++) {
     const dataGen = [];
-    for (let ix = 0; ix < 1440; ix++) {
+    // 1440 minutes in a day but that is too slow
+    for (let ix = 0; ix < 144; ix++) {
       dataGen.push({x: ix, y: Math.floor(Math.random() * ix) + ix});
     }
     sensors.push(
         {
           id: i * 1000 + is,
-          sensorId: Room.toString() + ': ' + is.toString(),
+          sensorId: i.toString() + ': ' + is.toString(),
           description: 'Well...',
           data: dataGen,
         },
@@ -30,7 +31,7 @@ for (let i = 0; i < roomNum; i++) {
   rooms.push(
       {
         id: i,
-        name: i.toString + ' room',
+        name: i.toString() + ' room',
         sensors: sensors,
       },
   );
