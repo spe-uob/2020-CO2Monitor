@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import {
   XYPlot,
-  LineSeries,
+  AreaSeries,
 } from 'react-vis';
 import Info from './Info.js';
 
@@ -19,8 +19,7 @@ import Info from './Info.js';
 export default function Room(props) {
   let maximizedGraph;
   if (props.sensors.length > 0) {
-    const maximizedGraphData = [];
-    const minimizedGraphData = [];
+    const graphData = [];
 
     for (let i = 0; i < props.sensors[0].data.length; i++) {
       let maxy = props.sensors[0].data[i].y;
@@ -29,23 +28,17 @@ export default function Room(props) {
         maxy = Math.max(maxy, props.sensors[j].data[i].y);
         miny = Math.min(miny, props.sensors[j].data[i].y);
       }
-      maximizedGraphData.push(
+      graphData.push(
           {
             x: props.sensors[0].data[i].x,
             y: maxy,
-          },
-      );
-      minimizedGraphData.push(
-          {
-            x: props.sensors[0].data[i].x,
-            y: miny,
+            y0: miny,
           },
       );
     }
 
     maximizedGraph = (<XYPlot height={300} width={500}>
-      <LineSeries data={maximizedGraphData} />
-      <LineSeries data={minimizedGraphData} />
+      <AreaSeries data={graphData} />
     </XYPlot>);
   } else {
     maximizedGraph = 'No sensors in this room';
