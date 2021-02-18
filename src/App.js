@@ -72,7 +72,24 @@ function App() {
   return (
     <div className="App">
       <Paper className="App-header">
-        CO2 Monitor Control Panel
+        <Grid container
+          spacing={0}
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          <Grid item sm={12} md={6}>
+            <a className="Left-header">
+              CO2 Monitor Control Panel
+            </a>
+          </Grid>
+          <Grid item sm={12} md={6}>
+            <Fab variant="extended" className="Right-header">
+              <AddIcon />
+              Add room
+            </Fab>
+          </Grid>
+        </Grid>
       </Paper>
       <Grid container
         spacing={0}

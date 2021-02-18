@@ -17,9 +17,18 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 10px;
 }
 
 .Fab-expander {
   margin-top: 196px;
   margin-bottom: 196.5px;
+}
+
+.Left-header {
+  float: left;
+}
+
+.Right-header {
+  float: right;
 }
