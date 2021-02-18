@@ -1,6 +1,13 @@
 import React from 'react';
 import '../node_modules/react-vis/dist/style.css';
-import {Grid, Paper} from '@material-ui/core';
+import {
+  Grid,
+  Paper,
+  Card,
+  CardContent,
+  Fab,
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import './App.css';
 import Room from './components/Room.js';
 
@@ -43,6 +50,19 @@ const roomCards = rooms.map((room) => (
       <Room {...room} />
     </div>
   </Grid>),
+);
+roomCards.push(
+    <Grid item sm={12} md={6} lg={4} key={-1}>
+      <div className="PaddedCard">
+        <Card>
+          <CardContent class="Fab-expander">
+            <Fab disabled>
+              <AddIcon />
+            </Fab>
+          </CardContent>
+        </Card>
+      </div>
+    </Grid>,
 );
 
 /**
