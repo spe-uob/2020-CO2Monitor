@@ -57,8 +57,8 @@ function App() {
       <Grid container
         spacing={0}
         direction="row"
-        justify="space-around"
-        alignItems="center"
+        justify="flex-start"
+        alignItems="flex-start"
       >
         {roomCards}
       </Grid>
