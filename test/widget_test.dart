@@ -6,7 +6,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
   testWidgets('Page Displayed', (WidgetTester tester) async {
-    await tester.pumpWidget(LocationView(Location.mock()));
+    await tester.pumpWidget(LocationView(Location.mock(99)));
     final chartFinder = find.byType(charts.TimeSeriesChart);
     expect(chartFinder, findsOneWidget);
     final titleFinder = find.text("CO2 Monitor");

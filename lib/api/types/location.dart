@@ -22,14 +22,14 @@ class Location extends IGraphable {
       _$LocationFromJson(json);
 
   // Mock value, can be used for testing and mocking UI
-  factory Location.mock() => Location(1, "Dummy Location");
+  factory Location.mock(int id) => Location(id, "Location $id");
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
   Future<List<Device>> devices() =>
       Future.sync(() => List.generate(5, (index) => Device.mock()));
 
-  Future<Device> device(int id) => _client.getDevice("");
+  Future<Device> device(int id) => _client.getDevice(id);
 
   @override
   DataSet provideData() {
