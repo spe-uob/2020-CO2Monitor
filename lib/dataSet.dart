@@ -6,6 +6,9 @@ class DataSet {
   int _length;
   List<TimeSeriesLevels> _data;
   Duration maxAge = Duration(hours: 5);
+  int lowerThreshold = 1000;
+  int upperThreshold = 5000;
+  int dangerLevel = 0;
   DataSet(){
     _data = List<TimeSeriesLevels>.empty(growable: true);
     _length = 0;
@@ -44,6 +47,7 @@ class DataSet {
       _sort();
       _length += 1;
     }
+    checkDanger();
     return valid;
   }
 
@@ -56,6 +60,30 @@ class DataSet {
       }
     }
   }
+
+  String checkDanger(){
+    String result;
+    if (_data.length > 0){
+      if (_data[_data.length-1].levels > upperThreshold){
+        dangerLevel = 2;
+        result = 'High';
+      }
+      else if (_data[_data.length-1].levels > lowerThreshold){
+        dangerLevel = 1;
+        result = 'Moderate';
+      }
+      else {
+        dangerLevel = 0;
+        result = 'Low';
+      }
+    }
+    else {
+      result = 'No Data';
+    }
+
+    return result;
+  }
+
 
   DataSet query({Duration from, Duration to = Duration.zero, bool critical = false}){
     if (from == null){
