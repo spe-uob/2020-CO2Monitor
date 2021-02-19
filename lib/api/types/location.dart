@@ -32,8 +32,6 @@ class Location extends IGraphable {
   Future<Device> device(int id) => _client.getDevice(id);
 
   @override
-  DataSet provideData() {
-    // TODO: implement provideData
-    throw UnimplementedError();
-  }
+  // TODO: Implement provideData
+  DataSet provideData() => DataSet.usingSampleSeries();
 }

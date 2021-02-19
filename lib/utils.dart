@@ -44,3 +44,15 @@ Widget entryBuilder(String label, var data, String unit, BuildContext context,
         ),
       ]);
 }
+
+/// Flutter's concept of page navigation requires creating a new MaterialApp
+/// for each page (route?), which we do not want to do. This helper will do
+/// this in a consistent manner.
+Widget wrapRoute(Widget widget, String title) {
+  return Scaffold(
+    body: widget,
+    appBar: AppBar(
+      title: Text(title),
+    ),
+  );
+}
