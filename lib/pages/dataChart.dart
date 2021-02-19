@@ -62,7 +62,7 @@ class DataChartState extends State<DataChart> {
     return newWidget;
   }
 
-  Widget entryBuilder(String label, int data, String unit, BuildContext context, BoxConstraints constraints) {
+  Widget entryBuilder(String label, var data, String unit, BuildContext context, BoxConstraints constraints) {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
@@ -140,6 +140,7 @@ class DataChartState extends State<DataChart> {
                             .query(from: Duration(hours: 7))
                             .peak()
                             .levels, 'ppm', context, constraints),
+                        entryBuilder('Danger Level:', widget.dataSet.checkDanger(), '', context, constraints)
                       ],
                     )
                   ],

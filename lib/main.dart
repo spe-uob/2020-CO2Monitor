@@ -71,7 +71,7 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Sample"),
+          title: Text("CO₂ Monitor"),
         ),
         body: _pages.elementAt(_index).item1,
         bottomNavigationBar: BottomNavigationBar(
