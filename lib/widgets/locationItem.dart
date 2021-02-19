@@ -16,6 +16,8 @@ class _LocationItemState extends State<LocationItem> {
   bool isSubbed = false;
   SubscriptionProvider subs = SubscriptionProvider();
 
+  _LocationItemState() {}
+
   @override
   Widget build(BuildContext context) {
     subs
@@ -24,7 +26,7 @@ class _LocationItemState extends State<LocationItem> {
 
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0), // if you need this
+        borderRadius: BorderRadius.circular(0),
         side: BorderSide(
           color: Colors.grey.withOpacity(0.2),
           width: 1,

@@ -1,10 +1,46 @@
+import 'dart:io';
+
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
-import 'package:test/test.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+// import 'package:test/test.dart';
 
 void main() {
+  // Boilerplate
+  TestWidgetsFlutterBinding.ensureInitialized();
   SubscriptionProvider data = SubscriptionProvider();
-  // Clear file before
-  setUp(() async => await data.unsubscribeAll());
+
+  // Tests cannot interact with the file system of the device.
+  // Therefore, we must mock calls to I/O functions.
+  // See: https://flutter.dev/docs/cookbook/persistence/reading-writing-files
+  // Create a temporary directory.
+  setUpAll(() async {
+    // Create a temporary directory.
+    final directory = await Directory.systemTemp.createTemp();
+
+    // Mock out the MethodChannel for the path_provider plugin.
+    const MethodChannel('plugins.flutter.io/path_provider')
+        .setMockMethodCallHandler((MethodCall methodCall) async {
+      // If you're getting the apps documents directory, return the path to the
+      // temp directory on the test environment instead.
+      if (methodCall.method == 'getApplicationDocumentsDirectory') {
+        print(directory.path);
+        return directory.path;
+      }
+      return null;
+    });
+  });
+
+  // Clear file before.
+  setUp(() async {
+    await data.unsubscribeAll();
+  });
+
+  // Added after regression where subscription-related functions didn't return.
+  test('Subscriptions Timeout', () async {
+    var bp = 1;
+    await data.subscriptions();
+  });
 
   test('Empty Subscriptions', () async {
     // Pick some arbitrary values, include edge cases.

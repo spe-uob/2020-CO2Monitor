@@ -20,8 +20,13 @@ class SubscriptionProvider {
   Future<File> _dataPath() async {
     var directory = await getApplicationDocumentsDirectory();
     var f = File("${directory.path}/$filename");
-    // UnsubscribeAll creates the file and fills it with valid JSON.
-    if (!await f.exists()) await unsubscribeAll();
+    if (!await f.exists()) {
+      // Do not remove this call: this will cause infinite recursion.
+      // Specifically, unsubscribeAll will call this function, and recurse.
+      await f.create();
+      // UnsubscribeAll fill the new file with valid JSON.
+      await unsubscribeAll();
+    }
     return f;
   }
 
