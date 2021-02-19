@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
 import 'package:co2_monitor/pages/codeEntry.dart';
 import 'package:co2_monitor/pages/locationList.dart';
@@ -7,7 +6,7 @@ import 'package:co2_monitor/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:workmanager/workmanager.dart';
-import 'pages/dataChart.dart';
+import 'pages/locationView.dart';
 
 void main() {
   runApp(App());
@@ -61,7 +60,7 @@ class _MainViewState extends State<MainView> {
   List<Tuple2<Widget, BottomNavigationBarItem>> _pages = [
     Tuple2(CodeEntry(),
         BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: "Code")),
-    Tuple2(DataChart(test: true),
+    Tuple2(LocationView(Location.mock(), test: true),
         BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: "Data")),
     // BottomNavigationBar requires at least two items, add a junk one
     Tuple2(LocationList(),

@@ -1,12 +1,14 @@
 import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/device.dart';
+import 'package:co2_monitor/widgets/graphs/baseGraph.dart';
+import 'package:co2_monitor/widgets/graphs/dataSet.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'location.g.dart';
 
 // A location is a collection of SCK devices in near proximity.
 // The intention is that each area (e.g. a room, building) will be a location.
 @JsonSerializable(explicitToJson: true)
-class Location {
+class Location extends IGraphable {
   @JsonKey(required: true)
   int id;
   String name;
@@ -28,4 +30,10 @@ class Location {
       Future.sync(() => List.generate(5, (index) => Device.mock()));
 
   Future<Device> device(int id) => _client.getDevice("");
+
+  @override
+  DataSet provideData() {
+    // TODO: implement provideData
+    throw UnimplementedError();
+  }
 }

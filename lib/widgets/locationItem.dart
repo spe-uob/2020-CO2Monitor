@@ -1,8 +1,6 @@
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
-import 'package:co2_monitor/widgets/deviceItem.dart';
 import 'package:flutter/material.dart';
-import 'package:quiver/collection.dart';
 
 class LocationItem extends StatefulWidget {
   final Location location;
