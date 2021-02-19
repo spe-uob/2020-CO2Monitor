@@ -19,7 +19,7 @@ const FlexXYPlot = makeWidthFlexible(XYPlot);
  * @return {React.ReactFragment} Card with room
  */
 export default function Room(props) {
-  let maximizedGraph;
+  let minMaxGraph;
   if (props.sensors.length > 0) {
     const graphData = [];
 
@@ -39,20 +39,20 @@ export default function Room(props) {
       );
     }
 
-    maximizedGraph = (
+    minMaxGraph = (
       <FlexXYPlot height={300}>
         <AreaSeries data={graphData} />
       </FlexXYPlot>
     );
   } else {
-    maximizedGraph = 'No sensors in this room';
+    minMaxGraph = 'No sensors in this room';
   }
 
   return (
     <Card>
       <CardHeader title={'Name: ' + props.name} />
       <CardContent>
-        {maximizedGraph}
+        {minMaxGraph}
       </CardContent>
       <CardActions>
         <Info {...props} />

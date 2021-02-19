@@ -6,13 +6,14 @@ import {
   CardContent,
   CardHeader,
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
+  Fab,
   Grid,
+  Paper,
   Slide,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import {
   XYPlot,
   LineSeries,
@@ -75,12 +76,27 @@ export default function Info(props) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <DialogTitle>{'More Info'}</DialogTitle>
+        <Paper className="App-header">
+          <Grid container
+            spacing={0}
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
+            <Grid item sm={12} md={6}>
+              <a className="Left-header">
+              CO2 Monitor Control Panel: Room Details
+              </a>
+            </Grid>
+            <Grid item sm={12} md={6}>
+              <Fab variant="extended" className="Right-header" disabled>
+                <AddIcon />
+                Add sensor
+              </Fab>
+            </Grid>
+          </Grid>
+        </Paper>
         <DialogContent>
-          <DialogContentText>
-          Bunch of graphs for now
-          </DialogContentText>
-
           <Grid container
             spacing={0}
             direction="row"

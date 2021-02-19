@@ -11,9 +11,6 @@ import AddIcon from '@material-ui/icons/Add';
 import './App.css';
 import Room from './components/Room.js';
 
-/* do list of solid graphs (min-max of sensors) which pop out to
-list of all sensors in the room */
-
 // Populate some fake data
 const roomNum = Math.floor(Math.random() * 10);
 const rooms = [];
@@ -45,23 +42,26 @@ for (let i = 0; i < roomNum; i++) {
 }
 
 const roomCards = rooms.map((room) => (
-  <Grid item sm={12} md={6} lg={4} key={room.id * 1000 + room.name}>
-    <div className="PaddedCard">
-      <Room {...room} />
-    </div>
+  <Grid item
+    sm={12}
+    md={6}
+    lg={4}
+    key={room.id * 1000 + room.name}
+    className="PaddedCard"
+  >
+    <Room {...room} />
   </Grid>),
 );
+// button card to add another room
 roomCards.push(
-    <Grid item sm={12} md={6} lg={4} key={-1}>
-      <div className="PaddedCard">
-        <Card>
-          <CardContent className="Fab-expander">
-            <Fab disabled>
-              <AddIcon />
-            </Fab>
-          </CardContent>
-        </Card>
-      </div>
+    <Grid item sm={12} md={6} lg={4} key={-1} className="PaddedCard">
+      <Card>
+        <CardContent className="Fab-expander">
+          <Fab disabled>
+            <AddIcon />
+          </Fab>
+        </CardContent>
+      </Card>
     </Grid>,
 );
 
