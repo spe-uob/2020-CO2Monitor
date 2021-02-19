@@ -16,11 +16,6 @@
   padding: 10px;
 }
 
-.Fab-expander {
-  margin-top: 100px;
-  margin-bottom: 100px;
-}
-
 .Left-header {
   float: left;
 }
@@ -32,3 +27,8 @@
 .PaddedCard {
   padding: 10px;
 }
+
+.AddRoom {
+    right: 20;
+    position: 'fixed';
+};
