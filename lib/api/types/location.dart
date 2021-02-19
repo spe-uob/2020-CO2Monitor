@@ -24,7 +24,8 @@ class Location {
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
-  Future<List<Device>> devices() => _client.getDevices("");
+  Future<List<Device>> devices() =>
+      Future.sync(() => List.generate(5, (index) => Device.mock()));
 
   Future<Device> device(int id) => _client.getDevice("");
 }

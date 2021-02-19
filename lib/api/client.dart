@@ -17,12 +17,13 @@ class ApiClient {
 
   factory ApiClient() => _instance;
 
-  Future<List<Location>> getLocations(String endpoint) async {
-    var res = await _httpClient.get("");
-    return jsonDecode(res.body).map((loc) => Location.fromJson(loc));
+  Future<List<Location>> getLocations() async {
+    // var res = await _httpClient.get("");
+    // return jsonDecode(res.body).map((loc) => Location.fromJson(loc));
+    return Future.sync(() => List.generate(3, (index) => Location.mock()));
   }
 
-  Future<Location> getLocation(String endpoint) async {
+  Future<Location> getLocation(int id) async {
     var res = await _httpClient.get("");
     return Location.fromJson(jsonDecode(res.body));
   }
