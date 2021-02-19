@@ -1,0 +1,11 @@
+.Left-header {
+  float: left;
+}
+
+.Right-header {
+  float: right;
+}
+
+.PaddedCard {
+  padding: 10px;
+}

@@ -55,7 +55,7 @@ roomCards.push(
     <Grid item sm={12} md={6} lg={4} key={-1}>
       <div className="PaddedCard">
         <Card>
-          <CardContent class="Fab-expander">
+          <CardContent className="Fab-expander">
             <Fab disabled>
               <AddIcon />
             </Fab>
@@ -84,7 +84,7 @@ function App() {
             </a>
           </Grid>
           <Grid item sm={12} md={6}>
-            <Fab variant="extended" className="Right-header">
+            <Fab variant="extended" className="Right-header" disabled>
               <AddIcon />
               Add room
             </Fab>

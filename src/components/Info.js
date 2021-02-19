@@ -1,16 +1,29 @@
 import React from 'react';
 import {
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
+  Grid,
+  Slide,
 } from '@material-ui/core';
 import {
   XYPlot,
   LineSeries,
+  makeWidthFlexible,
 } from 'react-vis';
+import './Info.css';
+
+const FlexXYPlot = makeWidthFlexible(XYPlot);
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 /**
  * @param {object} props
@@ -32,14 +45,23 @@ export default function Info(props) {
   }
 
   const sensorGraphs = props.sensors.map((sensor) => (
-    <React.Fragment key={sensor.description + sensor.sensorId}>
-      <DialogContentText>
-        {sensor.description + ' ' + sensor.sensorId}
-      </DialogContentText>
-      <XYPlot height={500} width={900}>
-        <LineSeries data={sensor.data} />
-      </XYPlot>
-    </React.Fragment>
+    <Grid item sm={12} md={6} lg={4} key={sensor.description + sensor.sensorId}>
+      <div className="PaddedCard">
+        <Card>
+          <CardHeader title={sensor.description + ' ' + sensor.sensorId} />
+          <CardContent>
+            <FlexXYPlot height={300}>
+              <LineSeries data={sensor.data} />
+            </FlexXYPlot>
+          </CardContent>
+          <CardActions>
+            <Button>
+              Edit sensor
+            </Button>
+          </CardActions>
+        </Card>
+      </div>
+    </Grid>
   ));
 
   return (
@@ -48,16 +70,25 @@ export default function Info(props) {
                 More info
       </Button>
       <Dialog
-        maxWidth="lg"
+        fullScreen
         open={open}
         onClose={handleClose}
+        TransitionComponent={Transition}
       >
         <DialogTitle>{'More Info'}</DialogTitle>
         <DialogContent>
           <DialogContentText>
           Bunch of graphs for now
           </DialogContentText>
-          {sensorGraphs}
+
+          <Grid container
+            spacing={0}
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+          >
+            {sensorGraphs}
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>

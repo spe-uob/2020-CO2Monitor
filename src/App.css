@@ -4,10 +4,6 @@
   padding: 5;
 }
 
-.PaddedCard {
-  padding: 10px;
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 50px;
@@ -21,8 +17,8 @@
 }
 
 .Fab-expander {
-  margin-top: 196px;
-  margin-bottom: 196.5px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 .Left-header {
@@ -31,4 +27,8 @@
 
 .Right-header {
   float: right;
+}
+
+.PaddedCard {
+  padding: 10px;
 }

@@ -8,8 +8,10 @@ import {
 import {
   XYPlot,
   AreaSeries,
+  makeWidthFlexible,
 } from 'react-vis';
 import Info from './Info.js';
+const FlexXYPlot = makeWidthFlexible(XYPlot);
 
 /**
  * @param {Object} props
@@ -37,18 +39,18 @@ export default function Room(props) {
       );
     }
 
-    maximizedGraph = (<XYPlot height={300} width={500}>
-      <AreaSeries data={graphData} />
-    </XYPlot>);
+    maximizedGraph = (
+      <FlexXYPlot height={300}>
+        <AreaSeries data={graphData} />
+      </FlexXYPlot>
+    );
   } else {
     maximizedGraph = 'No sensors in this room';
   }
 
   return (
     <Card>
-      <CardHeader title={'Name: ' + props.name}>
-
-      </CardHeader>
+      <CardHeader title={'Name: ' + props.name} />
       <CardContent>
         {maximizedGraph}
       </CardContent>
