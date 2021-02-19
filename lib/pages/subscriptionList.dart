@@ -15,7 +15,7 @@ class _SubscriptionListState extends State<SubscriptionList> {
   @override
   Widget build(BuildContext context) {
     var client = ApiClient();
-    SubscriptionProvider().subscriptions().then((ids) async {
+    SubscriptionProvider().subscriptionIds().then((ids) async {
       var locs = await Future.wait(ids.map((id) => client.getLocation(id)));
       setState(() => locations = locs);
     });

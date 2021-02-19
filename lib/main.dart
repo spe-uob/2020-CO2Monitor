@@ -12,7 +12,7 @@ import 'pages/locationView.dart';
 void main() {
   runApp(App());
 
-  Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager.initialize(callbackDispatcher, isInDebugMode: false);
   Workmanager.registerPeriodicTask(
     "co2alerts", "co2alerts",
     // Who knows what a good duration is? 20 minutes is a good default, for now.

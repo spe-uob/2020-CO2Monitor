@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:co2_monitor/api/client.dart';
+import 'package:co2_monitor/api/types/location.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// This class provides the ability to:
@@ -45,14 +47,14 @@ class SubscriptionProvider {
 
   Future subscribeTo(int id) async {
     if (await isSubscribedTo(id)) return;
-    var curr = await subscriptions();
+    var curr = await subscriptionIds();
     curr.add(id);
     await _write(curr);
   }
 
   Future unsubscribeFrom(int id) async {
     if (!await isSubscribedTo(id)) return;
-    var curr = await subscriptions();
+    var curr = await subscriptionIds();
     curr.remove(id);
     await _write(curr);
   }
@@ -62,15 +64,23 @@ class SubscriptionProvider {
   }
 
   /// Obtain a list of all locations a user is subscribed to.
-  Future<List<int>> subscriptions() async {
+  Future<List<int>> subscriptionIds() async {
     List<int> json = (await _readJson()).cast<int>();
     // TODO: Handle invalid JSON by regenerating empty file
     // This could display a notification?
     return json;
   }
 
+  /// Utility method, because we probably do this a lot
+  /// Wraps `subscriptionIds` and converts into locations.
+  Future<List<Location>> subscriptions() async {
+    var client = ApiClient();
+    var subIds = await subscriptionIds();
+    return await Future.wait(subIds.map((id) => client.getLocation(id)));
+  }
+
   Future<bool> isSubscribedTo(int id) async =>
-      (await subscriptions()).contains(id);
+      (await subscriptionIds()).contains(id);
 
   /// Subscribe to a location if unsubscribed, or unsubscribe if subscribed.
   /// This function returns the new subscription status, i.e. it returns

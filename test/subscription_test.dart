@@ -39,7 +39,7 @@ void main() {
   // Added after regression where subscription-related functions didn't return.
   test('Subscriptions Timeout', () async {
     var bp = 1;
-    await data.subscriptions();
+    await data.subscriptionIds();
   });
 
   test('Empty Subscriptions', () async {
@@ -60,22 +60,22 @@ void main() {
   test('Cycle Subscriptions', () async {
     await data.subscribeTo(4);
     assert(await data.isSubscribedTo(4));
-    assert((await data.subscriptions()).contains(4));
+    assert((await data.subscriptionIds()).contains(4));
     await data.unsubscribeFrom(4);
     assert(!await data.isSubscribedTo(4));
-    assert(!(await data.subscriptions()).contains(4));
+    assert(!(await data.subscriptionIds()).contains(4));
     await data.subscribeTo(4);
     assert(await data.isSubscribedTo(4));
-    assert((await data.subscriptions()).contains(4));
+    assert((await data.subscriptionIds()).contains(4));
   });
 
   test('Get Subscriptions', () async {
-    assert((await data.subscriptions()).isEmpty);
+    assert((await data.subscriptionIds()).isEmpty);
     await data.subscribeTo(5);
     await data.subscribeTo(4);
     await data.subscribeTo(1);
 
-    var subs = await data.subscriptions();
+    var subs = await data.subscriptionIds();
     expect(subs, containsAll([1, 5, 4]));
     expect(subs, hasLength(3));
   });
