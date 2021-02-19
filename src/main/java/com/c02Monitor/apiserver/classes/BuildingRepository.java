@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface BuildingRepository extends MongoRepository<Building, String> {
+public interface BuildingRepository extends CrudRepository<Building, Long> {
 
-  public Room findById(String id);
+  public Building findById(String id);
   Long deleteBuildingById(String id);
 
 }
