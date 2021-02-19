@@ -4,14 +4,13 @@ import {
   Grid,
   Paper,
   Fab,
-  // Button,
   IconButton,
   InputBase,
 } from '@material-ui/core';
 import {Add, Search} from '@material-ui/icons';
+import {makeStyles} from '@material-ui/core/styles';
 import './App.css';
 import Room from './components/Room.js';
-import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   addRoom: {
@@ -71,6 +70,7 @@ function App() {
 
   return (
     <div className="App">
+      {/* Header bar */}
       <Paper className="App-header">
         <Grid container
           spacing={0}
@@ -95,6 +95,8 @@ function App() {
           </Grid>
         </Grid>
       </Paper>
+
+      {/* The cards (rooms) */}
       <Grid container
         spacing={0}
         direction="row"
@@ -103,6 +105,8 @@ function App() {
       >
         {roomCards}
       </Grid>
+
+      {/* Spain but the s is silent */}
       <Fab className={classes.addRoom}>
         <Add />
       </Fab>
