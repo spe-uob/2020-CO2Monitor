@@ -3,9 +3,10 @@ import '../node_modules/react-vis/dist/style.css';
 import {
   Grid,
   Paper,
-  Card,
-  CardContent,
-  Fab,
+  // Fab,
+  // Card,
+  // CardContent,
+  Button,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import './App.css';
@@ -53,7 +54,7 @@ const roomCards = rooms.map((room) => (
   </Grid>),
 );
 // button card to add another room
-roomCards.push(
+/* roomCards.push(
     <Grid item sm={12} md={6} lg={4} key={-1} className="PaddedCard">
       <Card>
         <CardContent className="Fab-expander">
@@ -63,7 +64,7 @@ roomCards.push(
         </CardContent>
       </Card>
     </Grid>,
-);
+); */
 
 /**
  * @return {React.Component}
@@ -84,10 +85,14 @@ function App() {
             </a>
           </Grid>
           <Grid item sm={12} md={6}>
-            <Fab variant="extended" className="Right-header" disabled>
-              <AddIcon />
+            <Button
+              disableElevation
+              variant="extended"
+              className="Right-header"
+              startIcon={<AddIcon />}
+            >
               Add room
-            </Fab>
+            </Button>
           </Grid>
         </Grid>
       </Paper>

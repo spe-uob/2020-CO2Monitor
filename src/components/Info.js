@@ -7,13 +7,12 @@ import {
   CardHeader,
   Dialog,
   DialogContent,
-  DialogActions,
-  Fab,
   Grid,
   Paper,
   Slide,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import {Add, Close} from '@material-ui/icons';
+// import {boxShadow} from '@material-ui/system';
 import {
   XYPlot,
   LineSeries,
@@ -46,22 +45,26 @@ export default function Info(props) {
   }
 
   const sensorGraphs = props.sensors.map((sensor) => (
-    <Grid item sm={12} md={6} lg={4} key={sensor.description + sensor.sensorId}>
-      <div className="PaddedCard">
-        <Card>
-          <CardHeader title={sensor.description + ' ' + sensor.sensorId} />
-          <CardContent>
-            <FlexXYPlot height={300}>
-              <LineSeries data={sensor.data} />
-            </FlexXYPlot>
-          </CardContent>
-          <CardActions>
-            <Button>
-              Edit sensor
-            </Button>
-          </CardActions>
-        </Card>
-      </div>
+    <Grid item
+      sm={12}
+      md={6}
+      lg={4}
+      key={sensor.description + sensor.sensorId}
+      className="PaddedCard"
+    >
+      <Card>
+        <CardHeader title={sensor.description + ' ' + sensor.sensorId} />
+        <CardContent>
+          <FlexXYPlot height={300}>
+            <LineSeries data={sensor.data} />
+          </FlexXYPlot>
+        </CardContent>
+        <CardActions>
+          <Button>
+            Edit sensor
+          </Button>
+        </CardActions>
+      </Card>
     </Grid>
   ));
 
@@ -76,7 +79,7 @@ export default function Info(props) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <Paper className="App-header">
+        <Paper className="Info-header">
           <Grid container
             spacing={0}
             direction="row"
@@ -84,15 +87,24 @@ export default function Info(props) {
             alignItems="center"
           >
             <Grid item sm={12} md={6}>
-              <a className="Left-header">
-              CO2 Monitor Control Panel: Room Details
-              </a>
+              <Button
+                variant="extended"
+                className="Left-header"
+                onClick={handleClose}
+                disableElevation
+              >
+                <Close />
+              </Button>
             </Grid>
             <Grid item sm={12} md={6}>
-              <Fab variant="extended" className="Right-header" disabled>
-                <AddIcon />
+              <Button
+                variant="extended"
+                className="Right-header"
+                disableElevation
+                startIcon={<Add />}
+              >
                 Add sensor
-              </Fab>
+              </Button>
             </Grid>
           </Grid>
         </Paper>
@@ -106,11 +118,6 @@ export default function Info(props) {
             {sensorGraphs}
           </Grid>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>
-            Close
-          </Button>
-        </DialogActions>
       </Dialog>
     </React.Fragment>
   );
