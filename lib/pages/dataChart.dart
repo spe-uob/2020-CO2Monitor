@@ -49,7 +49,8 @@ class DataChartState extends State<DataChart> {
   //   });
   // }
 
-  Widget chartBuilder() {
+  /// Constructs a chart from data provided as parameter. If no data is provided, no chart is produced.
+  Widget chartBuilder(seriesList) {
     Widget newWidget;
     if (seriesList.length != 0) {
       newWidget = charts.TimeSeriesChart(
@@ -62,6 +63,7 @@ class DataChartState extends State<DataChart> {
     return newWidget;
   }
 
+  /// Constructs a field, with a label and value
   Widget entryBuilder(String label, var data, String unit, BuildContext context, BoxConstraints constraints) {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,11 +123,11 @@ class DataChartState extends State<DataChart> {
                     height: (constraints.maxHeight-100),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 0),
-                    // decoration: BoxDecoration(color: Color(0xffd7e5f7)),
+                    // decoration: BoxDecoration(color: Color(0xffd7e5f7 )),
                     // constraints: BoxConstraints.tight(Size(350, 550)),
                     alignment: Alignment.center,
                     key: Key('Graph Container'),
-                    child: chartBuilder()),
+                    child: chartBuilder(seriesList)),
                 ExpansionTile(
                   title: Text("Additional Information"),
                   children: [
@@ -140,7 +142,7 @@ class DataChartState extends State<DataChart> {
                             .query(from: Duration(hours: 7))
                             .peak()
                             .levels, 'ppm', context, constraints),
-                        entryBuilder('Danger Level:', widget.dataSet.checkDanger(), '', context, constraints)
+                        entryBuilder('Current Risk:', widget.dataSet.checkDanger(), '', context, constraints)
                       ],
                     )
                   ],

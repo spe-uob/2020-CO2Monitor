@@ -14,7 +14,15 @@ void main() {
     expect(fieldFinder, findsOneWidget);
     final entryFinder = find.byWidgetPredicate(
         (widget) => widget is Text && widget.data.contains("ppm"));
-    expect(entryFinder, findsOneWidget);
+    expect(entryFinder, findsWidgets);
+    final dropFinder = find.text("Additional Information");
+    expect(dropFinder, findsOneWidget);
+    final avgFinder = find.text("7-day Average");
+    expect(avgFinder, findsOneWidget);
+    final peakFinder = find.text("24-hour Peak");
+    expect(peakFinder, findsOneWidget);
+    final riskFinder = find.text("Current Risk");
+    expect(riskFinder, findsOneWidget);
   });
   // testWidgets('Data Displayed', (WidgetTester tester) async {
   //   List<TimeSeriesLevels> data = [

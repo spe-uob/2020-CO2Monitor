@@ -2,6 +2,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:quiver/core.dart';
 
+/// DataSet is used to store readings from a particular location, providing functions for querying and basic data analysis.
 class DataSet {
   int _length;
   List<TimeSeriesLevels> _data;
@@ -9,16 +10,21 @@ class DataSet {
   int lowerThreshold = 1000;
   int upperThreshold = 5000;
   int dangerLevel = 0;
+
+  /// Constructs an empty DataSet.
   DataSet(){
     _data = List<TimeSeriesLevels>.empty(growable: true);
     _length = 0;
   }
 
+  /// Constructs a DataSet from a list of TimeSeriesLevels.
   DataSet.fromSeriesList(List<TimeSeriesLevels> data) {
     _data = data;
     _length = data.length;
     _sort();
   }
+
+  /// Constructs a DataSet containing sample data with fixed values.
   DataSet.usingSampleSeries() {
     _data = [
       new TimeSeriesLevels(DateTime.now(), 550),
@@ -32,6 +38,7 @@ class DataSet {
     _sort();
   }
 
+  /// Sorts the DataSet by most recent reading.
   void _sort(){
     if (_length > 0){
       _data.sort((TimeSeriesLevels element1, TimeSeriesLevels element2) => element2.time.compareTo(element1.time));
@@ -40,6 +47,7 @@ class DataSet {
 
   int get length => _length;
 
+  /// Adds a new reading to the DataSet.
   bool appendEntry(TimeSeriesLevels entry) {
     bool valid = true; //entry.time.isAfter(DateTime.now().subtract(maxAge));
     if (valid) {
@@ -51,6 +59,7 @@ class DataSet {
     return valid;
   }
 
+  /// Removes readings which are older than the maximum lifetime of the data.
   void purgeOldEntries() {
     for (int i = 0; i < length; i++) {
       if (data[i].time.isBefore(DateTime.now().subtract(maxAge))){
@@ -61,6 +70,7 @@ class DataSet {
     }
   }
 
+  /// Updates the danger level to the current reading, and returns a string of the danger level.
   String checkDanger(){
     String result;
     if (_data.length > 0){
@@ -84,7 +94,7 @@ class DataSet {
     return result;
   }
 
-
+  /// Returns a new dataSet containing a subset of the readings based on the query. Can be queried by a period of time, and by whether the reading was a critical value.
   DataSet query({Duration from, Duration to = Duration.zero, bool critical = false}){
     if (from == null){
       from = maxAge;
@@ -98,6 +108,7 @@ class DataSet {
     return DataSet.fromSeriesList(reqData);
   }
 
+  /// Calculates the mean level of CO2 from all of the readings in the dataSet
   int mean(){
     if (_length > 0){
       int sum = 0;
@@ -109,6 +120,7 @@ class DataSet {
     return 0;
   }
 
+  /// Returns the reading with the highest value of all of the readings
   TimeSeriesLevels peak(){
     TimeSeriesLevels peak = TimeSeriesLevels(DateTime.now(), -1);
     for (int i = 0; i < length; i++){
@@ -122,6 +134,7 @@ class DataSet {
     return peak;
   }
 
+  /// Returns a series for use in a chart
   List<charts.Series<TimeSeriesLevels,DateTime>> createSeries(){
     return [
       new charts.Series<TimeSeriesLevels, DateTime>(
@@ -157,6 +170,7 @@ class DataSet {
   int get hashCode => hashObjects(_data);
 }
 
+/// TimeSeriesLevels contains a single data reading, usually stored in a list of data readings.
 class TimeSeriesLevels {
   final DateTime time;
   final int levels;
