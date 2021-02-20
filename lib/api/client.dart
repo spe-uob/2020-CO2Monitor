@@ -20,30 +20,31 @@ class ApiClient {
   Future<List<Location>> getLocations() async {
     // var res = await _httpClient.get("");
     // return jsonDecode(res.body).map((loc) => Location.fromJson(loc));
-    return Future.sync(() => List.generate(3, (index) => Location.mock()));
+    return Future.sync(() => List.generate(5, (idx) => Location.mock(idx)));
   }
 
   Future<Location> getLocation(int id) async {
-    var res = await _httpClient.get("");
-    return Location.fromJson(jsonDecode(res.body));
+    return Location(id, "Location $id");
+    // var res = await _httpClient.get("");
+    // return Location.fromJson(jsonDecode(res.body));
   }
 
-  Future<List<Device>> getDevices(String endpoint) async {
+  Future<List<Device>> getDevices() async {
     var res = await _httpClient.get("");
     return jsonDecode(res.body).map((dev) => Device.fromJson(dev));
   }
 
-  Future<Device> getDevice(String endpoint) async {
+  Future<Device> getDevice(int id) async {
     var res = await _httpClient.get("");
     return Device.fromJson(jsonDecode(res.body));
   }
 
-  Future<List<Reading>> getReadings(String endpoint) async {
+  Future<List<Reading>> getReadings() async {
     var res = await _httpClient.get("");
     return jsonDecode(res.body).map((rea) => Reading.fromJson(rea));
   }
 
-  Future<Reading> getReading(String endpoint) async {
+  Future<Reading> getReading(int id) async {
     var res = await _httpClient.get("");
     return Reading.fromJson(jsonDecode(res.body));
   }

@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:co2_monitor/dataSet.dart';
+import 'package:co2_monitor/widgets/graphs/dataSet.dart';
 
 void main() {
   test("Test appendEntry()", () {

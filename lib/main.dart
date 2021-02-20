@@ -1,18 +1,18 @@
-import 'dart:math';
-
+import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
 import 'package:co2_monitor/pages/codeEntry.dart';
 import 'package:co2_monitor/pages/locationList.dart';
+import 'package:co2_monitor/pages/subscriptionList.dart';
 import 'package:co2_monitor/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:workmanager/workmanager.dart';
-import 'pages/dataChart.dart';
+import 'pages/locationView.dart';
 
 void main() {
   runApp(App());
 
-  Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager.initialize(callbackDispatcher, isInDebugMode: false);
   Workmanager.registerPeriodicTask(
     "co2alerts", "co2alerts",
     // Who knows what a good duration is? 20 minutes is a good default, for now.
@@ -59,13 +59,34 @@ class _MainViewState extends State<MainView> {
 
   // Hold (page, icon) pairs.
   List<Tuple2<Widget, BottomNavigationBarItem>> _pages = [
-    Tuple2(CodeEntry(),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: "Code")),
-    Tuple2(DataChart(test: true),
-        BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: "Data")),
-    // BottomNavigationBar requires at least two items, add a junk one
-    Tuple2(LocationList(),
-        BottomNavigationBarItem(icon: Icon(Icons.keyboard), label: "Test")),
+    Tuple2(
+      CodeEntry(),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.qr_code),
+        label: "Add Location",
+      ),
+    ),
+    Tuple2(
+      LocationView(Location.mock(99), test: true),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.show_chart),
+        label: "[TEST] LocationView",
+      ),
+    ),
+    Tuple2(
+      SubscriptionList(),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.location_on),
+        label: "Subscriptions",
+      ),
+    ),
+    Tuple2(
+      LocationList(),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.map),
+        label: "All Locations",
+      ),
+    ),
   ];
 
   Widget build(BuildContext context) {
@@ -78,6 +99,8 @@ class _MainViewState extends State<MainView> {
           items: _pages.map((p) => p.item2).toList(),
           currentIndex: _index,
           onTap: (index) => setState(() => _index = index),
+          // Without this, items turn invisible (too many)
+          type: BottomNavigationBarType.fixed,
         ));
   }
 }

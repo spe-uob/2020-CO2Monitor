@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:co2_monitor/dataSet.dart';
+import 'package:co2_monitor/widgets/graphs/dataSet.dart';
 
 // int currentCO2 = 600;
 

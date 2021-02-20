@@ -24,9 +24,9 @@ class Device {
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
-  Future<List<Reading>> readings() => _client.getReadings("");
+  Future<List<Reading>> readings() => _client.getReadings();
 
-  Future<Reading> latestReading() => _client.getReading("");
+  Future<Reading> latestReading() => _client.getReading(0);
 
-  Future<Reading> reading(int id) => _client.getReading("");
+  Future<Reading> reading(int id) => _client.getReading(id);
 }

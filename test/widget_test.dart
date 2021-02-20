@@ -1,11 +1,12 @@
-import 'package:co2_monitor/pages/dataChart.dart';
+import 'package:co2_monitor/api/types/location.dart';
+import 'package:co2_monitor/pages/locationView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
   testWidgets('Page Displayed', (WidgetTester tester) async {
-    await tester.pumpWidget(DataChart());
+    await tester.pumpWidget(LocationView(Location.mock(99)));
     final chartFinder = find.byType(charts.TimeSeriesChart);
     expect(chartFinder, findsOneWidget);
     final titleFinder = find.text("CO2 Monitor");
