@@ -9,21 +9,21 @@ public class Room {
     private long id;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("sensors")
-    private List<Sensor> sensors;
+    @JsonProperty("devices")
+    private List<Device> devices;
 
     //for the json fake data
     public Room() {
         super();
     }
 
-    public Room(long id, String name, List<Sensor> sensors) {
+    public Room(long id, String name, List<device> devices) {
         this.id = id;
         this.name = name;
-        this.sensors = sensors;
+        this.devices = devices;
     }
-    public addSensor (Sensor sensor){
-        this.sensors.append(sensor);
+    public adddevice (device device){
+        this.devices.append(device);
     }
     public long getId() {
         return id;
@@ -33,7 +33,7 @@ public class Room {
         return name;
     }
 
-    public List<Sensor> getSensors() {
-        return sensors;
+    public List<device> getdevices() {
+        return devices;
     }
 }
