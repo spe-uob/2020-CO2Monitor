@@ -4,10 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Building {
     @JsonProperty("id")
-    @Id
-    private string id;
+    private @Id long id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("rooms")
@@ -61,5 +67,14 @@ public class Building {
 
     public List<Room> getRooms() {
         return rooms;
+    }
+
+    public Room getRoom(long id) {
+        for x in getRooms(){
+            if x.getId() == id{
+                return x
+            }
+        }
+        else return null
     }
 }
