@@ -39,4 +39,13 @@ public class Sensor {
     public List<Data> getData() {
         return data;
     }
+
+    public Data getDatum() {
+        for x in getData(){
+            if x.getId() == id{
+                return x
+            }
+        }
+        else return null
+    }
 }
