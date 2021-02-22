@@ -36,4 +36,13 @@ public class Room {
     public List<Sensor> getSensors() {
         return sensors;
     }
+    public Sensor getSensor(long id) {
+        for x in getSensors(){
+            if x.getId() == id{
+                return x
+            }
+        }
+        else return null
+    }
+    
 }
