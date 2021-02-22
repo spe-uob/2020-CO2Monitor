@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-public class Device {
+public class Sensor {
     @JsonProperty("id")
     private long id;
     @JsonProperty("description")
@@ -14,11 +14,11 @@ public class Device {
     private List<Data> data;
 
     //for the json fake data
-    public Device() {
+    public Sensor() {
         super();
     }
 
-    public Device(long id, String description, List<Data> data) {
+    public Sensor(long id, String description, List<Data> data) {
         this.id = id;
         this.description = description;
         this.data = data;
