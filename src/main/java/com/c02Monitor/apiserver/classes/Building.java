@@ -3,11 +3,8 @@ package com.c02Monitor.apiserver.classes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-
-import java.util.Objects;
-
+import java.util.ArrayList;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
@@ -30,31 +27,29 @@ public class Building {
         this.rooms = rooms;
     }
 
-    public AddData(long roomId, long sensorId, Data data){ // Must be a neater way of doing this.
-        tempRoom = new Room();
-        for x in rooms{
-            if x.getId() == roomId{
-                tempRoom = x;
-                Sensor[] tempSensors = x.getSensors();
-                for y in tempSensors{
-                    if y.getId() == sensorId{
-                        y.addData(data)
+    public void AddData(long roomId, long sensorId, Data data){ // Must be a neater way of doing this.
+        for (Room x: rooms){
+            if( x.getId() == roomId){
+                List<Sensor> tempSensors = x.getSensors();
+                for(Sensor y: tempSensors){
+                    if(y.getId() == sensorId){
+                        y.addData(data);
                     }
                 }
             }
         }
     }
 
-    public AddSensor(long roomId, Sensor sensor){
-        for x in rooms{
-            if x.getId() == roomId{
-                x.addSensor(sensor)
+    public void AddSensor(long roomId, Sensor sensor){
+        for (Room x: rooms){
+            if (x.getId() == roomId){
+                x.addSensor(sensor);
                 }
             }
         }
-    }
-    public AddRoom(Room room){ 
-       rooms.append(room)
+    
+    public void AddRoom(Room room){ 
+       rooms.add(room);
     }
 
     public long getId() {
@@ -65,16 +60,47 @@ public class Building {
         return name;
     }
 
-    public List<Room> getRooms() {
+    public List<Room> getRooms(){
         return rooms;
     }
 
     public Room getRoom(long id) {
-        for x in getRooms(){
-            if x.getId() == id{
-                return x
+        for (Room x:  getRooms()){
+            if( x.getId() == id){
+                return x;
             }
         }
-        else return null
+        return null;
     }
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setId(long id){
+        this.id = id;
+    }
+    public void setRooms(List<Room> rooms){
+        this.rooms = rooms;
+    }
+    public void setRoom(Room room, long id, String name){
+        Boolean match = false;
+        for (Room x: rooms){
+            if (x.getId() == id){
+                x = room;
+                match = true;
+            }
+
+        }
+        if (!match){
+            List<Sensor> newSensors = new ArrayList<Sensor>();;
+            Room newRoom = new Room(id, name, newSensors);
+            this.AddRoom(newRoom);
+        }
+    }
+    
+    public void setRoom(Room room, long id){ // overload for no name
+        String name = "DefaultBuildingName";
+        setRoom(room, id, name);
+    }
+
 }
+
