@@ -22,8 +22,8 @@ public class Room {
         this.name = name;
         this.sensors = sensors;
     }
-    public addSensor (Sensor sensor){
-        this.sensors.append(sensor);
+    public void addSensor (Sensor sensor){
+        this.sensors.add(sensor);
     }
     public long getId() {
         return id;
@@ -37,12 +37,12 @@ public class Room {
         return sensors;
     }
     public Sensor getSensor(long id) {
-        for x in getSensors(){
-            if x.getId() == id{
-                return x
+        for( Sensor x: getSensors()){
+            if(x.getId() == id){
+                return x;
             }
         }
-        else return null
+        return null;
     }
     
 }
