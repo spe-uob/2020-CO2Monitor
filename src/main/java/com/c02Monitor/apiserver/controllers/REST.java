@@ -1,4 +1,10 @@
-package com.c02Monitor.apiserver.classes;
+package com.c02Monitor.apiserver.controllers;
+
+import com.c02Monitor.apiserver.classes.Building;
+import com.c02Monitor.apiserver.classes.Room;
+import com.c02Monitor.apiserver.classes.Sensor;
+import com.c02Monitor.apiserver.classes.Data;
+import com.c02Monitor.apiserver.classes.BuildingRepository;
 
 import java.util.List;
 
@@ -29,37 +35,78 @@ class REST {
 
   @GetMapping("/buildings/{id}/rooms")// Get all rooms in a building
   List<Room> all(@PathVariable Long id) {
-    return repository.findById(id).getRooms();
+    if (repository.findById(id).isPresent()){
+      return repository.findById(id).get().getRooms();
+    }
+    return null;
+    
   }
 
   @GetMapping("/buildings/{id}/rooms/{id2}/sensors")// Get all sensors in a room in a building
   List<Sensor> all(@PathVariable Long id, @PathVariable Long id2) {
-    return repository.findById(id).getRoom(id2).getSensors();
+    if (repository.findById(id).isPresent()){
+    return repository.findById(id).get().getRoom(id2).getSensors();
+    }
+    return null;
   }
 
   @GetMapping("/buildings/{id}/rooms/{id2}/sensors{id3}/data")// Get all data in a sensor in a room in a building
   List<Data> all(@PathVariable Long id, @PathVariable Long id2, @PathVariable Long id3) {
-    return repository.findById(id).getRoom(id2).getSensor(id3).getData();
+    if (repository.findById(id).isPresent()){
+    return repository.findById(id).get().getRoom(id2).getSensor(id3).getData();
+    }
+    return null;
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////// GET ONE //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   @GetMapping("/buildings/{id}") // Get a building
   Building one(@PathVariable Long id) {
-    return repository.findById(id);
+    if (repository.findById(id).isPresent()){
+      return repository.findById(id).get();
+    }
+    return null;
   }
 
   @GetMapping("/buildings/{id}/rooms/{id2}")// Get a room in a building
   Room one(@PathVariable Long id, @PathVariable Long id2) {
-    return repository.findById(id).getRoom(id2);
+    if (repository.findById(id).isPresent()){
+    return repository.findById(id).get().getRoom(id2);
+    }
+    return null;
   }
 
   @GetMapping("/buildings/{id}/rooms/{id2}/sensors/{id3}")// Get a sensor in a room in a building
-  Sensor one(@PathVariable Long id @PathVariable Long id2, @PathVariable Long id3) {
-    return repository.findById(id).getRoom(id2).getSensor(id3);
+  Sensor one(@PathVariable Long id, @PathVariable Long id2, @PathVariable Long id3) {
+    if (repository.findById(id).isPresent()){
+    return repository.findById(id).get().getRoom(id2).getSensor(id3);
+    }
+    return null;
   }
 
   @GetMapping("/buildings/{id}/rooms/{id2}/sensors{id3}/data/{id4}")// Get a datum in a sensor in a room in a building
-  Data one(@PathVariable Long id @PathVariable Long id2, @PathVariable Long id3, @PathVariable Long id4) {
-    return repository.findById(id).getRoom(id2).getSensor(id3).getDatum(id4);
+  Data one(@PathVariable Long id, @PathVariable Long id2, @PathVariable Long id3, @PathVariable Long id4) {
+    if (repository.findById(id).isPresent()){
+    return repository.findById(id).get().getRoom(id2).getSensor(id3).getDatum(id4);
+    }
+    return null;
   }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////// ADD ONE //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  @PutMapping("/buildings/{id}")
+  Building replaceBuilding(@RequestBody Building newBuilding, @PathVariable Long id) {
+    
+    return repository.findById(id)
+      .map(building -> {
+        building.setName(newBuilding.getName());
+        building.setId(newBuilding.getId());
+        building.setRooms(newBuilding.getRooms());
+        return repository.save(building);
+      })
+      .orElseGet(() -> {
+        newBuilding.setId(id);
+        return repository.save(newBuilding);
+      });
+  }
+}
