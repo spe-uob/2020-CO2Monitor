@@ -1,8 +1,6 @@
 package com.c02Monitor.apiserver.classes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.List;
 
 public class Sensor {
@@ -24,8 +22,8 @@ public class Sensor {
         this.data = data;
     }
 
-    public addData (Data data){
-        this.data.append(data);
+    public void addData (Data data){
+        this.data.add(data);
     }
 
     public long getId() {
@@ -40,12 +38,16 @@ public class Sensor {
         return data;
     }
 
-    public Data getDatum() {
-        for x in getData(){
-            if x.getId() == id{
-                return x
+    public void setData(List<Data> data){
+        this.data = data;
+    }
+
+    public Data getDatum(long id) {
+        for (Data x : getData()){
+            if (x.getId() == id){
+                return x;
             }
         }
-        else return null
+        return null;
     }
 }
