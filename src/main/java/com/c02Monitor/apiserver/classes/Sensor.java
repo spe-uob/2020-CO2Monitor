@@ -38,6 +38,14 @@ public class Sensor {
         return data;
     }
 
+    public void delDatum(long id){
+        for (Data x:data){
+            if (x.getId() == id){
+                data.remove(x);
+            }
+        }
+    }
+
     public void setData(List<Data> data){
         this.data = data;
     }
