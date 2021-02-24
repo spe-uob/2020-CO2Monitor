@@ -11,11 +11,8 @@ import javax.persistence.Embeddable;
 
 @Entity
 public class Data {
-    @JsonProperty("id")
     private long id;
-    @JsonProperty("date")
     private LocalDateTime date;
-    @JsonProperty("co2")
     private float co2;
     public Long sensor;
     public Long room;

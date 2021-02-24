@@ -11,11 +11,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 @Entity
 public class Sensor {
-    @JsonProperty("id")
     private long id;
-    @JsonProperty("description")
     private String description;
-    @JsonProperty("data")
     public List<Long> data;
     public Long room;
     public Long building;

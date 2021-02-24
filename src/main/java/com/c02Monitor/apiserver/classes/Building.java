@@ -11,12 +11,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 @Entity
 public class Building {
-    @JsonProperty("id")
-
     private long id;
-    @JsonProperty("name")
     private String name;
-    @JsonProperty("rooms")
     public List<Long> rooms;
 
     public Building(long id, String name, List<Long> rooms) {

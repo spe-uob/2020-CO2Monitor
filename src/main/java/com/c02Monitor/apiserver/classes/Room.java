@@ -12,14 +12,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 @Entity
 public class Room {
-    @JsonProperty("id")
     private long id;
-    @JsonProperty("name")
     private String name;
-    @JsonProperty("sensors")
-    @OneToMany(targetEntity = Sensor.class, mappedBy = "room", 
-    cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Embedded
     public List<Long> sensors;
     public Long building;
 
