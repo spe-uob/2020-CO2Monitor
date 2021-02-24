@@ -3,17 +3,17 @@ package com.c02Monitor.apiserver.classes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+
 @Entity
 public class Room {
+    @Id
     private long id;
     private String name;
+    @Column
+    @ElementCollection()
     public List<Long> sensors;
     public Long building;
 
@@ -26,7 +26,7 @@ public class Room {
     public void addSensor (Long sensor){
         this.sensors.add(sensor);
     }
-    @Id
+
     public long getId() {
         return id;
     }

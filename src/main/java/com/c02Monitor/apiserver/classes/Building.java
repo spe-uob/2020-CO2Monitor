@@ -9,10 +9,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 @Entity
 public class Building {
+    @Id
     private long id;
     private String name;
+    @Column
+    @ElementCollection()
     public List<Long> rooms;
 
     public Building(long id, String name, List<Long> rooms) {
@@ -39,7 +44,7 @@ public class Building {
             }
         }
     }
-    @Id
+
     public long getId() {
         return id;
     }

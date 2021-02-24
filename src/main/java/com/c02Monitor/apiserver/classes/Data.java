@@ -7,10 +7,12 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Embeddable;
-
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 
 @Entity
 public class Data {
+    @Id
     private long id;
     private LocalDateTime date;
     private float co2;
@@ -26,7 +28,7 @@ public class Data {
         this.room = room;
         this.building = building;
     }
-    @Id
+
     public long getId() {
         return id;
     }
