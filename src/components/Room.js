@@ -1,9 +1,14 @@
 import React from 'react';
 import {
+  Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from '@material-ui/core';
 import {
   XYPlot,
@@ -19,6 +24,16 @@ const FlexXYPlot = makeWidthFlexible(XYPlot);
  * @return {React.ReactFragment} Card with room
  */
 export default function Room(props) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   let minMaxGraph;
   if (props.sensors.length > 0) {
     const graphData = [];
@@ -56,6 +71,28 @@ export default function Room(props) {
       </CardContent>
       <CardActions>
         <Info {...props} />
+        <Button onClick={handleClickOpen} color="secondary" variant="contained">
+          Delete
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+        >
+          <DialogTitle>
+            Are you sure you want to delete this room?
+          </DialogTitle>
+          <DialogContent>
+            You sure bro?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button color="secondary" variant="contained">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </CardActions>
     </Card>
   );
