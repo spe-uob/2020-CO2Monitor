@@ -49,7 +49,20 @@ public class Building {
         }
     
     public void AddRoom(Room room){ 
+        for (Room x:getRooms()){
+            if (x.getId() == room.getId()){
+                delRoom(x.getId());
+            }
+        } 
        rooms.add(room);
+    }
+
+    public void delRoom(long id){
+        for (Room x:rooms){
+            if (x.getId() == id){
+                rooms.remove(x);
+            }
+        }
     }
 
     public long getId() {
