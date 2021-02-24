@@ -97,14 +97,20 @@ class REST {
   Data one(@PathVariable Long id, @PathVariable Long id2, @PathVariable Long id3, @PathVariable Long id4) {
     return dataRepository.findById(id4).get();
   }
-}
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////// ADD ONE //////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
   @PutMapping("/buildings/{id}")// Add or replace a building
   Building replaceBuilding(@RequestBody Building newBuilding, @PathVariable Long id) {
-   return repository.save(newBuilding);
+   return buildingRepository.save(newBuilding);
   }
 
+  @PostMapping("/buildings")
+  Building newBuilding(@RequestBody Building newBuilding) {
+    return buildingRepository.save(newBuilding);
+  }
+}
+/*
 
 @PutMapping("/buildings/{id}/rooms/{id2}")// Add or replace a room in a building
 Room replaceRoom(@RequestBody Room newRoom, @PathVariable Long id,@PathVariable Long id2) {
@@ -132,3 +138,4 @@ Data replaceDatum(@RequestBody Data newDatum, @PathVariable Long id,@PathVariabl
 }
 
  */
+

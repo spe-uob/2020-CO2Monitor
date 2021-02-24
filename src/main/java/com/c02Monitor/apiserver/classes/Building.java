@@ -20,6 +20,10 @@ public class Building {
     @ElementCollection()
     public List<Long> rooms;
 
+    public Building(){
+
+    }
+
     public Building(long id, String name, List<Long> rooms) {
         this.id = id;
         this.name = name;
