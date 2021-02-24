@@ -33,6 +33,14 @@ public class Room {
         return name;
     }
 
+    public void delSensor(long id){
+        for (Sensor x:sensors){
+            if (x.getId() == id){
+                sensors.remove(x);
+            }
+        }
+    }
+
     public List<Sensor> getSensors() {
         return sensors;
     }
