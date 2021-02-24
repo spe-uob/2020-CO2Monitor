@@ -4,6 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Embeddable;
+
+
+@Entity
 public class Data {
     @JsonProperty("id")
     private long id;
@@ -11,18 +17,19 @@ public class Data {
     private LocalDateTime date;
     @JsonProperty("co2")
     private float co2;
+    public Long sensor;
+    public Long room;
+    public Long building;
 
-    //for the json fake data
-    public Data() {
-        super();
-    }
-
-    public Data(long id, LocalDateTime date, float co2) {
+    public Data(long id, LocalDateTime date, float co2, long sensor, Long room, Long building) {
         this.id = id;
         this.date = date;
         this.co2 = co2;
+        this.sensor = sensor;
+        this.room = room;
+        this.building = building;
     }
-
+    @Id
     public long getId() {
         return id;
     }

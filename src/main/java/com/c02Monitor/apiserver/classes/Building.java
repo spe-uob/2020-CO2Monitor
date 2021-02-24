@@ -3,68 +3,47 @@ package com.c02Monitor.apiserver.classes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 @Entity
 public class Building {
     @JsonProperty("id")
-    private @Id long id;
+
+    private long id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("rooms")
-    private List<Room> rooms;
+    public List<Long> rooms;
 
-    //for the json fake data
-    public Building() {
-        super();
-    }
-
-    public Building(long id, String name, List<Room> rooms) {
+    public Building(long id, String name, List<Long> rooms) {
         this.id = id;
         this.name = name;
         this.rooms = rooms;
     }
 
-    public void AddData(long roomId, long sensorId, Data data){ // Must be a neater way of doing this.
-        for (Room x: rooms){
-            if( x.getId() == roomId){
-                List<Sensor> tempSensors = x.getSensors();
-                for(Sensor y: tempSensors){
-                    if(y.getId() == sensorId){
-                        y.addData(data);
-                    }
-                }
-            }
-        }
-    }
 
-    public void AddSensor(long roomId, Sensor sensor){
-        for (Room x: rooms){
-            if (x.getId() == roomId){
-                x.addSensor(sensor);
-                }
-            }
-        }
     
-    public void AddRoom(Room room){ 
-        for (Room x:getRooms()){
-            if (x.getId() == room.getId()){
-                delRoom(x.getId());
+    public void AddRoom(Long room){ 
+        for (Long x:getRooms()){
+            if (!(x == room)){
+                rooms.add(room);
             }
         } 
-       rooms.add(room);
+      
     }
 
     public void delRoom(long id){
-        for (Room x:rooms){
-            if (x.getId() == id){
+        for (Long x:rooms){
+            if (x == id){
                 rooms.remove(x);
             }
         }
     }
-
+    @Id
     public long getId() {
         return id;
     }
@@ -73,13 +52,13 @@ public class Building {
         return name;
     }
 
-    public List<Room> getRooms(){
+    public List<Long> getRooms(){
         return rooms;
     }
 
-    public Room getRoom(long id) {
-        for (Room x:  getRooms()){
-            if( x.getId() == id){
+    public Long getRoom(long id) {
+        for (Long x:  getRooms()){
+            if( x == id){
                 return x;
             }
         }
@@ -91,29 +70,10 @@ public class Building {
     public void setId(long id){
         this.id = id;
     }
-    public void setRooms(List<Room> rooms){
+    public void setRooms(List<Long> rooms){
         this.rooms = rooms;
     }
-    public void setRoom(Room room, long id, String name){
-        Boolean match = false;
-        for (Room x: rooms){
-            if (x.getId() == id){
-                x = room;
-                match = true;
-            }
-
-        }
-        if (!match){
-            List<Sensor> newSensors = new ArrayList<Sensor>();;
-            Room newRoom = new Room(id, name, newSensors);
-            this.AddRoom(newRoom);
-        }
-    }
     
-    public void setRoom(Room room, long id){ // overload for no name
-        String name = "DefaultBuildingName";
-        setRoom(room, id, name);
-    }
 
 }
 

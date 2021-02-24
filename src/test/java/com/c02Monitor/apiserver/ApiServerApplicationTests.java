@@ -1,13 +1,13 @@
-package com.c02Monitor.apiserver;
+//package com.c02Monitor.apiserver;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class ApiServerApplicationTests {
+//@SpringBootTest
+//class ApiServerApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+//	@Test
+//	void contextLoads() {
+//	}
 
-}
+//}
