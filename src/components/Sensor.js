@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  TextField,
 } from '@material-ui/core';
 import {
   XYPlot,
@@ -64,7 +65,7 @@ export default function Sensor(props) {
             </b>
           </DialogTitle>
           <DialogContent>
-            You sure bro?
+            <TextField multiline label="Description" variant="outlined" />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseEdit}>
