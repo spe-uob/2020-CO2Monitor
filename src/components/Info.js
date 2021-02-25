@@ -99,7 +99,7 @@ export default function Info(props) {
                 onClose={handleCloseAddSensor}
               >
                 <DialogTitle>
-            Add sensor
+                  Add sensor
                 </DialogTitle>
                 <DialogContent>
                   <div>
@@ -109,9 +109,7 @@ export default function Info(props) {
                       variant="outlined"
                     />
                   </div>
-                  <div className="PaddedCard">
-
-                  </div>
+                  <div className="PaddedCard" />
                   <div>
                     <TextField
                       multiline
@@ -122,10 +120,10 @@ export default function Info(props) {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleCloseAddSensor}>
-              Cancel
+                    Cancel
                   </Button>
                   <Button color="primary" variant="contained">
-              Add
+                    Add
                   </Button>
                 </DialogActions>
               </Dialog>
