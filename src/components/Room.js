@@ -79,7 +79,11 @@ export default function Room(props) {
           onClose={handleClose}
         >
           <DialogTitle>
-            Are you sure you want to delete this room?
+            Are you sure you want to delete:
+            <b>
+              {' ' + props.name + ' '}
+            </b>
+            ?
           </DialogTitle>
           <DialogContent>
             You sure bro?

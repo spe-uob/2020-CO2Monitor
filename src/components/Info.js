@@ -1,10 +1,6 @@
 import React from 'react';
 import {
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
   Dialog,
   DialogContent,
   Grid,
@@ -12,15 +8,9 @@ import {
   Slide,
 } from '@material-ui/core';
 import {Add, Close} from '@material-ui/icons';
-// import {boxShadow} from '@material-ui/system';
-import {
-  XYPlot,
-  LineSeries,
-  makeWidthFlexible,
-} from 'react-vis';
 import './Info.css';
+import Sensor from './Sensor.js';
 
-const FlexXYPlot = makeWidthFlexible(XYPlot);
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -44,7 +34,7 @@ export default function Info(props) {
     console.log(props.sensors[0].sensorId);
   }
 
-  const sensorGraphs = props.sensors.map((sensor) => (
+  const sensors = props.sensors.map((sensor) => (
     <Grid item
       sm={12}
       md={6}
@@ -52,19 +42,7 @@ export default function Info(props) {
       key={sensor.description + sensor.sensorId}
       className="PaddedCard"
     >
-      <Card>
-        <CardHeader title={sensor.description + ' ' + sensor.sensorId} />
-        <CardContent>
-          <FlexXYPlot height={300}>
-            <LineSeries data={sensor.data} />
-          </FlexXYPlot>
-        </CardContent>
-        <CardActions>
-          <Button>
-            Edit sensor
-          </Button>
-        </CardActions>
-      </Card>
+      <Sensor {...sensor} />
     </Grid>
   ));
 
@@ -115,7 +93,7 @@ export default function Info(props) {
             justify="flex-start"
             alignItems="flex-start"
           >
-            {sensorGraphs}
+            {sensors}
           </Grid>
         </DialogContent>
       </Dialog>
