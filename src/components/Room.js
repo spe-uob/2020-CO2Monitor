@@ -25,11 +25,9 @@ const FlexXYPlot = makeWidthFlexible(XYPlot);
  */
 export default function Room(props) {
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -37,6 +35,7 @@ export default function Room(props) {
   let minMaxGraph;
   if (props.sensors.length > 0) {
     const graphData = [];
+    let graphMax = 0;
 
     for (let i = 0; i < props.sensors[0].data.length; i++) {
       let maxy = props.sensors[0].data[i].y;
@@ -45,6 +44,7 @@ export default function Room(props) {
         maxy = Math.max(maxy, props.sensors[j].data[i].y);
         miny = Math.min(miny, props.sensors[j].data[i].y);
       }
+      graphMax = Math.max(graphMax, maxy);
       graphData.push(
           {
             x: props.sensors[0].data[i].x,
@@ -55,9 +55,12 @@ export default function Room(props) {
     }
 
     minMaxGraph = (
-      <FlexXYPlot height={300}>
-        <AreaSeries data={graphData} />
-      </FlexXYPlot>
+      <React.Fragment>
+        <FlexXYPlot height={300}>
+          <AreaSeries data={graphData} />
+        </FlexXYPlot>
+        The 24h maximum is <b>{graphMax}</b>
+      </React.Fragment>
     );
   } else {
     minMaxGraph = 'No sensors in this room';

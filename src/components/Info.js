@@ -39,11 +39,6 @@ export default function Info(props) {
     setOpenAddSensor(false);
   };
 
-
-  if (props.sensors.length > 0) {
-    console.log(props.sensors[0].sensorId);
-  }
-
   const sensors = props.sensors.map((sensor) => (
     <Grid item
       sm={12}
@@ -76,7 +71,6 @@ export default function Info(props) {
           >
             <Grid item sm={12} md={6}>
               <Button
-                variant="extended"
                 className="Left-header"
                 onClick={handleClose}
                 disableElevation
@@ -86,7 +80,6 @@ export default function Info(props) {
             </Grid>
             <Grid item sm={12} md={6}>
               <Button
-                variant="extended"
                 className="Right-header"
                 disableElevation
                 startIcon={<Add />}

@@ -40,6 +40,8 @@ export default function Sensor(props) {
     setEditOpen(false);
   };
 
+  const graphMax = Math.max(...props.data.map((entry) => (entry.y)));
+
   return (
     <Card>
       <CardHeader title={props.description + ' ' + props.sensorId} />
@@ -47,6 +49,7 @@ export default function Sensor(props) {
         <FlexXYPlot height={300}>
           <LineSeries data={props.data} />
         </FlexXYPlot>
+        The 24h maximum is <b>{graphMax}</b>
       </CardContent>
       <CardActions>
         <Button
