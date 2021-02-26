@@ -1,32 +1,33 @@
 import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/reading.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'link.dart';
+
 part 'device.g.dart';
 
-// Represents a physical SCK device in a fixed location.
+/// Represents a physical SCK device in a fixed location.
 @JsonSerializable(explicitToJson: true)
 class Device {
   @JsonKey(required: true)
   int id;
   String name;
-  // Longitude and latitude provided by API for GPS location.
-  double lat;
-  double long;
-
+  String desc;
+  @JsonKey(required: true)
+  Link link;
   @JsonKey(ignore: true)
   ApiClient _client = ApiClient();
 
-  Device(this.id, this.name, this.lat, this.long);
+  Device(this.id, this.name);
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 
   // Mock value, can be used for testing and mocking UI
-  factory Device.mock() => Device(0, "Mock Device", 10, 10);
+  factory Device.mock() => Device(0, "Mock Device");
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
-  Future<List<Reading>> readings() => _client.getReadings();
+  /// A list of all readings taken by this sensor.
+  Future<List<Reading>> readings() => _client.getMany(link.children);
 
-  Future<Reading> latestReading() => _client.getReading(0);
-
-  Future<Reading> reading(int id) => _client.getReading(id);
+  // TODO: Why isn't this defined properly in this Hell API
+  Future<Reading> latestReading() => readings().then((rs) => rs.first);
 }

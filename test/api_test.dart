@@ -75,8 +75,6 @@ void main() {
         var device = Device.fromJson(jsonDecode(jsonDevice));
         assert(device.id == 2);
         assert(device.name == "MVB-02");
-        assert(device.lat == 21.01);
-        assert(device.long == -25.31);
       });
     });
   });

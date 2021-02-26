@@ -8,14 +8,12 @@ part of 'reading.dart';
 
 Reading _$ReadingFromJson(Map<String, dynamic> json) {
   return Reading(
-    json['takenAt'] == null ? null : DateTime.parse(json['takenAt'] as String),
-    json['isCritical'] as bool,
-    json['value'] as int,
+    json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    json['co2'] as int,
   );
 }
 
 Map<String, dynamic> _$ReadingToJson(Reading instance) => <String, dynamic>{
-      'takenAt': instance.takenAt?.toIso8601String(),
-      'isCritical': instance.isCritical,
-      'value': instance.value,
+      'date': instance.takenAt?.toIso8601String(),
+      'co2': instance.value,
     };
