@@ -1,11 +1,17 @@
 import React from 'react';
 import '../node_modules/react-vis/dist/style.css';
 import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Grid,
   Paper,
   Fab,
   IconButton,
   InputBase,
+  TextField,
 } from '@material-ui/core';
 import {Add, Search} from '@material-ui/icons';
 import {makeStyles} from '@material-ui/core/styles';
@@ -20,53 +26,66 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+// --- GET RID OF THIS LATER ---
+
+// Populate some fake data
+const roomNum = Math.floor(Math.random() * 10);
+const rooms = [];
+for (let i = 0; i < roomNum; i++) {
+  const sensors = [];
+  const sensorNum = Math.floor(Math.random() * 20);
+  for (let is = 0; is < sensorNum; is++) {
+    const dataGen = [];
+    // 1440 minutes in a day but that is too slow
+    for (let ix = 0; ix < 144; ix++) {
+      dataGen.push({x: ix, y: Math.floor(Math.random() * ix) + ix});
+    }
+    sensors.push(
+        {
+          id: i * 1000 + is,
+          sensorId: i.toString() + ': ' + is.toString(),
+          description: 'Well...',
+          data: dataGen,
+        },
+    );
+  }
+  rooms.push(
+      {
+        id: i,
+        name: i.toString() + ' room',
+        sensors: sensors,
+      },
+  );
+}
+
+// -----------------------------
+
+const roomCards = rooms.map((room) => (
+  <Grid item
+    sm={12}
+    md={6}
+    lg={4}
+    key={room.id * 1000 + room.name}
+    className="PaddedCard"
+  >
+    <Room {...room} />
+  </Grid>),
+);
+
 /**
  * @return {React.Component}
  */
 function App() {
   const classes = useStyles();
 
-  // Populate some fake data
-  const roomNum = Math.floor(Math.random() * 10);
-  const rooms = [];
-  for (let i = 0; i < roomNum; i++) {
-    const sensors = [];
-    const sensorNum = Math.floor(Math.random() * 20);
-    for (let is = 0; is < sensorNum; is++) {
-      const dataGen = [];
-      // 1440 minutes in a day but that is too slow
-      for (let ix = 0; ix < 144; ix++) {
-        dataGen.push({x: ix, y: Math.floor(Math.random() * ix) + ix});
-      }
-      sensors.push(
-          {
-            id: i * 1000 + is,
-            sensorId: i.toString() + ': ' + is.toString(),
-            description: 'Well...',
-            data: dataGen,
-          },
-      );
-    }
-    rooms.push(
-        {
-          id: i,
-          name: i.toString() + ' room',
-          sensors: sensors,
-        },
-    );
-  }
-
-  const roomCards = rooms.map((room) => (
-    <Grid item
-      sm={12}
-      md={6}
-      lg={4}
-      key={room.id * 1000 + room.name}
-      className="PaddedCard"
-    >
-      <Room {...room} />
-    </Grid>),
-  );
+  const [openAddRoom, setOpenAddRoom] = React.useState(false);
+  const handleClickOpenAddRoom = () => {
+    setOpenAddRoom(true);
+  };
+  const handleCloseAddRoom = () => {
+    setOpenAddRoom(false);
+  };
 
   return (
     <div className="App">
@@ -107,9 +126,34 @@ function App() {
       </Grid>
 
       {/* Spain but the s is silent */}
-      <Fab className={classes.addRoom}>
+      <Fab
+        className={classes.addRoom}
+        onClick={handleClickOpenAddRoom}
+      >
         <Add />
       </Fab>
+      <Dialog
+        open={openAddRoom}
+        onClose={handleCloseAddRoom}
+      >
+        <DialogTitle>
+          Add Room
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            label="name"
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddRoom}>
+            Cancel
+          </Button>
+          <Button color="primary" variant="contained">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
