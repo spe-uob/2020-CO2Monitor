@@ -60,6 +60,8 @@ export default function Room(props) {
           <AreaSeries data={graphData} />
         </FlexXYPlot>
         The 24h maximum is <b>{graphMax}</b>
+        <br/>
+        <b>{props.sensors.length}</b> sensors in this room
       </React.Fragment>
     );
   } else {

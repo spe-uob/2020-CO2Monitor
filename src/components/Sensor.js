@@ -50,6 +50,8 @@ export default function Sensor(props) {
           <LineSeries data={props.data} />
         </FlexXYPlot>
         The 24h maximum is <b>{graphMax}</b>
+        <br/>
+        <b>{props.data.length}</b> data points recorded by this sensor
       </CardContent>
       <CardActions>
         <Button
