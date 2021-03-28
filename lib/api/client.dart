@@ -1,6 +1,5 @@
 // Holds all network state and the HTTP client
 import 'dart:convert';
-import 'dart:html';
 import 'dart:io';
 
 import 'package:http/http.dart';
