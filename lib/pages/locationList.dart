@@ -10,6 +10,7 @@ class LocationList extends StatefulWidget {
   _LocationListState createState() => _LocationListState();
 }
 
+/// ListView of all locations.
 class _LocationListState extends State<LocationList> {
   List<Location> locations = List.empty();
 

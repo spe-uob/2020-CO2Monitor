@@ -1,5 +1,3 @@
-import 'package:co2_monitor/api/client.dart';
-import 'package:co2_monitor/api/types/device.dart';
 import 'package:co2_monitor/logic/notificationProvider.dart';
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
 import 'package:workmanager/workmanager.dart';
@@ -17,8 +15,7 @@ void callbackDispatcher() {
 
     // Locations where one devices is critical are also considered critical.
     for (var location in locations)
-      for (var device in await location.devices())
-        if ((await device.latestReading()).isCritical) critical.add(location);
+      if (await location.isCritical()) critical.add(location);
 
     if (critical.isNotEmpty) NotificationProvider().alert(critical);
 

@@ -9,15 +9,15 @@ class SubscriptionList extends StatefulWidget {
   _SubscriptionListState createState() => _SubscriptionListState();
 }
 
+/// ListView of all locations which the user is current subscribed to.
+/// This is a subset of all locations.
 class _SubscriptionListState extends State<SubscriptionList> {
   List<Location> locations = List.empty();
 
   @override
   Widget build(BuildContext context) {
-    var client = ApiClient();
-    SubscriptionProvider().subscriptionIds().then((ids) async {
-      var locs = await Future.wait(ids.map((id) => client.getLocation(id)));
-      setState(() => locations = locs);
+    SubscriptionProvider().subscriptions().then((subs) async {
+      setState(() => locations = subs);
     });
 
     return ListView(

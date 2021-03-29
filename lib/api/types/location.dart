@@ -39,6 +39,15 @@ class Location extends IGraphable {
     }
   }
 
+  /// Determine if a location is considered critical to occupy based on its
+  /// component sensors. For the time being, any locatiom with one critical
+  /// sensors is itself considered critical.
+  Future<bool> isCritical() async {
+    var devices = await this.devices();
+    for (var device in devices) if (await device.isCritical()) return true;
+    return false;
+  }
+
   @override
   // TODO: Implement provideData
   DataSet provideData() => DataSet.usingSampleSeries();

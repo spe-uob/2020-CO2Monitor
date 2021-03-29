@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/api/types/device.dart';
-import 'package:co2_monitor/api/types/reading.dart';
 
 /// Singleton API client that all data classes use.
 class ApiClient {
@@ -53,6 +52,7 @@ class ApiClient {
   Future<List<Location>> getLocations() async {
     try {
       var res = await getMany("$_apiUrl/rooms");
+      return res;
     } catch (HttpException) {
       // Currently returns a default value, as the server is less-than-ideal
       return Future.sync(() => List.generate(5, (idx) => Location.mock(idx)));

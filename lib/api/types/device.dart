@@ -28,6 +28,11 @@ class Device {
   /// A list of all readings taken by this sensor.
   Future<List<Reading>> readings() => _client.getMany(link.children);
 
+  /// Determine if this device is critical. A device is considered critical if
+  /// its latest reading is also considered critical.
+  Future<bool> isCritical() =>
+      this.latestReading().then((read) => read.isCritical);
+
   // TODO: Why isn't this defined properly in this Hell API
   Future<Reading> latestReading() => readings().then((rs) => rs.first);
 }
