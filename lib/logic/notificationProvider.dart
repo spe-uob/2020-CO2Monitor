@@ -1,7 +1,12 @@
 import 'dart:convert';
 
 import 'package:co2_monitor/api/types/location.dart';
+import 'package:co2_monitor/pages/criticalList.dart';
+import 'package:co2_monitor/pages/locationView.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../utils.dart';
 
 /// This class wraps notification logic, additionally providing:
 /// - Alert notifications with in-app callbacks.
@@ -25,12 +30,24 @@ class NotificationProvider {
     _notifPlugin.initialize(init);
   }
 
-  Future<dynamic> _onNotif(String payload) async {
-    if (payload == null) return null;
-    List<Location> locations = jsonDecode(payload).cast<Location>();
-    // TODO: Display a page of all (new?) high-priority alerts
-    // Likely a page of `locationItem` widgets sorted by priority
-  }
+  // Future<dynamic> _onNotif(String payload) async {
+  //   if (payload != "critical") return null;
+  //   // List<Location> locations = jsonDecode(payload).cast<Location>();
+  //   // TODO: Display a page of all (new?) high-priority alerts
+  //   // Likely a page of `locationItem` widgets sorted by priority
+  //   var route = MaterialPageRoute(
+  //     builder: (context) => wrapRoute(
+  //       CriticalList(),
+  //       "Critical Locations",
+  //     ),
+  //   );
+  //   Navigator.push(context, route);
+  // }
+
+  /// Passthrough for
+  /// FlutterLocalNotificationsPlugin.getNotificationAppLaunchDetails
+  Future<NotificationAppLaunchDetails> launchDetails() =>
+      _notifPlugin.getNotificationAppLaunchDetails();
 
   /// Fire a one-off notification with a specified body.
   Future oneOff(String title, String body) async {
@@ -44,7 +61,7 @@ class NotificationProvider {
 
   /// Fire an alert notification with given 'critical' locations.
   /// Clicking on this notification will redirect the user to a designated page.
-  /// This will allow them to see details of
+  /// This will allow them to see details of the alert via a CriticalList.
   Future alert(List<Location> critical) async {
     if (critical.isEmpty) return;
     const AndroidNotificationDetails android = AndroidNotificationDetails(
@@ -61,6 +78,6 @@ class NotificationProvider {
         ${critical.length} location(s) you have registered interest in. 
         Click here to view them.""",
         details,
-        payload: jsonEncode(critical));
+        payload: "critical");
   }
 }

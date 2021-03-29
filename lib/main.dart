@@ -1,15 +1,20 @@
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
+import 'package:co2_monitor/logic/notificationProvider.dart';
 import 'package:co2_monitor/pages/codeEntry.dart';
+import 'package:co2_monitor/pages/criticalList.dart';
 import 'package:co2_monitor/pages/locationList.dart';
 import 'package:co2_monitor/pages/subscriptionList.dart';
 import 'package:co2_monitor/theme.dart';
+import 'package:co2_monitor/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:workmanager/workmanager.dart';
 import 'pages/locationView.dart';
 
 void main() {
+  // var launchDetails = NotificationProvider().launchDetails();
+  // TODO: Notification launches CriticalList
   runApp(App());
 
   Workmanager.initialize(callbackDispatcher, isInDebugMode: false);
