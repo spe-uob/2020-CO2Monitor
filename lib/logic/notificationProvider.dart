@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:co2_monitor/api/types/location.dart';
+import 'package:co2_monitor/logic/navigationProvider.dart';
 import 'package:co2_monitor/pages/criticalList.dart';
 import 'package:co2_monitor/pages/locationView.dart';
 import 'package:flutter/material.dart';
@@ -27,23 +28,24 @@ class NotificationProvider {
         AndroidInitializationSettings("@mipmap/ic_launcher");
     final InitializationSettings init =
         InitializationSettings(android: settings);
-    _notifPlugin.initialize(init);
+    _notifPlugin.initialize(init, onSelectNotification: _onNotif);
     log("huh");
   }
 
-  // Future<dynamic> _onNotif(String payload) async {
-  //   if (payload != "critical") return null;
-  //   // List<Location> locations = jsonDecode(payload).cast<Location>();
-  //   // TODO: Display a page of all (new?) high-priority alerts
-  //   // Likely a page of `locationItem` widgets sorted by priority
-  //   var route = MaterialPageRoute(
-  //     builder: (context) => wrapRoute(
-  //       CriticalList(),
-  //       "Critical Locations",
-  //     ),
-  //   );
-  //   Navigator.push(context, route);
-  // }
+  Future _onNotif(String payload) async {
+    if (payload != "critical") return null;
+    // List<Location> locations = jsonDecode(payload).cast<Location>();
+    // TODO: Display a page of all (new?) high-priority alerts
+    // Likely a page of `locationItem` widgets sorted by priority
+    var route = MaterialPageRoute(
+      builder: (context) => wrapRoute(
+        CriticalList(),
+        "Critical Locations",
+      ),
+    );
+    var nav = NavigationProvider();
+    await nav.navigateTo("/critical");
+  }
 
   /// Passthrough for
   /// FlutterLocalNotificationsPlugin.getNotificationAppLaunchDetails

@@ -1,6 +1,5 @@
-import 'package:co2_monitor/api/client.dart';
-import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
+import 'package:co2_monitor/logic/navigationProvider.dart';
 import 'package:co2_monitor/logic/notificationProvider.dart';
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
 import 'package:co2_monitor/pages/codeEntry.dart';
@@ -10,14 +9,11 @@ import 'package:co2_monitor/pages/subscriptionList.dart';
 import 'package:co2_monitor/theme.dart';
 import 'package:co2_monitor/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:tuple/tuple.dart';
 import 'package:workmanager/workmanager.dart';
-import 'pages/locationView.dart';
 
 void main() {
   // var launchDetails = NotificationProvider().launchDetails();
-  // TODO: Notification launches CriticalList
   runApp(App());
 
   Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
@@ -30,31 +26,25 @@ void main() {
   );
 
   NotificationProvider();
-
-  // Much of the below logic has been moved to `notificationProvider.dart`.
-  // However, it will remain here until that has been properly tested.
-
-  // FlutterLocalNotificationsPlugin notifPlugin =
-  //     FlutterLocalNotificationsPlugin();
-  // final AndroidInitializationSettings settings =
-  //     AndroidInitializationSettings("@mipmap/ic_launcher");
-  // final InitializationSettings init = InitializationSettings(android: settings);
-  // notifPlugin.initialize(init);
-
-  // const AndroidNotificationDetails androidDetails =
-  //     AndroidNotificationDetails('channel id', 'channel name', 'description');
-  // const NotificationDetails details =
-  //     NotificationDetails(android: androidDetails);
-  // await notifPlugin.periodicallyShow(new Random().nextInt(100000), 'title',
-  //     'body', RepeatInterval.everyMinute, details);
 }
 
 class App extends StatelessWidget {
   static const String _title = "Air Monitor";
 
   @override
-  Widget build(BuildContext context) =>
-      MaterialApp(home: MainView(), title: _title, theme: appTheme);
+  Widget build(BuildContext context) {
+    var nav = NavigationProvider();
+    return MaterialApp(
+      // Removed in favour of route-based navigation, see NavigationProvider.
+      // home: MainView(),
+      title: _title,
+      theme: appTheme,
+      // More boilerplate, required for routes and notification handling.
+      navigatorKey: nav.navKey,
+      initialRoute: "/",
+      routes: nav.routes,
+    );
+  }
 }
 
 // This widget is the 'glue' that sticks together all the pages of the app.
