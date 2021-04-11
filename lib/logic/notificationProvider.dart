@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/pages/criticalList.dart';
@@ -21,13 +22,13 @@ class NotificationProvider {
   FlutterLocalNotificationsPlugin _notifPlugin;
 
   NotificationProvider._internal() {
-    FlutterLocalNotificationsPlugin _notifPlugin =
-        FlutterLocalNotificationsPlugin();
+    _notifPlugin = FlutterLocalNotificationsPlugin();
     final AndroidInitializationSettings settings =
         AndroidInitializationSettings("@mipmap/ic_launcher");
     final InitializationSettings init =
         InitializationSettings(android: settings);
     _notifPlugin.initialize(init);
+    log("huh");
   }
 
   // Future<dynamic> _onNotif(String payload) async {
@@ -64,19 +65,28 @@ class NotificationProvider {
   /// This will allow them to see details of the alert via a CriticalList.
   Future alert(List<Location> critical) async {
     if (critical.isEmpty) return;
-    const AndroidNotificationDetails android = AndroidNotificationDetails(
+
+    var bigText =
+        "Effective CO₂ levels have surpassed the recommended level in " +
+            "${critical.length} location(s) you have registered interest in." +
+            "Click here to view them.";
+
+    var android = AndroidNotificationDetails(
         "critical",
         "High eCO₂ Alerts",
-        """Alert notifications that are sent when eCO₂ levels 
-        surpass a recommended value in 
-        locations you are subscribed to notifications for.""");
-    const NotificationDetails details = NotificationDetails(android: android);
+        "Alert notifications that are sent when eCO₂ levels surpass a " +
+            "recommended value in locations you are subscribed to " +
+            "notifications for.",
+        styleInformation: BigTextStyleInformation(bigText));
+
+    var details = NotificationDetails(android: android);
     await _notifPlugin.show(
         0,
-        "Critical eCO₂ Alert",
-        """Effective CO₂ levels have surpassed the recommended level in 
-        ${critical.length} location(s) you have registered interest in. 
-        Click here to view them.""",
+        // "<b>Critical eCO₂ alert</b>",
+        "Critical eCO₂ alert",
+        critical.length == 1
+            ? "${critical.length} location is critical."
+            : "${critical.length} locations are critical.",
         details,
         payload: "critical");
   }

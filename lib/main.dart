@@ -1,6 +1,8 @@
+import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
 import 'package:co2_monitor/logic/notificationProvider.dart';
+import 'package:co2_monitor/logic/subscriptionProvider.dart';
 import 'package:co2_monitor/pages/codeEntry.dart';
 import 'package:co2_monitor/pages/criticalList.dart';
 import 'package:co2_monitor/pages/locationList.dart';
@@ -8,6 +10,7 @@ import 'package:co2_monitor/pages/subscriptionList.dart';
 import 'package:co2_monitor/theme.dart';
 import 'package:co2_monitor/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:tuple/tuple.dart';
 import 'package:workmanager/workmanager.dart';
 import 'pages/locationView.dart';
@@ -17,7 +20,7 @@ void main() {
   // TODO: Notification launches CriticalList
   runApp(App());
 
-  Workmanager.initialize(callbackDispatcher, isInDebugMode: false);
+  Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
   Workmanager.registerPeriodicTask(
     "co2alerts", "co2alerts",
     // Who knows what a good duration is? 20 minutes is a good default, for now.
@@ -25,6 +28,8 @@ void main() {
     // Do not register the same task multiple times; use the original
     existingWorkPolicy: ExistingWorkPolicy.keep,
   );
+
+  NotificationProvider();
 
   // Much of the below logic has been moved to `notificationProvider.dart`.
   // However, it will remain here until that has been properly tested.
@@ -72,10 +77,16 @@ class _MainViewState extends State<MainView> {
       ),
     ),
     Tuple2(
-      LocationView(Location.mock(99), test: true),
+      ElevatedButton(
+          child: Text("make an alert"),
+          onPressed: () async {
+            var provider = SubscriptionProvider();
+            var subs = await provider.subscriptions();
+            await alertIfCritical();
+          }),
       BottomNavigationBarItem(
-        icon: Icon(Icons.show_chart),
-        label: "[TEST] LocationView",
+        icon: Icon(Icons.warning),
+        label: "Critical Locations",
       ),
     ),
     Tuple2(

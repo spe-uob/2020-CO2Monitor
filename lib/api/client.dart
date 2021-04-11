@@ -59,7 +59,16 @@ class ApiClient {
     }
   }
 
-  Future<Location> getLocation(int id) => getOne("$_apiUrl/rooms/$id");
+  // Future<Location> getLocation(int id) => getOne("$_apiUrl/rooms/$id");
+  Future<Location> getLocation(int id) async {
+    try {
+      var res = await getOne("$_apiUrl/rooms/$id");
+      return res;
+    } catch (HttpException) {
+      // Currently returns a default value, as the server is less-than-ideal
+      return Location.mock(id);
+    }
+  }
 
   Future<List<Device>> getDevices() => getMany("$_apiUrl/sensors");
   Future<Device> getDevice(int id) => getOne("$_apiUrl/sensors/$id");

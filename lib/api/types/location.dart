@@ -43,6 +43,8 @@ class Location extends IGraphable {
   /// component sensors. For the time being, any locatiom with one critical
   /// sensors is itself considered critical.
   Future<bool> isCritical() async {
+    // TODO: Not this, that's for sure
+    return true;
     var devices = await this.devices();
     for (var device in devices) if (await device.isCritical()) return true;
     return false;
