@@ -4,8 +4,6 @@ import 'package:co2_monitor/pages/locationView.dart';
 import 'package:co2_monitor/utils.dart';
 import 'package:flutter/material.dart';
 
-import '../theme.dart';
-
 class LocationItem extends StatefulWidget {
   final Location location;
   LocationItem(this.location);
@@ -15,18 +13,25 @@ class LocationItem extends StatefulWidget {
 }
 
 class _LocationItemState extends State<LocationItem> {
-  bool isSubbed = false;
   SubscriptionProvider subs = SubscriptionProvider();
+  bool isSubbed = false;
+  int criticalDevices = 0;
+  int totalDevices = 0;
 
-  _LocationItemState() {}
+  _LocationItemState();
 
   @override
   Widget build(BuildContext context) {
     subs
         .isSubscribedTo(widget.location.id)
         .then((b) => setState(() => isSubbed = b));
+    widget.location.devices().then((devs) {
+      totalDevices = devs.length;
+      Future.wait(devs.map((dev) => dev.isCritical()))
+          .then((bools) => criticalDevices = bools.where((b) => b).length);
+    });
 
-    var children2 = [
+    var horizChildren = [
       TextButton(
         child: Text("VIEW"),
         onPressed: () {
@@ -46,7 +51,21 @@ class _LocationItemState extends State<LocationItem> {
           setState(() => isSubbed = isNowSubbed);
         },
       ),
+      Spacer(),
     ];
+
+    var additionalChildren = [
+      Text(
+        "$criticalDevices / $totalDevices",
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      ),
+      Padding(padding: EdgeInsets.symmetric(horizontal: 8.0)),
+      Icon(Icons.error_outline, color: Colors.red),
+      Padding(padding: EdgeInsets.symmetric(horizontal: 8.0)),
+    ];
+
+    if (true) horizChildren.addAll(additionalChildren);
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
@@ -70,7 +89,8 @@ class _LocationItemState extends State<LocationItem> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: children2,
+            // scrollDirection: Axis.horizontal,
+            children: horizChildren,
           ),
         ],
       ),

@@ -70,7 +70,7 @@ class NotificationProvider {
 
     var bigText =
         "Effective CO₂ levels have surpassed the recommended level in " +
-            "${critical.length} location(s) you have registered interest in." +
+            "${critical.length} location(s) you have registered interest in. " +
             "Click here to view them.";
 
     var android = AndroidNotificationDetails(
