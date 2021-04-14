@@ -1,7 +1,7 @@
 import React from 'react'
-import { render, screen, cleanup, fireEvent } from '@testing-library/react'
-import renderer from 'react-test-renderer'
-import Info from '../components/Info'
+import { render, screen, cleanup } from '@testing-library/react'
+// import renderer from 'react-test-renderer'
+import Room from '../components/Room'
 
 afterEach(() => {
   cleanup()
@@ -598,21 +598,12 @@ const oneSensor = {
 }
 
 test('should render info', () => {
-  render(<Info {...oneSensor} />)
-  const linkElement = screen.getByTestId('info-button')
+  render(<Room {...oneSensor} />)
+  const linkElement = screen.getByText('Name: 0 room')
   expect(linkElement).toBeInTheDocument()
 })
 
-test('click popup button', () => {
-  render(<Info {...oneSensor} />)
-  const linkElement = screen.getByTestId('info-button')
-  fireEvent.click(linkElement)
-  const dialog = screen.getByTestId('info-dialog')
-  expect(dialog).toBeInTheDocument()
-})
-
-// snapshots can be updated with u
-test('matches info snapshot', () => {
-  const tree = renderer.create(<Info {...oneSensor} />).toJSON()
-  expect(tree).toMatchSnapshot()
-})
+// test('matches room snapshot', () => {
+//   const tree = renderer.create(<Room {...oneSensor} />).toJSON()
+//   expect(tree).toMatchSnapshot()
+// })

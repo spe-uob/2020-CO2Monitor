@@ -58,7 +58,7 @@ for (let i = 0; i < roomNum; i++) {
   )
 }
 
-console.log(rooms)
+// console.log(rooms)
 
 // -----------------------------
 
