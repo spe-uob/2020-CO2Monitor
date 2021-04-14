@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Button,
   Card,
@@ -9,49 +9,53 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
-} from '@material-ui/core';
+  TextField
+} from '@material-ui/core'
 import {
   XYPlot,
   LineSeries,
-  makeWidthFlexible,
-} from 'react-vis';
+  makeWidthFlexible
+} from 'react-vis'
 
-const FlexXYPlot = makeWidthFlexible(XYPlot);
+const FlexXYPlot = makeWidthFlexible(XYPlot)
 
 /**
  * @param {object} props
  * @return {React.Component}
  */
-export default function Sensor(props) {
-  const [deleteOpen, setDeleteOpen] = React.useState(false);
+export default function Sensor (props) {
+  const [deleteOpen, setDeleteOpen] = React.useState(false)
   const handleClickOpenDelete = () => {
-    setDeleteOpen(true);
-  };
+    setDeleteOpen(true)
+  }
   const handleCloseDelete = () => {
-    setDeleteOpen(false);
-  };
+    setDeleteOpen(false)
+  }
 
-  const [editOpen, setEditOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false)
   const handleClickOpenEdit = () => {
-    setEditOpen(true);
-  };
+    setEditOpen(true)
+  }
   const handleCloseEdit = () => {
-    setEditOpen(false);
-  };
+    setEditOpen(false)
+  }
 
-  const graphMax = Math.max(...props.data.map((entry) => (entry.y)));
+  const graphMax = Math.max(...props.data.map((entry) => (entry.y)))
 
   return (
     <Card>
-      <CardHeader title={props.description + ' ' + props.sensorId} />
+      <CardHeader title={`${props.description} ${props.sensorId}`} />
       <CardContent>
         <FlexXYPlot height={300}>
           <LineSeries data={props.data} />
         </FlexXYPlot>
-        The 24h maximum is <b>{graphMax}</b>
-        <br/>
-        <b>{props.data.length}</b> data points recorded by this sensor
+        The 24h maximum is
+        {' '}
+        <b>{graphMax}</b>
+        <br />
+        <b>{props.data.length}</b>
+        {' '}
+        data points recorded by this sensor
       </CardContent>
       <CardActions>
         <Button
@@ -66,7 +70,7 @@ export default function Sensor(props) {
           <DialogTitle>
             Editing:
             <b>
-              {' ' + props.sensorId + ' '}
+              {` ${props.sensorId} `}
             </b>
           </DialogTitle>
           <DialogContent>
@@ -95,7 +99,7 @@ export default function Sensor(props) {
           <DialogTitle>
             Are you sure you want to delete:
             <b>
-              {' ' + props.sensorId + ' '}
+              {` ${props.sensorId} `}
             </b>
             ?
           </DialogTitle>
@@ -113,5 +117,5 @@ export default function Sensor(props) {
         </Dialog>
       </CardActions>
     </Card>
-  );
+  )
 }

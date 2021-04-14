@@ -5,11 +5,9 @@
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
     "install": "^0.13.0",
-    "npm": "^6.14.9",
+    "npm": "^6.14.13",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
@@ -20,7 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint"
   },
   "eslintConfig": {
     "extends": [
@@ -41,8 +40,21 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.20.0",
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb": "^18.2.1",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.22.0"
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.5",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "react-test-renderer": "^17.0.2"
   }
 }

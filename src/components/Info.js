@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Button,
   Dialog,
@@ -8,39 +8,38 @@ import {
   Grid,
   Paper,
   Slide,
-  TextField,
-} from '@material-ui/core';
-import {Add, Close} from '@material-ui/icons';
-import './Info.css';
-import Sensor from './Sensor.js';
+  TextField
+} from '@material-ui/core'
+import { Add, Close } from '@material-ui/icons'
+import './Info.css'
+import Sensor from './Sensor.js'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />)
 
 /**
  * @param {object} props
  * @return {React.Component}
  */
-export default function Info(props) {
-  const [open, setOpen] = React.useState(false);
+export default function Info (props) {
+  const [open, setOpen] = React.useState(false)
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const [openAddSensor, setOpenAddSensor] = React.useState(false);
+  const [openAddSensor, setOpenAddSensor] = React.useState(false)
   const handleClickOpenAddSensor = () => {
-    setOpenAddSensor(true);
-  };
+    setOpenAddSensor(true)
+  }
   const handleCloseAddSensor = () => {
-    setOpenAddSensor(false);
-  };
+    setOpenAddSensor(false)
+  }
 
   const sensors = props.sensors.map((sensor) => (
-    <Grid item
+    <Grid
+      item
       sm={12}
       md={6}
       lg={4}
@@ -49,21 +48,23 @@ export default function Info(props) {
     >
       <Sensor {...sensor} />
     </Grid>
-  ));
+  ))
 
   return (
-    <React.Fragment>
-      <Button onClick={handleClickOpen}>
-                More info
+    <>
+      <Button onClick={handleClickOpen} data-testid="info-button">
+        More info
       </Button>
       <Dialog
         fullScreen
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}
+        data-testid="info-dialog"
       >
         <Paper className="Info-header">
-          <Grid container
+          <Grid
+            container
             spacing={0}
             direction="row"
             justify="space-between"
@@ -124,7 +125,8 @@ export default function Info(props) {
           </Grid>
         </Paper>
         <DialogContent>
-          <Grid container
+          <Grid
+            container
             spacing={0}
             direction="row"
             justify="flex-start"
@@ -134,6 +136,6 @@ export default function Info(props) {
           </Grid>
         </DialogContent>
       </Dialog>
-    </React.Fragment>
-  );
+    </>
+  )
 }

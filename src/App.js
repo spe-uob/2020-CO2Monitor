@@ -1,5 +1,5 @@
-import React from 'react';
-import '../node_modules/react-vis/dist/style.css';
+import React from 'react'
+import '../node_modules/react-vis/dist/style.css'
 import {
   Button,
   Dialog,
@@ -11,58 +11,60 @@ import {
   Fab,
   IconButton,
   InputBase,
-  TextField,
-} from '@material-ui/core';
-import {Add, Search} from '@material-ui/icons';
-import {makeStyles} from '@material-ui/core/styles';
-import './App.css';
-import Room from './components/Room.js';
+  TextField
+} from '@material-ui/core'
+import { Add, Search } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/core/styles'
+import './App.css'
+import Room from './components/Room.js'
 
 const useStyles = makeStyles((theme) => ({
   addRoom: {
     position: 'fixed',
     bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-}));
-
+    right: theme.spacing(2)
+  }
+}))
 
 // --- GET RID OF THIS LATER ---
 
 // Populate some fake data
-const roomNum = Math.floor(Math.random() * 10);
-const rooms = [];
+const roomNum = Math.floor(Math.random() * 10)
+const rooms = []
 for (let i = 0; i < roomNum; i++) {
-  const sensors = [];
-  const sensorNum = Math.floor(Math.random() * 20);
+  const sensors = []
+  const sensorNum = Math.floor(Math.random() * 20)
   for (let is = 0; is < sensorNum; is++) {
-    const dataGen = [];
+    const dataGen = []
     // 1440 minutes in a day but that is too slow
     for (let ix = 0; ix < 144; ix++) {
-      dataGen.push({x: ix, y: Math.floor(Math.random() * ix) + ix});
+      dataGen.push({ x: ix, y: Math.floor(Math.random() * ix) + ix })
     }
     sensors.push(
-        {
-          id: i * 1000 + is,
-          sensorId: i.toString() + ': ' + is.toString(),
-          description: 'Well...',
-          data: dataGen,
-        },
-    );
+      {
+        id: i * 1000 + is,
+        sensorId: `${i.toString()}: ${is.toString()}`,
+        description: 'Well...',
+        data: dataGen
+      }
+    )
   }
   rooms.push(
-      {
-        id: i,
-        name: i.toString() + ' room',
-        sensors: sensors,
-      },
-  );
+    {
+      id: i,
+      name: `${i.toString()} room`,
+      sensors
+    }
+  )
 }
+
+console.log(rooms)
 
 // -----------------------------
 
 const roomCards = rooms.map((room) => (
-  <Grid item
+  <Grid
+    item
     sm={12}
     md={6}
     lg={4}
@@ -70,28 +72,29 @@ const roomCards = rooms.map((room) => (
     className="PaddedCard"
   >
     <Room {...room} />
-  </Grid>),
-);
+  </Grid>
+))
 
 /**
  * @return {React.Component}
  */
-function App() {
-  const classes = useStyles();
+function App () {
+  const classes = useStyles()
 
-  const [openAddRoom, setOpenAddRoom] = React.useState(false);
+  const [openAddRoom, setOpenAddRoom] = React.useState(false)
   const handleClickOpenAddRoom = () => {
-    setOpenAddRoom(true);
-  };
+    setOpenAddRoom(true)
+  }
   const handleCloseAddRoom = () => {
-    setOpenAddRoom(false);
-  };
+    setOpenAddRoom(false)
+  }
 
   return (
     <div className="App">
       {/* Header bar */}
       <Paper className="App-header">
-        <Grid container
+        <Grid
+          container
           spacing={0}
           direction="row"
           justify="space-between"
@@ -116,7 +119,8 @@ function App() {
       </Paper>
 
       {/* The cards (rooms) */}
-      <Grid container
+      <Grid
+        container
         spacing={0}
         direction="row"
         justify="flex-start"
@@ -155,7 +159,7 @@ function App() {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
