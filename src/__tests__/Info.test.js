@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import renderer from 'react-test-renderer'
 import Info from '../components/Info'
 
 afterEach(() => {
@@ -608,4 +609,10 @@ test('click popup button', () => {
   fireEvent.click(linkElement)
   const dialog = screen.getByTestId('info-dialog')
   expect(dialog).toBeInTheDocument()
+})
+
+// snapshots can be updated with u
+test('matches snapshot', () => {
+  const tree = renderer.create(<Info {...oneSensor} />).toJSON()
+  expect(tree).toMatchSnapshot()
 })
