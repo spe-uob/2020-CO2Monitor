@@ -598,7 +598,7 @@ test('check title', () => {
   expect(linkElement).toBeInTheDocument()
 })
 
-test('check description', async () => {
+test('check description', () => {
   render(<Sensor {...data} />)
   // expect(screen.getByText('The 24h maximum is')).toBeInTheDocument()
   expect(screen.getByText('266')).toBeInTheDocument()
