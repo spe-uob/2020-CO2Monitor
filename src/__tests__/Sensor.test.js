@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, waitForElementToBeRemoved } from '@testing-library/react'
 // import renderer from 'react-test-renderer'
 import Sensor from '../components/Sensor'
 
@@ -592,10 +592,38 @@ const data =
         ]
       }
 
-test('should render info', () => {
+test('check title', () => {
   render(<Sensor {...data} />)
   const linkElement = screen.getByText('Well... 0: 0')
   expect(linkElement).toBeInTheDocument()
+})
+
+test('check description', async () => {
+  render(<Sensor {...data} />)
+  // expect(screen.getByText('The 24h maximum is')).toBeInTheDocument()
+  expect(screen.getByText('266')).toBeInTheDocument()
+  expect(screen.getByText('144')).toBeInTheDocument()
+  // expect(screen.getByText('data points recorded by this sensor')).toBeInTheDocument()
+})
+
+test('try editing sensor dialog', async () => {
+  render(<Sensor {...data} />)
+  fireEvent.click(screen.getByText('Edit sensor'))
+  const cancel = screen.getByText('Cancel')
+  expect(screen.getByText('Editing:')).toBeInTheDocument()
+  expect(screen.getByText('Save')).toBeInTheDocument()
+  fireEvent.click(cancel)
+  await waitForElementToBeRemoved(() => screen.getByText('Save'))
+  expect(cancel).not.toBeInTheDocument()
+})
+
+test('try deleting sensor dialog', async () => {
+  render(<Sensor {...data} />)
+  fireEvent.click(screen.getByText('Delete'))
+  const cancel = screen.getByText('Cancel')
+  fireEvent.click(cancel)
+  await waitForElementToBeRemoved(() => screen.getByText('Cancel'))
+  expect(cancel).not.toBeInTheDocument()
 })
 
 // test('matches sensor snapshot', () => {

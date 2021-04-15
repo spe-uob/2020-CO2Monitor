@@ -623,19 +623,6 @@ test('open and close dialog', async () => {
   await waitForElementToBeRemoved(() => screen.getByText('Add sensor'))
 })
 
-test('check description', async () => {
-  render(<Info {...oneSensor} />)
-  fireEvent.click(screen.getByText('More info'))
-  const dialog = screen.getByTestId('info-dialog')
-  expect(dialog).toBeInTheDocument()
-  // expect(screen.getByText('The 24h maximum is')).toBeInTheDocument()
-  expect(screen.getByText('266')).toBeInTheDocument()
-  expect(screen.getByText('144')).toBeInTheDocument()
-  // expect(screen.getByText('data points recorded by this sensor')).toBeInTheDocument()
-  fireEvent.click(screen.getByTestId('close-more-info'))
-  await waitForElementToBeRemoved(() => screen.getByText('Add sensor'))
-})
-
 test('try adding sensor dialog', async () => {
   render(<Info {...oneSensor} />)
   fireEvent.click(screen.getByText('More info'))
@@ -645,28 +632,6 @@ test('try adding sensor dialog', async () => {
   expect(cancel).toBeInTheDocument()
   fireEvent.click(cancel)
   await waitForElementToBeRemoved(() => screen.getByText('Add'))
-  expect(cancel).not.toBeInTheDocument()
-})
-
-test('try editing sensor dialog', async () => {
-  render(<Info {...oneSensor} />)
-  fireEvent.click(screen.getByText('More info'))
-  fireEvent.click(screen.getByText('Edit sensor'))
-  const cancel = screen.getByText('Cancel')
-  expect(screen.getByText('Editing:')).toBeInTheDocument()
-  expect(screen.getByText('Save')).toBeInTheDocument()
-  fireEvent.click(cancel)
-  await waitForElementToBeRemoved(() => screen.getByText('Save'))
-  expect(cancel).not.toBeInTheDocument()
-})
-
-test('try deleting sensor dialog', async () => {
-  render(<Info {...oneSensor} />)
-  fireEvent.click(screen.getByText('More info'))
-  fireEvent.click(screen.getByText('Delete'))
-  const cancel = screen.getByText('Cancel')
-  fireEvent.click(cancel)
-  await waitForElementToBeRemoved(() => screen.getByText('Cancel'))
   expect(cancel).not.toBeInTheDocument()
 })
 
