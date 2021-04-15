@@ -133,6 +133,7 @@ function App () {
       <Fab
         className={classes.addRoom}
         onClick={handleClickOpenAddRoom}
+        data-testid="add-room-button"
       >
         <Add />
       </Fab>
@@ -150,7 +151,7 @@ function App () {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseAddRoom}>
+          <Button onClick={handleCloseAddRoom} data-testid="cancel-add-room">
             Cancel
           </Button>
           <Button color="primary" variant="contained">
