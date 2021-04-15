@@ -599,28 +599,25 @@ const oneSensor = {
 
 test('should render info', () => {
   render(<Info {...oneSensor} />)
-  const linkElement = screen.getByText('More info')
-  expect(linkElement).toBeInTheDocument()
+  expect(screen.getByText('More info')).toBeInTheDocument()
 })
 
 test('click popup button', () => {
   render(<Info {...oneSensor} />)
-  const linkElement = screen.getByText('More info')
-  fireEvent.click(linkElement)
-  const dialog = screen.getByTestId('info-dialog')
-  expect(dialog).toBeInTheDocument()
+  fireEvent.click(screen.getByText('More info'))
+  expect(screen.getByTestId('info-dialog')).toBeInTheDocument()
 })
 
 test('open and close dialog', async () => {
   render(<Info {...oneSensor} />)
-  const open = screen.getByText('More info')
-  fireEvent.click(open)
+  fireEvent.click(screen.getByText('More info'))
   const dialog = screen.getByTestId('info-dialog')
   expect(dialog).toBeInTheDocument()
   const close = screen.getByTestId('close-more-info')
   // const add = screen.getByText('Add sensor')
   fireEvent.click(close)
   await waitForElementToBeRemoved(() => screen.getByText('Add sensor'))
+  expect(dialog).not.toBeInTheDocument()
 })
 
 test('try adding sensor dialog', async () => {

@@ -9,8 +9,7 @@ afterEach(() => {
 
 test('should render title bar', () => {
   render(<App />)
-  const title = screen.getByText('CO2 Monitor Control Panel')
-  expect(title).toBeInTheDocument()
+  expect(screen.getByText('CO2 Monitor Control Panel')).toBeInTheDocument()
 })
 
 test('open and close add room dialog', async () => {

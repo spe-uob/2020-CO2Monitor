@@ -594,8 +594,7 @@ const data =
 
 test('check title', () => {
   render(<Sensor {...data} />)
-  const linkElement = screen.getByText('Well... 0: 0')
-  expect(linkElement).toBeInTheDocument()
+  expect(screen.getByText('Well... 0: 0')).toBeInTheDocument()
 })
 
 test('check description', () => {
