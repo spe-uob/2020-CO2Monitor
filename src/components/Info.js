@@ -52,7 +52,7 @@ export default function Info (props) {
 
   return (
     <>
-      <Button onClick={handleClickOpen} data-testid="info-button">
+      <Button onClick={handleClickOpen}>
         More info
       </Button>
       <Dialog
@@ -75,6 +75,7 @@ export default function Info (props) {
                 className="Left-header"
                 onClick={handleClose}
                 disableElevation
+                data-testid="close-more-info"
               >
                 <Close />
               </Button>

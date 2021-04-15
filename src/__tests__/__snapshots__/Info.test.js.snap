@@ -3,7 +3,6 @@
 exports[`matches info snapshot 1`] = `
 <button
   className="MuiButtonBase-root MuiButton-root MuiButton-text"
-  data-testid="info-button"
   disabled={false}
   onBlur={[Function]}
   onClick={[Function]}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, waitForElementToBeRemoved } from '@testing-library/react'
 import renderer from 'react-test-renderer'
 import Info from '../components/Info'
 
@@ -599,16 +599,75 @@ const oneSensor = {
 
 test('should render info', () => {
   render(<Info {...oneSensor} />)
-  const linkElement = screen.getByTestId('info-button')
+  const linkElement = screen.getByText('More info')
   expect(linkElement).toBeInTheDocument()
 })
 
 test('click popup button', () => {
   render(<Info {...oneSensor} />)
-  const linkElement = screen.getByTestId('info-button')
+  const linkElement = screen.getByText('More info')
   fireEvent.click(linkElement)
   const dialog = screen.getByTestId('info-dialog')
   expect(dialog).toBeInTheDocument()
+})
+
+test('open and close dialog', async () => {
+  render(<Info {...oneSensor} />)
+  const open = screen.getByText('More info')
+  fireEvent.click(open)
+  const dialog = screen.getByTestId('info-dialog')
+  expect(dialog).toBeInTheDocument()
+  const close = screen.getByTestId('close-more-info')
+  // const add = screen.getByText('Add sensor')
+  fireEvent.click(close)
+  await waitForElementToBeRemoved(() => screen.getByText('Add sensor'))
+})
+
+test('check description', async () => {
+  render(<Info {...oneSensor} />)
+  fireEvent.click(screen.getByText('More info'))
+  const dialog = screen.getByTestId('info-dialog')
+  expect(dialog).toBeInTheDocument()
+  // expect(screen.getByText('The 24h maximum is')).toBeInTheDocument()
+  expect(screen.getByText('266')).toBeInTheDocument()
+  expect(screen.getByText('144')).toBeInTheDocument()
+  // expect(screen.getByText('data points recorded by this sensor')).toBeInTheDocument()
+  fireEvent.click(screen.getByTestId('close-more-info'))
+  await waitForElementToBeRemoved(() => screen.getByText('Add sensor'))
+})
+
+test('try adding sensor dialog', async () => {
+  render(<Info {...oneSensor} />)
+  fireEvent.click(screen.getByText('More info'))
+  fireEvent.click(screen.getByText('Add sensor'))
+  expect(screen.getByText('Add')).toBeInTheDocument()
+  const cancel = screen.getByText('Cancel')
+  expect(cancel).toBeInTheDocument()
+  fireEvent.click(cancel)
+  await waitForElementToBeRemoved(() => screen.getByText('Add'))
+  expect(cancel).not.toBeInTheDocument()
+})
+
+test('try editing sensor dialog', async () => {
+  render(<Info {...oneSensor} />)
+  fireEvent.click(screen.getByText('More info'))
+  fireEvent.click(screen.getByText('Edit sensor'))
+  const cancel = screen.getByText('Cancel')
+  expect(screen.getByText('Editing:')).toBeInTheDocument()
+  expect(screen.getByText('Save')).toBeInTheDocument()
+  fireEvent.click(cancel)
+  await waitForElementToBeRemoved(() => screen.getByText('Save'))
+  expect(cancel).not.toBeInTheDocument()
+})
+
+test('try deleting sensor dialog', async () => {
+  render(<Info {...oneSensor} />)
+  fireEvent.click(screen.getByText('More info'))
+  fireEvent.click(screen.getByText('Delete'))
+  const cancel = screen.getByText('Cancel')
+  fireEvent.click(cancel)
+  await waitForElementToBeRemoved(() => screen.getByText('Cancel'))
+  expect(cancel).not.toBeInTheDocument()
 })
 
 // snapshots can be updated with u
