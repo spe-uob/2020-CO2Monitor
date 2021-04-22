@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../node_modules/react-vis/dist/style.css'
 import {
   Button,
@@ -62,24 +62,26 @@ for (let i = 0; i < roomNum; i++) {
 
 // -----------------------------
 
-const roomCards = rooms.map((room) => (
-  <Grid
-    item
-    sm={12}
-    md={6}
-    lg={4}
-    key={room.id * 1000 + room.name}
-    className="PaddedCard"
-  >
-    <Room {...room} />
-  </Grid>
-))
-
 /**
  * @return {React.Component}
  */
 function App () {
   const classes = useStyles()
+
+  const roomCardsInit = rooms.map((room) => (
+    <Grid
+      item
+      sm={12}
+      md={6}
+      lg={4}
+      key={room.id * 1000 + room.name}
+      className="PaddedCard"
+    >
+      <Room {...room} />
+    </Grid>
+  ))
+
+  const [roomCards, setRoomCards] = useState(roomCardsInit)
 
   const [openAddRoom, setOpenAddRoom] = React.useState(false)
   const handleClickOpenAddRoom = () => {
@@ -87,6 +89,53 @@ function App () {
   }
   const handleCloseAddRoom = () => {
     setOpenAddRoom(false)
+  }
+
+  const [searchTerm, setSearchTerm] = useState('')
+  const changeSearchTerm = (newTerm) => {
+    setSearchTerm(newTerm)
+  }
+
+  const checkTerm = (data, term) => {
+    if (data === null) {
+      return false
+    } else if (typeof (data) === 'object') {
+      for (const dataKey in data) {
+        if (dataKey !== 'data' && checkTerm(data[dataKey], term)) {
+          return true
+        }
+      }
+      return false
+    } else {
+      if (typeof data === 'string') {
+        // match any substring
+        return data.includes(term)
+      } else {
+        // match number ids exactly
+        return data.toString() === term
+      }
+    }
+  }
+
+  const filterBySearchTerm = () => {
+    setRoomCards(rooms.filter(room => checkTerm(room, searchTerm)).map((room) => (
+      <Grid
+        item
+        sm={12}
+        md={6}
+        lg={4}
+        key={room.id * 1000 + room.name}
+        className="PaddedCard"
+      >
+        <Room {...room} />
+      </Grid>
+    )))
+  }
+
+  const keyPress = (e) => {
+    if (e.keyCode === 13) {
+      filterBySearchTerm()
+    }
   }
 
   return (
@@ -109,8 +158,10 @@ function App () {
             <div className="Right-header">
               <InputBase
                 placeholder="Search For Room"
+                onChange={(event) => changeSearchTerm(event.target.value)}
+                onKeyDown={(event) => keyPress(event)}
               />
-              <IconButton>
+              <IconButton onClick={filterBySearchTerm}>
                 <Search />
               </IconButton>
             </div>
