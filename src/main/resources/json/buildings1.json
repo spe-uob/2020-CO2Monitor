@@ -1,0 +1,78 @@
+[
+  {
+    "id": 0,
+    "name": "MVB",
+    "rooms": [
+      {
+        "id": 0,
+        "name": "1.1",
+        "sensors": [
+          {
+            "id": 10,
+            "description": "Back of room a",
+            "data": []
+          },
+          {
+            "id": 11,
+            "description": "Front of room b",
+            "data": []
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "name": "2.3",
+        "sensors": [
+          {
+            "id": 15,
+            "description": "Back of room c",
+            "data": []
+          },
+          {
+            "id": 16,
+            "description": "Front of room d",
+            "data": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Queens",
+    "rooms": [
+      {
+        "id": 5,
+        "name": "Room A",
+        "sensors": [
+          {
+            "id": 22,
+            "description": "Back of room e",
+            "data": []
+          },
+          {
+            "id": 23,
+            "description": "Front of room f",
+            "data": []
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Room C",
+        "sensors": [
+          {
+            "id": 25,
+            "description": "Back of room g",
+            "data": []
+          },
+          {
+            "id": 26,
+            "description": "Front of room h",
+            "data": []
+          }
+        ]
+      }
+    ]
+  }
+]
