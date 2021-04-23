@@ -11,9 +11,9 @@ class Device {
   @JsonKey(required: true)
   int id;
   String name;
-  String desc;
-  @JsonKey(required: true)
-  Link link;
+  // String desc;
+  @JsonKey(required: true, name: "links")
+  Link _link;
   @JsonKey(ignore: true)
   ApiClient _client = ApiClient();
 
@@ -26,13 +26,16 @@ class Device {
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
   /// A list of all readings taken by this sensor.
-  Future<List<Reading>> readings() => _client.getMany(link.children);
+  Future<List<Reading>> readings() => _client.getMany(_link.children);
+
+  Future<List<Reading>> latestReadings(int count) =>
+      _client.getMany("${_link.children}/latest?amt=$count");
+
+  Future<Reading> latestReading() =>
+      _client.getMany("${_link.children}/latest").then((arr) => arr[0]);
 
   /// Determine if this device is critical. A device is considered critical if
   /// its latest reading is also considered critical.
   Future<bool> isCritical() =>
       this.latestReading().then((read) => read.isCritical);
-
-  // TODO: Why isn't this defined properly in this Hell API
-  Future<Reading> latestReading() => readings().then((rs) => rs.first);
 }

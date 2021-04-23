@@ -17,7 +17,7 @@ class ApiClient {
   }
 
   /// API URL base endpoint
-  static String _apiUrl = "http://localhost:8080";
+  static String _apiUrl = "https://100.25.147.253:8080/api/v1";
 
   /// Safely perform a GET request on a given URL
   Future<Response> _getReq(String url) async {
@@ -28,9 +28,9 @@ class ApiClient {
           return res;
         // TODO: More granular errors, please!
         default:
-          throw HttpException("Status Code ${res.statusCode}");
+          throw HttpException("${res.statusCode}");
       }
-    } catch (Exception) {
+    } on Exception {
       return null;
     }
   }
@@ -46,33 +46,21 @@ class ApiClient {
   /// Involves type-level hackery
   Future<List<T>> getMany<T>(String url) async {
     var res = await _getReq(url);
-    return jsonDecode(res?.body).map((val) => (T as dynamic)?.fromJson(val));
+    return jsonDecode(res?.body)
+        .map((val) => (T as dynamic)?.fromJson(val))
+        .toList();
   }
 
-  Future<List<Location>> getLocations() async {
-    try {
-      var res = await getMany("$_apiUrl/rooms");
-      return res;
-    } catch (HttpException) {
-      // Currently returns a default value, as the server is less-than-ideal
-      return Future.sync(() => List.generate(5, (idx) => Location.mock(idx)));
-    }
-  }
+  Future<List<Location>> getLocations() =>
+      getMany("$_apiUrl/buildings/1/rooms");
 
   // Future<Location> getLocation(int id) => getOne("$_apiUrl/rooms/$id");
-  Future<Location> getLocation(int id) async {
-    try {
-      var res = await getOne("$_apiUrl/rooms/$id");
-      return res;
-    } catch (HttpException) {
-      // Currently returns a default value, as the server is less-than-ideal
-      return Location.mock(id);
-    }
-  }
+  Future<Location> getLocation(int id) => getOne("$_apiUrl/rooms/$id");
 
   Future<List<Device>> getDevices() => getMany("$_apiUrl/sensors");
   Future<Device> getDevice(int id) => getOne("$_apiUrl/sensors/$id");
 
-  Future<List<Device>> getReadings() => getMany("$_apiUrl/reading");
-  Future<Device> getReading(int id) => getOne("$_apiUrl/reading/$id");
+  // Future<List<Device>> getReadings() => getMany("$_apiUrl/reading");
+  Future<Device> getReading(int deviceId, int id) =>
+      getOne("$_apiUrl/sensors/$deviceId/readings/$id");
 }

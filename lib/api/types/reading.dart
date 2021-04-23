@@ -11,8 +11,8 @@ class Reading {
   @JsonKey(name: "co2")
   int value;
 
-  @JsonKey(ignore: true)
-  ApiClient _client = ApiClient();
+  // @JsonKey(ignore: true)
+  // ApiClient _client = ApiClient();
 
   Reading(this.takenAt, this.value);
   factory Reading.fromJson(Map<String, dynamic> json) {

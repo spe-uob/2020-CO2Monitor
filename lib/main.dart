@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
 import 'package:co2_monitor/logic/navigationProvider.dart';
 import 'package:co2_monitor/logic/notificationProvider.dart';
@@ -13,7 +15,7 @@ import 'package:tuple/tuple.dart';
 import 'package:workmanager/workmanager.dart';
 
 void main() {
-  // var launchDetails = NotificationProvider().launchDetails();
+  HttpOverrides.global = new AllowSelfSignedCerts();
   runApp(App());
 
   Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
@@ -26,6 +28,17 @@ void main() {
   );
 
   NotificationProvider();
+}
+
+/// As of the time of writing, the experimental API server has a self-signed
+/// HTTPS certificate, so we need to work around that.
+class AllowSelfSignedCerts extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }
 
 class App extends StatelessWidget {

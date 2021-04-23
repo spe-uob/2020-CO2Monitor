@@ -14,8 +14,8 @@ class Location extends IGraphable {
   @JsonKey(required: true)
   int id;
   String name;
-  @JsonKey(required: true)
-  Link link;
+  @JsonKey(required: true, name: "links")
+  Link _link;
   @JsonKey(ignore: true)
   ApiClient _client = ApiClient();
 
@@ -28,23 +28,12 @@ class Location extends IGraphable {
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
-  Future<List<Device>> devices() async {
-    // TODO: Remove default value when the API is a bit more stable
-    var defaultValue = List.generate(5, (index) => Device.mock());
-    try {
-      var returnValue = await _client.getMany(link.children);
-      return returnValue ?? defaultValue;
-    } catch (HttpException) {
-      return defaultValue;
-    }
-  }
+  Future<List<Device>> devices() => _client.getMany(_link.children);
 
   /// Determine if a location is considered critical to occupy based on its
   /// component sensors. For the time being, any locatiom with one critical
   /// sensors is itself considered critical.
   Future<bool> isCritical() async {
-    // TODO: Not this, that's for sure
-    return true;
     var devices = await this.devices();
     for (var device in devices) if (await device.isCritical()) return true;
     return false;

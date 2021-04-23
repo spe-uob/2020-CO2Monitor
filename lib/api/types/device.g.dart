@@ -7,20 +7,14 @@ part of 'device.dart';
 // **************************************************************************
 
 Device _$DeviceFromJson(Map<String, dynamic> json) {
-  $checkKeys(json, requiredKeys: const ['id', 'link']);
+  $checkKeys(json, requiredKeys: const ['id']);
   return Device(
     json['id'] as int,
     json['name'] as String,
-  )
-    ..desc = json['desc'] as String
-    ..link = json['link'] == null
-        ? null
-        : Link.fromJson(json['link'] as Map<String, dynamic>);
+  );
 }
 
 Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'desc': instance.desc,
-      'link': instance.link?.toJson(),
     };

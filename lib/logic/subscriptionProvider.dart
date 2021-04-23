@@ -76,7 +76,15 @@ class SubscriptionProvider {
   Future<List<Location>> subscriptions() async {
     var client = ApiClient();
     var subIds = await subscriptionIds();
-    return await Future.wait(subIds.map((id) => client.getLocation(id)));
+    return await Future.wait(subIds.map((id) {
+      try {
+        return client.getLocation(id);
+      } on HttpException catch (ex) {
+        // Looks like this subscription is now invalid, so we can remove it.
+        if (ex.message == "404") unsubscribeFrom(id);
+        return null;
+      }
+    })).then((subs) => subs.where((subs) => subs != null).toList());
   }
 
   Future<bool> isSubscribedTo(int id) async =>

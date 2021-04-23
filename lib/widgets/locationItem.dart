@@ -26,9 +26,9 @@ class _LocationItemState extends State<LocationItem> {
         .isSubscribedTo(widget.location.id)
         .then((b) => setState(() => isSubbed = b));
     widget.location.devices().then((devs) {
-      totalDevices = devs.length;
-      Future.wait(devs.map((dev) => dev.isCritical()))
-          .then((bools) => criticalDevices = bools.where((b) => b).length);
+      setState(() => totalDevices = devs.length);
+      Future.wait(devs.map((dev) => dev.isCritical())).then((bools) =>
+          setState(() => criticalDevices = bools.where((b) => b).length));
     });
 
     var horizChildren = [
