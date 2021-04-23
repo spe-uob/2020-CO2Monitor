@@ -1,13 +1,83 @@
 package com.c02Monitor.apiserver;
 
+import com.c02Monitor.apiserver.entity.Building;
+import com.c02Monitor.apiserver.entity.Room;
+import com.c02Monitor.apiserver.entity.Sensor;
+import com.c02Monitor.apiserver.service.BuildingService;
+import com.c02Monitor.apiserver.service.RoomService;
+import com.c02Monitor.apiserver.service.SensorService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import com.c02Monitor.apiserver.utils.SmartCit;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class ApiServerApplication {
 
+	public static List<Long> DEVICE_IDS = new ArrayList<>();
+
+//	public static void addDeviceIds(Long deviceIds) {
+//		DEVICE_IDS.add(deviceIds);
+//	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(ApiServerApplication.class, args);
 	}
+
+	@Bean
+	CommandLineRunner runner(BuildingService buildingService, RoomService roomService, SensorService sensorService, ApiServerApplication bar){
+		return args -> {
+			Building building1 =  new Building("MVB");
+			Building building2 =  new Building("Queens");
+
+			buildingService.createBuilding(building1);
+			buildingService.createBuilding(building2);
+
+			Room room1 = new Room("1.1", building1);
+			Room room2 = new Room("2.11", building1);
+			roomService.createRoom(room1);
+			roomService.createRoom(room2);
+
+			Room room3 = new Room("Room A", building2);
+			Room room4 = new Room("Room B", building2);
+			roomService.createRoom(room3);
+			roomService.createRoom(room4);
+
+			Sensor sensor1 = new Sensor(12600, "test", room1);
+			Sensor sensor2 = new Sensor(9858, "test", room1);
+			sensorService.createSensor(sensor1);
+			sensorService.createSensor(sensor2);
+//			System.out.println("BAR1: " + DEVICE_IDS.toString());
+
+//			System.out.println("BAR2: " + sensorService.getAllSensors()
+//					.stream()
+//					.map(Sensor::getId)
+//					.collect(Collectors.toList()));
+//			System.out.println("BAR3: " + ApiServerApplication.DEVICE_IDS.add(12600L));
+
+			DEVICE_IDS.addAll(sensorService.getAllSensors()
+                        .stream()
+                        .map(Sensor::getId)
+                        .collect(Collectors.toList()));
+
+//			System.out.println("BAR4: " + DEVICE_IDS.toString());
+
+		};
+	}
+	@Bean
+	public Jackson2ObjectMapperBuilder jacksonBuilder() {
+		Jackson2ObjectMapperBuilder b = new Jackson2ObjectMapperBuilder();
+		b.failOnEmptyBeans(false);
+		b.failOnUnknownProperties(false);
+		return b;
+	}
+
+
 
 }
