@@ -27,7 +27,7 @@ public class BuildingController {
     }
 
     //TODO ERROR HANDLE (kids optional bool)
-    @GetMapping("/list")
+    @GetMapping()
     public List<BuildingDTO> getAllBuildings(@RequestParam() Optional<Boolean> kids) {
         Stream<BuildingDTO> buildings;
         if (kids.isPresent() && kids.get()){

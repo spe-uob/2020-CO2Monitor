@@ -35,7 +35,7 @@ public class RoomController {
     }
 
     //TODO ERROR HANDLE (kids optional bool)
-    @GetMapping("/list")
+    @GetMapping()
     public List<RoomDTO> getAllRooms(@PathVariable() Optional<Long> buildingId,
             @RequestParam() Optional<Boolean> kids) {
 

@@ -34,7 +34,7 @@ public class SensorController {
     }
 
     //TODO ERROR HANDLE (kids optional bool)
-    @GetMapping("/list")
+    @GetMapping()
     public List<SensorDTO> getAllSensors(@PathVariable() Optional<Long> roomId,
                                      @RequestParam() Optional<Boolean> kids) {
 

@@ -30,7 +30,7 @@ public class ReadingController {
     }
 
     //TODO ERROR HANDLE (kids optional bool)
-    @GetMapping("/list")
+    @GetMapping()
     public List<ReadingDTO> getAllReadings(@PathVariable("sensorId") Long sensorId) {
 
 //        testy(1616);
