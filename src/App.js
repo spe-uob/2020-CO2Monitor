@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../node_modules/react-vis/dist/style.css'
 import {
   Button,
@@ -17,6 +17,7 @@ import { Add, Search } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import './App.css'
 import Room from './components/Room.js'
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
   addRoom: {
@@ -26,11 +27,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const formatAPI = (db) => {
+  const flattened = []
+  for (const building of db) {
+    for (const room of building.rooms) {
+      room.building = building.name
+      flattened.push(room)
+    }
+  }
+  return flattened
+}
+
 // --- GET RID OF THIS LATER ---
 
 // Populate some fake data
+/*
 const roomNum = Math.floor(Math.random() * 10)
-const rooms = []
+let rooms = []
+
 for (let i = 0; i < roomNum; i++) {
   const sensors = []
   const sensorNum = Math.floor(Math.random() * 20)
@@ -57,6 +71,7 @@ for (let i = 0; i < roomNum; i++) {
     }
   )
 }
+*/
 
 // console.log(rooms)
 
@@ -68,22 +83,35 @@ for (let i = 0; i < roomNum; i++) {
 function App () {
   const classes = useStyles()
 
-  const roomCardsInit = rooms.map((room) => (
-    <Grid
-      item
-      sm={12}
-      md={6}
-      lg={4}
-      key={room.id * 1000 + room.name}
-      className="PaddedCard"
-    >
-      <Room {...room} />
-    </Grid>
-  ))
+  const [roomCards, setRoomCards] = useState('Loading...')
+  const [rooms, setRooms] = useState([])
 
-  const [roomCards, setRoomCards] = useState(roomCardsInit)
+  const refreshRooms = () => {
+    axios.get('https://100.25.147.253:8080/api/v1/buildings/?kids=1')
+      .then((response) => {
+        setRooms(response.data)
+        setRoomCards(formatAPI(response.data).map((room) => (
+          <Grid
+            item
+            sm={12}
+            md={6}
+            lg={4}
+            key={room.id * 1000 + room.name}
+            className="PaddedCard"
+          >
+            <Room {...room} />
+          </Grid>
+        )))
+      }).catch((error) => {
+        console.log(error)
+      })
+  }
 
-  const [openAddRoom, setOpenAddRoom] = React.useState(false)
+  useEffect(() => {
+    refreshRooms()
+  }, [])
+
+  const [openAddRoom, setOpenAddRoom] = useState(false)
   const handleClickOpenAddRoom = () => {
     setOpenAddRoom(true)
   }
@@ -127,7 +155,7 @@ function App () {
         key={room.id * 1000 + room.name}
         className="PaddedCard"
       >
-        <Room {...room} />
+        <Room {...room} refresh={refreshRooms} />
       </Grid>
     )))
   }

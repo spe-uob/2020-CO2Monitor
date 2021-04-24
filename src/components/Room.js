@@ -38,19 +38,19 @@ export default function Room (props) {
     const graphData = []
     let graphMax = 0
 
-    for (let i = 0; i < props.sensors[0].data.length; i++) {
-      let maxy = props.sensors[0].data[i].y
-      let miny = props.sensors[0].data[i].y
+    for (let i = 0; i < props.sensors[0].readings.length; i++) {
+      let maxco2 = props.sensors[0].readings[i].co2
+      let minco2 = props.sensors[0].readings[i].co2
       for (let j = 1; j < props.sensors.length; j++) {
-        maxy = Math.max(maxy, props.sensors[j].data[i].y)
-        miny = Math.min(miny, props.sensors[j].data[i].y)
+        maxco2 = Math.max(maxco2, props.sensors[j].readings[i].co2)
+        minco2 = Math.min(minco2, props.sensors[j].readings[i].co2)
       }
-      graphMax = Math.max(graphMax, maxy)
+      graphMax = Math.max(graphMax, maxco2)
       graphData.push(
         {
-          x: props.sensors[0].data[i].x,
-          y: maxy,
-          y0: miny
+          x: i, // props.sensors[0].data[i].x,
+          y: maxco2,
+          y0: minco2
         }
       )
     }
@@ -75,7 +75,7 @@ export default function Room (props) {
 
   return (
     <Card>
-      <CardHeader title={`Name: ${props.name}`} />
+      <CardHeader title={`${props.building} ${props.name}`} />
       <CardContent>
         {minMaxGraph}
       </CardContent>

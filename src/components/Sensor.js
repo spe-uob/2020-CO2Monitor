@@ -40,20 +40,25 @@ export default function Sensor (props) {
     setEditOpen(false)
   }
 
-  const graphMax = Math.max(...props.data.map((entry) => (entry.y)))
+  const graphMax = Math.max(...props.readings.map((entry) => (entry.co2)))
 
   return (
     <Card>
-      <CardHeader title={`${props.description} ${props.sensorId}`} />
+      <CardHeader title={`${props.description} ${props.id}`} />
       <CardContent>
         <FlexXYPlot height={300}>
-          <LineSeries data={props.data} />
+          <LineSeries data={props.readings.map((entry) => (
+            {
+              y: entry.co2,
+              x: entry.id
+            }
+          ))} />
         </FlexXYPlot>
         The 24h maximum is
         {' '}
         <b>{graphMax}</b>
         <br />
-        <b>{props.data.length}</b>
+        <b>{props.readings.length}</b>
         {' '}
         data points recorded by this sensor
       </CardContent>
@@ -99,7 +104,7 @@ export default function Sensor (props) {
           <DialogTitle>
             Are you sure you want to delete:
             <b>
-              {` ${props.sensorId} `}
+              {` ${props.id} `}
             </b>
             ?
           </DialogTitle>

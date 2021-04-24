@@ -43,7 +43,7 @@ export default function Info (props) {
       sm={12}
       md={6}
       lg={4}
-      key={sensor.description + sensor.sensorId}
+      key={sensor.description + sensor.id}
       className="PaddedCard"
     >
       <Sensor {...sensor} />
