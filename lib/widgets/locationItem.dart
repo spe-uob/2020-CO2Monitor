@@ -25,6 +25,7 @@ class _LocationItemState extends State<LocationItem> {
     subs
         .isSubscribedTo(widget.location.id)
         .then((b) => setState(() => isSubbed = b));
+    // Count children for warning indicator
     widget.location.devices().then((devs) {
       setState(() => totalDevices = devs.length);
       Future.wait(devs.map((dev) => dev.isCritical())).then((bools) =>

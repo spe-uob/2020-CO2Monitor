@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:co2_monitor/api/types/reading.dart';
 import 'package:http/http.dart';
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/api/types/device.dart';
@@ -36,31 +37,32 @@ class ApiClient {
   }
 
   /// Wraps _getReq and parses into a given type
-  /// Involves type-level hackery
-  Future<T> getOne<T>(String url) async {
+  Future<T> getOne<T>(
+      T Function(Map<String, dynamic> json) fromJson, String url) async {
     var res = await _getReq(url);
-    return (T as dynamic)?.fromJson(jsonDecode(res?.body));
+    return fromJson(jsonDecode(res?.body));
   }
 
   /// Wraps _getReq and parses into an array of a given type
-  /// Involves type-level hackery
-  Future<List<T>> getMany<T>(String url) async {
+  Future<List<T>> getMany<T>(
+      T Function(Map<String, dynamic> json) fromJson, String url) async {
     var res = await _getReq(url);
-    return jsonDecode(res?.body)
-        .map((val) => (T as dynamic)?.fromJson(val))
-        .toList();
+    return List.from(jsonDecode(res?.body).map((val) => fromJson(val)));
   }
 
   Future<List<Location>> getLocations() =>
-      getMany("$_apiUrl/buildings/1/rooms");
+      getMany((j) => Location.fromJson(j), "$_apiUrl/buildings/1/rooms");
 
   // Future<Location> getLocation(int id) => getOne("$_apiUrl/rooms/$id");
-  Future<Location> getLocation(int id) => getOne("$_apiUrl/rooms/$id");
+  Future<Location> getLocation(int id) =>
+      getOne((j) => Location.fromJson(j), "$_apiUrl/rooms/$id");
 
-  Future<List<Device>> getDevices() => getMany("$_apiUrl/sensors");
-  Future<Device> getDevice(int id) => getOne("$_apiUrl/sensors/$id");
+  Future<List<Device>> getDevices() =>
+      getMany((j) => Device.fromJson(j), "$_apiUrl/sensors");
+  Future<Device> getDevice(int id) =>
+      getOne((j) => Device.fromJson(j), "$_apiUrl/sensors/$id");
 
   // Future<List<Device>> getReadings() => getMany("$_apiUrl/reading");
-  Future<Device> getReading(int deviceId, int id) =>
-      getOne("$_apiUrl/sensors/$deviceId/readings/$id");
+  Future<Reading> getReading(int deviceId, int id) => getOne(
+      (j) => Reading.fromJson(j), "$_apiUrl/sensors/$deviceId/readings/$id");
 }

@@ -6,33 +6,36 @@ import 'link.dart';
 part 'device.g.dart';
 
 /// Represents a physical SCK device in a fixed location.
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class Device {
   @JsonKey(required: true)
   int id;
   String name;
   // String desc;
   @JsonKey(required: true, name: "links")
-  Link _link;
+  Link link;
   @JsonKey(ignore: true)
   ApiClient _client = ApiClient();
 
-  Device(this.id, this.name);
+  Device(this.id, this.name, this.link);
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 
   // Mock value, can be used for testing and mocking UI
-  factory Device.mock() => Device(0, "Mock Device");
+  // factory Device.mock() => Device(0, "Mock Device");
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
+  Reading Function(Map<String, dynamic>) _readingJson;
+
   /// A list of all readings taken by this sensor.
-  Future<List<Reading>> readings() => _client.getMany(_link.children);
+  Future<List<Reading>> readings() => _client.getMany(_readingJson, link.child);
 
   Future<List<Reading>> latestReadings(int count) =>
-      _client.getMany("${_link.children}/latest?amt=$count");
+      _client.getMany(_readingJson, "${link.child}/latest?amt=$count");
 
-  Future<Reading> latestReading() =>
-      _client.getMany("${_link.children}/latest").then((arr) => arr[0]);
+  Future<Reading> latestReading() => _client
+      .getMany(_readingJson, "${link.child}/latest")
+      .then((arr) => arr[0]);
 
   /// Determine if this device is critical. A device is considered critical if
   /// its latest reading is also considered critical.

@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'reading.g.dart';
 
 /// A single eCO2 reading taken by a designated device.
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class Reading {
   @JsonKey(name: "date")
   DateTime takenAt;

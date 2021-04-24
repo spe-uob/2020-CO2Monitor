@@ -9,26 +9,27 @@ part 'location.g.dart';
 
 /// A location is a collection of SCK devices in near proximity.
 /// The intention is that each area (e.g. a room, building) will be a location.
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class Location extends IGraphable {
   @JsonKey(required: true)
   int id;
   String name;
   @JsonKey(required: true, name: "links")
-  Link _link;
+  Link link;
   @JsonKey(ignore: true)
   ApiClient _client = ApiClient();
 
-  Location(this.id, this.name);
+  Location(this.id, this.name, this.link);
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);
 
   /// Mock value, can be used for testing and mocking UI
-  factory Location.mock(int id) => Location(id, "Location $id");
+  // factory Location.mock(int id) => Location(id, "Location $id");
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
-  Future<List<Device>> devices() => _client.getMany(_link.children);
+  Future<List<Device>> devices() =>
+      _client.getMany((j) => Device.fromJson(j), link.child);
 
   /// Determine if a location is considered critical to occupy based on its
   /// component sensors. For the time being, any locatiom with one critical

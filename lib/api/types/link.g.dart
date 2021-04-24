@@ -7,13 +7,14 @@ part of 'link.dart';
 // **************************************************************************
 
 Link _$LinkFromJson(Map<String, dynamic> json) {
+  $checkKeys(json, requiredKeys: const ['self', 'child']);
   return Link(
     json['self'] as String,
-    json['children'] as String,
+    json['child'] as String,
   );
 }
 
 Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
       'self': instance.self,
-      'children': instance.children,
+      'child': instance.child,
     };
