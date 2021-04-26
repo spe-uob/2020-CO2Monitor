@@ -22,11 +22,13 @@ class _LocationItemState extends State<LocationItem> {
 
   @override
   Widget build(BuildContext context) {
-    subs
-        .isSubscribedTo(widget.location.id)
-        .then((b) => setState(() => isSubbed = b));
+    subs.isSubscribedTo(widget.location.id).then((b) {
+      if (!this.mounted) return;
+      setState(() => isSubbed = b);
+    });
     // Count children for warning indicator
     widget.location.devices().then((devs) {
+      if (!this.mounted) return;
       setState(() => totalDevices = devs.length);
       Future.wait(devs.map((dev) => dev.isCritical())).then((bools) =>
           setState(() => criticalDevices = bools.where((b) => b).length));

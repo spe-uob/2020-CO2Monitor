@@ -80,13 +80,25 @@ class _MainViewState extends State<MainView> {
       ),
     ),
     Tuple2(
-      ElevatedButton(
-          child: Text("make an alert"),
-          onPressed: () async {
-            var provider = SubscriptionProvider();
-            var subs = await provider.subscriptions();
-            await alertIfCritical();
-          }),
+      ListView(
+        children: [
+          ElevatedButton(
+            child: Text("make an alert"),
+            onPressed: () async {
+              var provider = SubscriptionProvider();
+              var subs = await provider.subscriptions();
+              await alertIfCritical();
+            },
+          ),
+          ElevatedButton(
+            child: Text("clear subscriptions"),
+            onPressed: () async {
+              var provider = SubscriptionProvider();
+              await provider.unsubscribeAll();
+            },
+          ),
+        ],
+      ),
       BottomNavigationBarItem(
         icon: Icon(Icons.warning),
         label: "Critical Locations",

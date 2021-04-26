@@ -25,16 +25,28 @@ class Device {
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
-  Reading Function(Map<String, dynamic>) _readingJson;
+  /// Dart does not allow us to instance methods as higher-order arguments.
+  /// Let's define this here to avoid some code repetition.
+  Reading Function(Map<String, dynamic>) _readingJson =
+      (json) => Reading.fromJson(json);
 
   /// A list of all readings taken by this sensor.
-  Future<List<Reading>> readings() => _client.getMany(_readingJson, link.child);
+  Future<List<Reading>> readings() =>
+      _client.getMany(_readingJson, _fix(link.child));
+
+  /// This function can be used to work-around a temporary bug in the API.
+  /// In this bug, the children of sensors are shown as sensors themselves,
+  /// rather than as readings
+  String _fix(String child) {
+    var start = child.lastIndexOf("/");
+    return child.replaceRange(start, null, "/readings");
+  }
 
   Future<List<Reading>> latestReadings(int count) =>
-      _client.getMany(_readingJson, "${link.child}/latest?amt=$count");
+      _client.getMany(_readingJson, "${_fix(link.child)}/latest?amt=$count");
 
   Future<Reading> latestReading() => _client
-      .getMany(_readingJson, "${link.child}/latest")
+      .getMany(_readingJson, "${_fix(link.child)}/latest")
       .then((arr) => arr[0]);
 
   /// Determine if this device is critical. A device is considered critical if

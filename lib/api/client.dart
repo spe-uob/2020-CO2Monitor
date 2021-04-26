@@ -22,17 +22,13 @@ class ApiClient {
 
   /// Safely perform a GET request on a given URL
   Future<Response> _getReq(String url) async {
-    try {
-      var res = await _httpClient.get(url);
-      switch (res.statusCode) {
-        case HttpStatus.ok:
-          return res;
-        // TODO: More granular errors, please!
-        default:
-          throw HttpException("${res.statusCode}");
-      }
-    } on Exception {
-      return null;
+    var res = await _httpClient.get(url);
+    switch (res.statusCode) {
+      case HttpStatus.ok:
+        return res;
+      // TODO: More granular errors, please!
+      default:
+        throw HttpException("${res.statusCode}");
     }
   }
 

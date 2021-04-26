@@ -2,12 +2,14 @@ import 'package:co2_monitor/api/client.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'reading.g.dart';
 
+const CRITICAL_THRESHHOLD = 1000;
+
 /// A single eCO2 reading taken by a designated device.
 @JsonSerializable()
 class Reading {
   @JsonKey(name: "date")
   DateTime takenAt;
-  bool get isCritical => value > 50;
+  bool get isCritical => value > CRITICAL_THRESHHOLD;
   @JsonKey(name: "co2")
   int value;
 
