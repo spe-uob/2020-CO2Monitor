@@ -36,11 +36,12 @@ const formatAPI = (db) => {
         for (const reading of sensor.readings) {
           reading.date = new Date(reading.date)
         }
-        sensor.readings.sort((a, b) => b.date - a.date)
+        sensor.readings.sort((a, b) => a.date - b.date)
       }
       flattened.push(room)
     }
   }
+  // console.log(flattened[0].sensors[0].readings)
   return flattened
 }
 

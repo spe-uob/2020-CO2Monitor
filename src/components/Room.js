@@ -39,22 +39,36 @@ export default function Room (props) {
   if (props.sensors.length > 0) {
     const graphData = []
     let graphMax = 0
+    const yIndices = props.sensors.map((sensor) => (sensor.readings.length - 1))
+    const latest = new Date(Math.max.apply(null, (props.sensors.map((sensor) => (
+      sensor.readings[sensor.readings.length - 1].date
+    )))))
 
-    for (let i = 0; i < props.sensors[0].readings.length; i++) {
-      let maxco2 = props.sensors[0].readings[i].co2
-      let minco2 = props.sensors[0].readings[i].co2
-      for (let j = 1; j < props.sensors.length; j++) {
-        maxco2 = Math.max(maxco2, props.sensors[j].readings[i].co2)
-        minco2 = Math.min(minco2, props.sensors[j].readings[i].co2)
-      }
-      graphMax = Math.max(graphMax, maxco2)
-      graphData.push(
-        {
-          x: props.sensors[0].readings[i].date, // props.sensors[0].data[i].x,
-          y: maxco2,
-          y0: minco2
+    for (let i = 0; i < 288; i++) {
+      latest.setMinutes(latest.getMinutes() - 5)
+      let maxco2 = -1
+      let minco2 = Infinity
+
+      // console.log(latest)
+      for (let j = 0; j < yIndices.length; j++) {
+        while (yIndices[j] > -1 && props.sensors[j].readings[yIndices[j]].date > latest) {
+          // console.log(props.sensors[j].readings[yIndices[j]])
+          maxco2 = Math.max(maxco2, props.sensors[j].readings[yIndices[j]].co2)
+          minco2 = Math.min(minco2, props.sensors[j].readings[yIndices[j]].co2)
+          yIndices[j] -= 1
         }
-      )
+      }
+
+      graphMax = Math.max(graphMax, maxco2)
+      if (maxco2 !== -1) {
+        graphData.push(
+          {
+            x: new Date(latest),
+            y: maxco2,
+            y0: minco2
+          }
+        )
+      }
     }
 
     minMaxGraph = (
