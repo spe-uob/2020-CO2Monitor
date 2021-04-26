@@ -12,6 +12,8 @@ import {
   TextField
 } from '@material-ui/core'
 import {
+  XAxis,
+  YAxis,
   XYPlot,
   LineSeries,
   makeWidthFlexible
@@ -46,11 +48,13 @@ export default function Sensor (props) {
     <Card>
       <CardHeader title={`${props.description} ${props.id}`} />
       <CardContent>
-        <FlexXYPlot height={300}>
+        <FlexXYPlot height={300} xType="time">
+          <XAxis title="time" />
+          <YAxis title="CO2" />
           <LineSeries data={props.readings.map((entry) => (
             {
               y: entry.co2,
-              x: entry.id
+              x: entry.date
             }
           ))} />
         </FlexXYPlot>

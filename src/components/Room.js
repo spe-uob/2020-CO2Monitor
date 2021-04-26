@@ -11,6 +11,8 @@ import {
   DialogTitle
 } from '@material-ui/core'
 import {
+  XAxis,
+  YAxis,
   XYPlot,
   AreaSeries,
   makeWidthFlexible
@@ -58,6 +60,8 @@ export default function Room (props) {
     minMaxGraph = (
       <>
         <FlexXYPlot height={300} xType='time'>
+          <XAxis title="time" />
+          <YAxis title="CO2" />
           <AreaSeries data={graphData} />
         </FlexXYPlot>
         The 24h maximum is
