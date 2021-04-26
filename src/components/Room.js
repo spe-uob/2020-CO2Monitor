@@ -48,7 +48,7 @@ export default function Room (props) {
       graphMax = Math.max(graphMax, maxco2)
       graphData.push(
         {
-          x: i, // props.sensors[0].data[i].x,
+          x: props.sensors[0].readings[i].date, // props.sensors[0].data[i].x,
           y: maxco2,
           y0: minco2
         }
@@ -57,7 +57,7 @@ export default function Room (props) {
 
     minMaxGraph = (
       <>
-        <FlexXYPlot height={300}>
+        <FlexXYPlot height={300} xType='time'>
           <AreaSeries data={graphData} />
         </FlexXYPlot>
         The 24h maximum is
