@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/v1/buildings")
-public class BuildingController {
+public class BuildingController extends ParentController{
 
     private final BuildingService buildingService;
 

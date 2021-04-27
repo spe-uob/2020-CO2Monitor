@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping({"/api/v1/buildings/{buildingId}/rooms/{roomId}/sensors", "/api/v1/sensors"})
-public class SensorController {
+public class SensorController extends ParentController{
 
     private final SensorService sensorService;
     private final RoomService roomService;

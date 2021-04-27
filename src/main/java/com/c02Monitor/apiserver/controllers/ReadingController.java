@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping({"/api/v1/buildings/{buildingId}/rooms/{roomId}/sensors/{sensorId}/readings", "/api/v1/{sensorId}/readings"})
-public class ReadingController {
+public class ReadingController extends ParentController{
     private final ReadingService readingService;
 
     public ReadingController(ReadingService readingService) {
