@@ -29,7 +29,6 @@ class NotificationProvider {
     final InitializationSettings init =
         InitializationSettings(android: settings);
     _notifPlugin.initialize(init, onSelectNotification: _onNotif);
-    log("huh");
   }
 
   Future _onNotif(String payload) async {

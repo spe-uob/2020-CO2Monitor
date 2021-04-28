@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
 import 'package:co2_monitor/widgets/locationItem.dart';
@@ -16,9 +18,9 @@ class _SubscriptionListState extends State<SubscriptionList> {
 
   @override
   Widget build(BuildContext context) {
-    SubscriptionProvider().subscriptions().then((subs) async {
-      setState(() => locations = subs);
-    });
+    SubscriptionProvider()
+        .subscriptions()
+        .then((subs) => setState(() => locations = subs));
 
     return ListView(
       children: locations.map((l) => LocationItem(l)).toList(),

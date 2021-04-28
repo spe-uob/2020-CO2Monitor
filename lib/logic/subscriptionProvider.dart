@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/location.dart';
@@ -41,6 +42,10 @@ class SubscriptionProvider {
 
   // Future<dynamic> _writeJson(dynamic json) =>
   //     _dataPath().then((f) => f.writeAsString(jsonEncode(json)));
+  //
+
+  /// Should be removed eventually; for debugging purposes only!
+  Future<String> debug() => _dataPath().then((f) => f.readAsString());
 
   Future<dynamic> _write(List<int> values) =>
       _dataPath().then((f) => f.writeAsString(jsonEncode(values)));
@@ -76,15 +81,9 @@ class SubscriptionProvider {
   Future<List<Location>> subscriptions() async {
     var client = ApiClient();
     var subIds = await subscriptionIds();
-    return await Future.wait(subIds.map((id) {
-      try {
-        return client.getLocation(id);
-      } on HttpException catch (ex) {
-        // Looks like this subscription is now invalid, so we can remove it.
-        if (ex.message == "404") unsubscribeFrom(id);
-        return null;
-      }
-    })).then((subs) => subs.where((subs) => subs != null).toList());
+    var locations = await client.getLocations();
+    for (var loc in locations) log("${loc.id}");
+    return locations.where((loc) => subIds.contains(loc.id)).toList();
   }
 
   Future<bool> isSubscribedTo(int id) async =>

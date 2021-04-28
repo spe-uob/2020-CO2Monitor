@@ -67,7 +67,9 @@ class _LocationItemState extends State<LocationItem> {
       Padding(padding: EdgeInsets.symmetric(horizontal: 8.0)),
     ];
 
-    if (true) horizChildren.addAll(additionalChildren);
+    widget.location.isCritical().then((crit) {
+      if (crit) horizChildren.addAll(additionalChildren);
+    });
 
     return Card(
       shape: RoundedRectangleBorder(

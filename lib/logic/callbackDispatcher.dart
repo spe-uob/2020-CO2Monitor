@@ -14,8 +14,6 @@ void callbackDispatcher() {
 }
 
 Future<bool> alertIfCritical() async {
-  // Currently, the only task we have is 'co2alerts'
-
   List<Location> critical = [];
   List<Location> locations = await SubscriptionProvider().subscriptions();
 
@@ -27,6 +25,20 @@ Future<bool> alertIfCritical() async {
     var notifs = NotificationProvider();
     notifs.alert(critical);
   }
+
+  return true;
+}
+
+Future<bool> alertAlways() async {
+  List<Location> critical = [];
+  List<Location> locations = await SubscriptionProvider().subscriptions();
+
+  // Locations where one devices is critical are also considered critical.
+  for (var location in locations)
+    if (await location.isCritical()) critical.add(location);
+
+  var notifs = NotificationProvider();
+  notifs.alert(critical);
 
   return true;
 }

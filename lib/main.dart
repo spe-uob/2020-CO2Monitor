@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
@@ -87,7 +88,7 @@ class _MainViewState extends State<MainView> {
             onPressed: () async {
               var provider = SubscriptionProvider();
               var subs = await provider.subscriptions();
-              await alertIfCritical();
+              await alertAlways();
             },
           ),
           ElevatedButton(
@@ -95,6 +96,13 @@ class _MainViewState extends State<MainView> {
             onPressed: () async {
               var provider = SubscriptionProvider();
               await provider.unsubscribeAll();
+            },
+          ),
+          ElevatedButton(
+            child: Text("print subs file"),
+            onPressed: () async {
+              var provider = SubscriptionProvider();
+              log(await provider.debug());
             },
           ),
         ],
