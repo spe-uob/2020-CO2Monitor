@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Dialog,
@@ -11,6 +11,7 @@ import {
   TextField
 } from '@material-ui/core'
 import { Add, Close } from '@material-ui/icons'
+import axios from 'axios'
 import './Info.css'
 import Sensor from './Sensor.js'
 
@@ -22,19 +23,27 @@ const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={r
  */
 export default function Info (props) {
   const [open, setOpen] = React.useState(false)
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
 
-  const [openAddSensor, setOpenAddSensor] = React.useState(false)
-  const handleClickOpenAddSensor = () => {
-    setOpenAddSensor(true)
-  }
-  const handleCloseAddSensor = () => {
-    setOpenAddSensor(false)
+  // adding sensor process
+  const [openAddSensor, setOpenAddSensor] = useState(false)
+  // const [addSensorSuccess, setAddSensorSuccess] = useState(false)
+  // const [addSensorError, setAddSensorError] = useState(false)
+  const [addSensorName, setAddSensorName] = useState('')
+  const [addSensorId, setAddSensorId] = useState('')
+
+  const addSensor = () => {
+    axios.post('https://100.25.147.253:8080/api/rooms/' + '437579' + '/sensors', {
+      name: addSensorName,
+      id: addSensorId
+    }).then(() => {
+      // setAddSensorSuccess(true)
+      setAddSensorName('')
+      setAddSensorId('')
+      setOpenAddSensor(false)
+      props.refresh()
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
   const sensors = props.sensors.map((sensor) => (
@@ -52,13 +61,13 @@ export default function Info (props) {
 
   return (
     <>
-      <Button onClick={handleClickOpen}>
+      <Button onClick={() => setOpen(true)}>
         More info
       </Button>
       <Dialog
         fullScreen
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpenAddSensor(false)}
         TransitionComponent={Transition}
         data-testid="info-dialog"
       >
@@ -73,7 +82,7 @@ export default function Info (props) {
             <Grid item sm={12} md={6}>
               <Button
                 className="Left-header"
-                onClick={handleClose}
+                onClick={() => setOpen(false)}
                 disableElevation
                 data-testid="close-more-info"
               >
@@ -85,13 +94,13 @@ export default function Info (props) {
                 className="Right-header"
                 disableElevation
                 startIcon={<Add />}
-                onClick={handleClickOpenAddSensor}
+                onClick={() => setOpenAddSensor(true)}
               >
                 Add sensor
               </Button>
               <Dialog
                 open={openAddSensor}
-                onClose={handleCloseAddSensor}
+                onClose={() => setOpenAddSensor(false)}
               >
                 <DialogTitle>
                   Add sensor
@@ -99,25 +108,30 @@ export default function Info (props) {
                 <DialogContent>
                   <div>
                     <TextField
-                      multiline
                       label="Sensor ID"
                       variant="outlined"
+                      onChange={(event) => setAddSensorId(event.target.value)}
                     />
                   </div>
                   <div className="PaddedCard" />
                   <div>
                     <TextField
-                      multiline
-                      label="Description"
+                      label="Name"
                       variant="outlined"
+                      onChange={(event) => setAddSensorName(event.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.keyCode === 13) {
+                          addSensor()
+                        }
+                      }}
                     />
                   </div>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleCloseAddSensor}>
+                  <Button onClick={() => setOpenAddSensor(false)}>
                     Cancel
                   </Button>
-                  <Button color="primary" variant="contained">
+                  <Button onClick={addSensor} color="primary" variant="contained">
                     Add
                   </Button>
                 </DialogActions>
