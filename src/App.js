@@ -235,7 +235,7 @@ function App () {
             <Grid item sm={12} md={6}>
               <a className="Left-header">
                 CO2 Monitor Control Panel
-            </a>
+              </a>
             </Grid>
             <Grid item sm={12} md={6}>
               <div className="Right-header">
@@ -281,7 +281,7 @@ function App () {
         >
           <DialogTitle>
             Add Room
-        </DialogTitle>
+          </DialogTitle>
           <DialogContent>
             <TextField
               label="name"
@@ -306,19 +306,19 @@ function App () {
           </Button>
             <Button onClick={addRoom} color="primary" variant="contained">
               Add
-          </Button>
+            </Button>
           </DialogActions>
 
           <Snackbar open={addRoomSuccess} autoHideDuration={6000} onClose={() => setAddRoomSuccess(false)}>
             <Alert onClose={() => setAddRoomSuccess(false)} severity="success">
               Room Added! Refresh the page to see changes.
-          </Alert>
+            </Alert>
           </Snackbar>
 
           <Snackbar open={addRoomError} autoHideDuration={6000} onClose={() => setAddRoomError(false)}>
             <Alert onClose={() => setAddRoomError(false)} severity="error">
               Room could not be added.
-          </Alert>
+            </Alert>
           </Snackbar>
         </Dialog>
       </div>
@@ -331,7 +331,7 @@ function App () {
         >
           <DialogTitle>
             Log in
-      </DialogTitle>
+          </DialogTitle>
           <DialogContent>
             <TextField
               label="username"
