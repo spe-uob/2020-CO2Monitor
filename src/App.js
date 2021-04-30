@@ -11,16 +11,18 @@ import {
   Fab,
   IconButton,
   InputBase,
-  TextField
+  TextField,
+  Snackbar
 } from '@material-ui/core'
 import { Add, Search } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
+import { Alert } from '@material-ui/lab'
 import './App.css'
 import Room from './components/Room.js'
 import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
-  addRoom: {
+  addRoomTheme: {
     position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2)
@@ -126,6 +128,59 @@ function App () {
     setOpenAddRoom(false)
   }
 
+  const [addRoomSuccess, setAddRoomSuccess] = useState(false)
+  const addRoomSuccessOpen = () => {
+    setAddRoomSuccess(true)
+  }
+  const addRoomSuccessClose = () => {
+    setAddRoomSuccess(false)
+  }
+
+  const [addRoomError, setAddRoomError] = useState(false)
+  const addRoomErrorOpen = () => {
+    setAddRoomError(true)
+  }
+  const addRoomErrorClose = () => {
+    setAddRoomError(false)
+  }
+
+  const [addRoomName, setAddRoomName] = useState('')
+  const changeAddRoomName = (newTerm) => {
+    setAddRoomName(newTerm)
+  }
+
+  const [addRoomBuildingName, setAddRoomBuildingName] = useState('')
+  const changeAddRoomBuildingName = (newTerm) => {
+    setAddRoomBuildingName(newTerm)
+  }
+
+  const addRoom = () => {
+    console.log('Some !%^&!%%! called this stupid function')
+    axios.get('https://100.25.147.253:8080/api/v1/buildings/list').then((response) => {
+      // check for building
+      const results = response.data.filter((buildingData) => buildingData.name === addRoomBuildingName)
+      if (results.length === 1) {
+        axios.post('https://100.25.147.253:8080/api/v1/buildings/list', {
+          name: addRoomName,
+          building: {
+            id: results[0].id
+          }
+        }).then(() => {
+          addRoomSuccessOpen()
+          refreshRooms()
+        })
+      } else {
+        addRoomErrorOpen()
+        console.log('Building not present')
+      }
+      console.log(response)
+    }).catch((error) => {
+      // could not get buildings
+      addRoomErrorOpen()
+      console.log(error)
+    })
+  }
+
   const [searchTerm, setSearchTerm] = useState('')
   const changeSearchTerm = (newTerm) => {
     setSearchTerm(newTerm)
@@ -167,9 +222,15 @@ function App () {
     )))
   }
 
-  const keyPress = (e) => {
+  const keyPressSearch = (e) => {
     if (e.keyCode === 13) {
       filterBySearchTerm()
+    }
+  }
+
+  const keyPressAddRoom = (e) => {
+    if (e.keyCode === 13) {
+      addRoom()
     }
   }
 
@@ -194,7 +255,7 @@ function App () {
               <InputBase
                 placeholder="Search For Room"
                 onChange={(event) => changeSearchTerm(event.target.value)}
-                onKeyDown={(event) => keyPress(event)}
+                onKeyDown={(event) => keyPressSearch(event)}
               />
               <IconButton onClick={filterBySearchTerm}>
                 <Search />
@@ -217,7 +278,7 @@ function App () {
 
       {/* Spain but the s is silent */}
       <Fab
-        className={classes.addRoom}
+        className={classes.addRoomTheme}
         onClick={handleClickOpenAddRoom}
         data-testid="add-room-button"
       >
@@ -234,16 +295,36 @@ function App () {
           <TextField
             label="name"
             variant="outlined"
+            onChange={(event) => changeAddRoomName(event.target.value)}
+          />
+          <div className="PaddedCard" />
+          <TextField
+            label="building"
+            variant="outlined"
+            onChange={(event) => changeAddRoomBuildingName(event.target.value)}
+            onKeyDown={(event) => keyPressAddRoom(event)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseAddRoom} data-testid="cancel-add-room">
             Cancel
           </Button>
-          <Button color="primary" variant="contained">
+          <Button onClick={addRoom} color="primary" variant="contained">
             Add
           </Button>
         </DialogActions>
+
+        <Snackbar open={addRoomSuccess} autoHideDuration={6000} onClose={addRoomSuccessClose}>
+          <Alert onClose={addRoomSuccessClose} severity="success">
+            Room Added! Refresh the page to see changes.
+          </Alert>
+        </Snackbar>
+
+        <Snackbar open={addRoomError} autoHideDuration={6000} onClose={addRoomErrorClose}>
+          <Alert onClose={addRoomErrorClose} severity="error">
+            Room could not be added.
+          </Alert>
+        </Snackbar>
       </Dialog>
     </div>
   )
