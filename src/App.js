@@ -93,6 +93,7 @@ for (let i = 0; i < roomNum; i++) {
 function App () {
   const classes = useStyles()
 
+  // login
   const [token, setToken] = useState('test')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -118,6 +119,7 @@ function App () {
     })
   }
 
+  // room global data
   const [roomCards, setRoomCards] = useState('Loading...')
   const [rooms, setRooms] = useState([])
 
@@ -146,41 +148,14 @@ function App () {
     refreshRooms()
   }, [])
 
+  // adding room process
   const [openAddRoom, setOpenAddRoom] = useState(false)
-  const handleClickOpenAddRoom = () => {
-    setOpenAddRoom(true)
-  }
-  const handleCloseAddRoom = () => {
-    setOpenAddRoom(false)
-  }
-
   const [addRoomSuccess, setAddRoomSuccess] = useState(false)
-  const addRoomSuccessOpen = () => {
-    setAddRoomSuccess(true)
-  }
-  const addRoomSuccessClose = () => {
-    setAddRoomSuccess(false)
-  }
-
   const [addRoomError, setAddRoomError] = useState(false)
-  const addRoomErrorOpen = () => {
-    setAddRoomError(true)
-  }
-  const addRoomErrorClose = () => {
-    setAddRoomError(false)
-  }
-
   const [addRoomName, setAddRoomName] = useState('')
-  const changeAddRoomName = (newTerm) => {
-    setAddRoomName(newTerm)
-  }
   const [addRoomBuildingName, setAddRoomBuildingName] = useState('')
-  const changeAddRoomBuildingName = (newTerm) => {
-    setAddRoomBuildingName(newTerm)
-  }
 
   const addRoom = () => {
-    console.log('Some !%^&!%%! called this stupid function')
     axios.get('https://100.25.147.253:8080/api/v1/buildings/list').then((response) => {
       // check for building
       const results = response.data.filter((buildingData) => buildingData.name === addRoomBuildingName)
@@ -191,25 +166,23 @@ function App () {
             id: results[0].id
           }
         }).then(() => {
-          addRoomSuccessOpen()
+          setAddRoomSuccess(true)
           refreshRooms()
         })
       } else {
-        addRoomErrorOpen()
+        setAddRoomError(true)
         console.log('Building not present')
       }
       console.log(response)
     }).catch((error) => {
       // could not get buildings
-      addRoomErrorOpen()
+      setAddRoomError(true)
       console.log(error)
     })
   }
 
+  // room search
   const [searchTerm, setSearchTerm] = useState('')
-  const changeSearchTerm = (newTerm) => {
-    setSearchTerm(newTerm)
-  }
 
   const checkTerm = (data, term) => {
     if (data === null) {
@@ -247,18 +220,6 @@ function App () {
     )))
   }
 
-  const keyPressSearch = (e) => {
-    if (e.keyCode === 13) {
-      filterBySearchTerm()
-    }
-  }
-
-  const keyPressAddRoom = (e) => {
-    if (e.keyCode === 13) {
-      addRoom()
-    }
-  }
-
   if (token) {
     return (
       <div className="App">
@@ -280,8 +241,12 @@ function App () {
               <div className="Right-header">
                 <InputBase
                   placeholder="Search For Room"
-                  onChange={(event) => changeSearchTerm(event.target.value)}
-                  onKeyDown={(event) => keyPressSearch(event)}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                      filterBySearchTerm()
+                    }
+                  }}
                 />
                 <IconButton onClick={filterBySearchTerm}>
                   <Search />
@@ -305,14 +270,14 @@ function App () {
         {/* Spain but the s is silent */}
         <Fab
           className={classes.addRoomTheme}
-          onClick={handleClickOpenAddRoom}
+          onClick={() => setOpenAddRoom(true)}
           data-testid="add-room-button"
         >
           <Add />
         </Fab>
         <Dialog
           open={openAddRoom}
-          onClose={handleCloseAddRoom}
+          onClose={() => setOpenAddRoom(false)}
         >
           <DialogTitle>
             Add Room
@@ -321,18 +286,22 @@ function App () {
             <TextField
               label="name"
               variant="outlined"
-              onChange={(event) => changeAddRoomName(event.target.value)}
+              onChange={(event) => setAddRoomName(event.target.value)}
             />
             <div className="PaddedCard" />
             <TextField
               label="building"
               variant="outlined"
-              onChange={(event) => changeAddRoomBuildingName(event.target.value)}
-              onKeyDown={(event) => keyPressAddRoom(event)}
+              onChange={(event) => setAddRoomBuildingName(event.target.value)}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  addRoom()
+                }
+              }}
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseAddRoom} data-testid="cancel-add-room">
+            <Button onClick={() => setOpenAddRoom(false)} data-testid="cancel-add-room">
               Cancel
           </Button>
             <Button onClick={addRoom} color="primary" variant="contained">
@@ -340,14 +309,14 @@ function App () {
           </Button>
           </DialogActions>
 
-          <Snackbar open={addRoomSuccess} autoHideDuration={6000} onClose={addRoomSuccessClose}>
-            <Alert onClose={addRoomSuccessClose} severity="success">
+          <Snackbar open={addRoomSuccess} autoHideDuration={6000} onClose={() => setAddRoomSuccess(false)}>
+            <Alert onClose={() => setAddRoomSuccess(false)} severity="success">
               Room Added! Refresh the page to see changes.
           </Alert>
           </Snackbar>
 
-          <Snackbar open={addRoomError} autoHideDuration={6000} onClose={addRoomErrorClose}>
-            <Alert onClose={addRoomErrorClose} severity="error">
+          <Snackbar open={addRoomError} autoHideDuration={6000} onClose={() => setAddRoomError(false)}>
+            <Alert onClose={() => setAddRoomError(false)} severity="error">
               Room could not be added.
           </Alert>
           </Snackbar>
@@ -356,40 +325,40 @@ function App () {
     )
   } else {
     return (
-    <>
-      <Dialog
-        open={true}
-      >
-        <DialogTitle>
-          Log in
+      <>
+        <Dialog
+          open={true}
+        >
+          <DialogTitle>
+            Log in
       </DialogTitle>
-        <DialogContent>
-          <TextField
-            label="username"
-            variant="outlined"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <div className="PaddedCard" />
-          <TextField
-            label="password"
-            variant="outlined"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.keyCode === 13) {
-                requestToken()
-              }
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={requestToken} color="primary" variant="contained">
-            {loginButton}
-          </Button>
-        </DialogActions>
-        {loginError}
-      </Dialog>
-    </>
+          <DialogContent>
+            <TextField
+              label="username"
+              variant="outlined"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <div className="PaddedCard" />
+            <TextField
+              label="password"
+              variant="outlined"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  requestToken()
+                }
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={requestToken} color="primary" variant="contained">
+              {loginButton}
+            </Button>
+          </DialogActions>
+          {loginError}
+        </Dialog>
+      </>
     )
   }
 }
