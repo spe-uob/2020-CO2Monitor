@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -7,8 +7,8 @@ import {
   CardHeader,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogTitle
+  DialogTitle,
+  Snackbar
 } from '@material-ui/core'
 import {
   XAxis,
@@ -17,6 +17,8 @@ import {
   AreaSeries,
   makeWidthFlexible
 } from 'react-vis'
+import { Alert } from '@material-ui/lab'
+import axios from 'axios'
 import Info from './Info.js'
 
 const FlexXYPlot = makeWidthFlexible(XYPlot)
@@ -27,12 +29,37 @@ const FlexXYPlot = makeWidthFlexible(XYPlot)
  * @return {React.ReactFragment} Card with room
  */
 export default function Room (props) {
-  const [open, setOpen] = React.useState(false)
-  const handleClickOpen = () => {
-    setOpen(true)
+  const [open, setOpen] = useState(false)
+  const [deleteRoomSuccess, setDeleteRoomSuccess] = useState(false)
+  const [deleteRoomError, setDeleteRoomError] = useState(false)
+
+  let deleteButton = <React.Fragment />
+  if (props.sensors.length > 0) {
+    deleteButton = <Button
+      disabled
+      color="secondary"
+      variant="contained"
+    >
+      Delete
+    </Button>
+  } else {
+    deleteButton = <Button
+      onClick={() => setOpen(true)}
+      color="secondary"
+      variant="contained"
+    >
+      Delete
+    </Button>
   }
-  const handleClose = () => {
-    setOpen(false)
+
+  const deleteRoom = () => {
+    axios.delete('https://100.25.147.253:8080/api/v1/' + props.id.toString()).then(() => {
+      console.log('Deleted rom')
+      setDeleteRoomSuccess(true)
+    }).catch(() => {
+      console.log('could not delete room')
+      setDeleteRoomError(true)
+    })
   }
 
   let minMaxGraph
@@ -99,12 +126,10 @@ export default function Room (props) {
       </CardContent>
       <CardActions>
         <Info {...props} />
-        <Button onClick={handleClickOpen} color="secondary" variant="contained">
-          Delete
-        </Button>
+        {deleteButton}
         <Dialog
           open={open}
-          onClose={handleClose}
+          onClose={() => setOpen(false)}
         >
           <DialogTitle>
             Are you sure you want to delete:
@@ -113,19 +138,38 @@ export default function Room (props) {
             </b>
             ?
           </DialogTitle>
-          <DialogContent>
-            You sure bro?
-          </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>
+            <Button onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button color="secondary" variant="contained">
+            <Button onClick={deleteRoom} color="secondary" variant="contained">
               Delete
             </Button>
           </DialogActions>
         </Dialog>
       </CardActions>
+
+      <Snackbar open={deleteRoomSuccess} autoHideDuration={3000} onClose={() => {
+        setDeleteRoomSuccess(false)
+        props.refresh()
+      }}
+      >
+        <Alert
+          onClose={() => {
+            setDeleteRoomSuccess(false)
+            props.refresh()
+          }}
+          severity="success"
+        >
+          Room Deleted. Close me to refresh panel.
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={deleteRoomError} autoHideDuration={3000} onClose={() => setDeleteRoomError(false)}>
+        <Alert onClose={() => setDeleteRoomError(false)} severity="error">
+          Room could not be deleted.
+        </Alert>
+      </Snackbar>
     </Card>
   )
 }

@@ -18,9 +18,9 @@ import {
 import { Add, Search } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Alert } from '@material-ui/lab'
+import axios from 'axios'
 import './App.css'
 import Room from './components/Room.js'
-import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
   addRoomTheme: {
@@ -156,24 +156,26 @@ function App () {
   const [addRoomBuildingName, setAddRoomBuildingName] = useState('')
 
   const addRoom = () => {
-    axios.get('https://100.25.147.253:8080/api/v1/buildings/list').then((response) => {
+    axios.get('https://100.25.147.253:8080/api/v1/buildings').then((response) => {
       // check for building
       const results = response.data.filter((buildingData) => buildingData.name === addRoomBuildingName)
       if (results.length === 1) {
-        axios.post('https://100.25.147.253:8080/api/v1/buildings/list', {
+        axios.post('https://100.25.147.253:8080/api/v1/rooms', {
           name: addRoomName,
           building: {
             id: results[0].id
           }
         }).then(() => {
           setAddRoomSuccess(true)
+          setAddRoomName('')
+          setAddRoomBuildingName('')
+          setOpenAddRoom(false)
           refreshRooms()
         })
       } else {
         setAddRoomError(true)
         console.log('Building not present')
       }
-      console.log(response)
     }).catch((error) => {
       // could not get buildings
       setAddRoomError(true)
@@ -308,19 +310,19 @@ function App () {
               Add
             </Button>
           </DialogActions>
-
-          <Snackbar open={addRoomSuccess} autoHideDuration={6000} onClose={() => setAddRoomSuccess(false)}>
-            <Alert onClose={() => setAddRoomSuccess(false)} severity="success">
-              Room Added! Refresh the page to see changes.
-            </Alert>
-          </Snackbar>
-
-          <Snackbar open={addRoomError} autoHideDuration={6000} onClose={() => setAddRoomError(false)}>
-            <Alert onClose={() => setAddRoomError(false)} severity="error">
-              Room could not be added.
-            </Alert>
-          </Snackbar>
         </Dialog>
+
+        <Snackbar open={addRoomSuccess} autoHideDuration={3000} onClose={() => setAddRoomSuccess(false)}>
+          <Alert onClose={() => setAddRoomSuccess(false)} severity="success">
+            Room Added! The update will be visible shortly.
+          </Alert>
+        </Snackbar>
+
+        <Snackbar open={addRoomError} autoHideDuration={3000} onClose={() => setAddRoomError(false)}>
+          <Alert onClose={() => setAddRoomError(false)} severity="error">
+            Room could not be added.
+          </Alert>
+        </Snackbar>
       </div>
     )
   } else {
