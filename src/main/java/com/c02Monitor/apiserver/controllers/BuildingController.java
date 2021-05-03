@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
+import org.springframework.web.client.RestTemplate;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,12 +94,12 @@ public class BuildingController extends ParentController{
             .links(getLinks(x.getId(), "rooms"))
             .build();
 
-    private Building covertToEntity(BuildingDTO buildingDTO){
+    public Building covertToEntity(BuildingDTO buildingDTO){
         return new Building(buildingDTO.getName());
     }
 
     //TODO :: Clean up
-    private BuildingDTO convertToDTO(Building building){
+    public BuildingDTO convertToDTO(Building building){
         return BuildingDTO.builder()
                 .id(building.getId())
                 .name(building.getName())
