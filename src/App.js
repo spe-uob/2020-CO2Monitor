@@ -110,15 +110,19 @@ function App () {
       }).then((response) => {
       setToken(response.data.token)
     }).catch((error) => {
-      console.log(error)
       setLoginError(
           <Alert severity="error">
-            Please log in.
+            Error: {error.message}
           </Alert>
       )
       setLoginButton('Log in')
     })
   }
+
+  // snackbar for errors and successes
+  const [snackSeverity, setSnackSeverity] = useState('error')
+  const [snackText, setSnackText] = useState('')
+  const [snackOpen, setSnackOpen] = useState(false)
 
   // room global data
   const [roomCards, setRoomCards] = useState('Loading...')
@@ -141,18 +145,15 @@ function App () {
           </Grid>
         )))
       }).catch((error) => {
-        console.log(error)
+        setSnackSeverity('error')
+        setSnackText('Refresh error: ' + error.message)
+        setSnackOpen(true)
       })
   }
 
   useEffect(() => {
     refresh()
   }, [])
-
-  // snackbar for errors and successes
-  const [snackSeverity, setSnackSeverity] = useState('error')
-  const [snackText, setSnackText] = useState('')
-  const [snackOpen, setSnackOpen] = useState(false)
 
   // adding room process
   const [openAddRoom, setOpenAddRoom] = useState(false)
@@ -217,17 +218,17 @@ function App () {
   }
 
   const filterBySearchTerm = () => {
-    setRoomCards(rooms.filter(room => checkTerm(room, searchTerm)).map((room) => (
-      <Grid
-        item
-        sm={12}
-        md={6}
-        lg={4}
-        key={room.id * 1000 + room.name}
-        className="PaddedCard"
-      >
-        <Room {...room} refresh={refresh} />
-      </Grid>
+    setRoomCards(formatAPI(rooms.filter(room => checkTerm(room, searchTerm))).map((room) => (
+    <Grid
+      item
+      sm={12}
+      md={6}
+      lg={4}
+      key={room.id * 1000 + room.name}
+      className="PaddedCard"
+    >
+      <Room {...room} refresh={refresh} />
+    </Grid>
     )))
   }
 

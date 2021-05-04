@@ -29,7 +29,6 @@ const FlexXYPlot = makeWidthFlexible(XYPlot)
  * @return {React.ReactFragment} Card with room
  */
 export default function Room (props) {
-  console.log(props)
   const [open, setOpen] = useState(false)
   const [deleteRoomSuccess, setDeleteRoomSuccess] = useState(false)
   const [deleteRoomError, setDeleteRoomError] = useState(false)
