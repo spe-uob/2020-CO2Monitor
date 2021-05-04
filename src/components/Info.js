@@ -37,9 +37,12 @@ export default function Info (props) {
   const [addSensorId, setAddSensorId] = useState('')
 
   const addSensor = () => {
-    axios.post('https://100.25.147.253:8080/api/buildings/' + props.buildingId + '/rooms/' + props.room + '/sensors', {
+    axios.post('https://100.25.147.253:8080/api/v1/sensors', {
       name: addSensorName,
-      id: addSensorId
+      id: addSensorId,
+      room: {
+        id: props.id
+      }
     }).then(() => {
       setSnackSeverity('success')
       setSnackText('Added sensor!')
@@ -65,7 +68,7 @@ export default function Info (props) {
       key={sensor.description + sensor.id}
       className="PaddedCard"
     >
-      <Sensor {...sensor} />
+      <Sensor {...sensor} refresh={props.refresh} />
     </Grid>
   ))
 

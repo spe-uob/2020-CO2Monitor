@@ -29,6 +29,7 @@ const FlexXYPlot = makeWidthFlexible(XYPlot)
  * @return {React.ReactFragment} Card with room
  */
 export default function Room (props) {
+  console.log(props)
   const [open, setOpen] = useState(false)
   const [deleteRoomSuccess, setDeleteRoomSuccess] = useState(false)
   const [deleteRoomError, setDeleteRoomError] = useState(false)
@@ -53,8 +54,7 @@ export default function Room (props) {
   }
 
   const deleteRoom = () => {
-    axios.delete('https://100.25.147.253:8080/api/v1/' + props.id.toString()).then(() => {
-      console.log('Deleted rom')
+    axios.delete('https://100.25.147.253:8080/api/v1/rooms/' + props.id.toString()).then(() => {
       setDeleteRoomSuccess(true)
     }).catch(() => {
       console.log('could not delete room')

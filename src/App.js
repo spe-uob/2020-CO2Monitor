@@ -124,7 +124,7 @@ function App () {
   const [roomCards, setRoomCards] = useState('Loading...')
   const [rooms, setRooms] = useState([])
 
-  const refreshRooms = () => {
+  const refresh = () => {
     axios.get('https://100.25.147.253:8080/api/v1/buildings/?kids=1')
       .then((response) => {
         setRooms(response.data)
@@ -137,7 +137,7 @@ function App () {
             key={room.id * 1000 + room.name}
             className="PaddedCard"
           >
-            <Room {...room} />
+            <Room {...room} refresh={refresh} />
           </Grid>
         )))
       }).catch((error) => {
@@ -146,7 +146,7 @@ function App () {
   }
 
   useEffect(() => {
-    refreshRooms()
+    refresh()
   }, [])
 
   // snackbar for errors and successes
@@ -177,7 +177,7 @@ function App () {
           setAddRoomName('')
           setAddRoomBuildingName('')
           setOpenAddRoom(false)
-          refreshRooms()
+          refresh()
         })
       } else {
         setSnackSeverity('error')
@@ -226,7 +226,7 @@ function App () {
         key={room.id * 1000 + room.name}
         className="PaddedCard"
       >
-        <Room {...room} refresh={refreshRooms} />
+        <Room {...room} refresh={refresh} />
       </Grid>
     )))
   }
