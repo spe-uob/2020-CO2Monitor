@@ -68,6 +68,8 @@ export default function Sensor (props) {
 
       props.refresh()
     }).catch((error) => {
+      setEditOpen(false)
+
       setSnackSeverity('error')
       setSnackText('Could not edit sensor: ' + error.message)
       setSnackOpen(true)

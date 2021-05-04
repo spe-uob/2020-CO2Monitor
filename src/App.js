@@ -209,7 +209,7 @@ function App () {
     } else {
       if (typeof data === 'string') {
         // match any substring
-        return data.includes(term)
+        return data.toLowerCase().includes(term.toLowerCase())
       } else {
         // match number ids exactly
         return data.toString() === term
