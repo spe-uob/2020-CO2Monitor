@@ -32,7 +32,7 @@ export default function Info (props) {
   const [addSensorId, setAddSensorId] = useState('')
 
   const addSensor = () => {
-    axios.post('https://100.25.147.253:8080/api/rooms/' + '437579' + '/sensors', {
+    axios.post('https://100.25.147.253:8080/api/buildings/' + props.buildingId + '/rooms/' + props.room + '/sensors', {
       name: addSensorName,
       id: addSensorId
     }).then(() => {

@@ -18,6 +18,7 @@ import {
   LineSeries,
   makeWidthFlexible
 } from 'react-vis'
+import axios from 'axios'
 
 const FlexXYPlot = makeWidthFlexible(XYPlot)
 
@@ -27,19 +28,15 @@ const FlexXYPlot = makeWidthFlexible(XYPlot)
  */
 export default function Sensor (props) {
   const [deleteOpen, setDeleteOpen] = React.useState(false)
-  const handleClickOpenDelete = () => {
-    setDeleteOpen(true)
-  }
-  const handleCloseDelete = () => {
-    setDeleteOpen(false)
-  }
-
   const [editOpen, setEditOpen] = React.useState(false)
-  const handleClickOpenEdit = () => {
-    setEditOpen(true)
-  }
-  const handleCloseEdit = () => {
-    setEditOpen(false)
+
+  const deleteSensor = () => {
+    axios.delete('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString()).then((response) => {
+      setDeleteOpen(false)
+      props.refresh()
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
   const graphMax = Math.max(...props.readings.map((entry) => (entry.co2)))
@@ -68,25 +65,25 @@ export default function Sensor (props) {
       </CardContent>
       <CardActions>
         <Button
-          onClick={handleClickOpenEdit}
+          onClick={() => setEditOpen(true)}
         >
           Edit sensor
         </Button>
         <Dialog
           open={editOpen}
-          onClose={handleCloseEdit}
+          onClose={() => setEditOpen(false)}
         >
           <DialogTitle>
             Editing:
             <b>
-              {` ${props.sensorId} `}
+              {` ${props.id} `}
             </b>
           </DialogTitle>
           <DialogContent>
-            <TextField multiline label="Description" variant="outlined" />
+            <TextField multiline label="Name" variant="outlined" />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseEdit}>
+            <Button onClick={() => setEditOpen(false)}>
               Cancel
             </Button>
             <Button color="primary" variant="contained">
@@ -95,7 +92,7 @@ export default function Sensor (props) {
           </DialogActions>
         </Dialog>
         <Button
-          onClick={handleClickOpenDelete}
+          onClick={() => setDeleteOpen(true)}
           color="secondary"
           variant="contained"
         >
@@ -103,7 +100,7 @@ export default function Sensor (props) {
         </Button>
         <Dialog
           open={deleteOpen}
-          onClose={handleCloseDelete}
+          onClose={() => setDeleteOpen(false)}
         >
           <DialogTitle>
             Are you sure you want to delete:
@@ -112,14 +109,11 @@ export default function Sensor (props) {
             </b>
             ?
           </DialogTitle>
-          <DialogContent>
-            You sure bro?
-          </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDelete}>
+            <Button onClick={() => setDeleteOpen(false)}>
               Cancel
             </Button>
-            <Button color="secondary" variant="contained">
+            <Button onClick={deleteSensor} color="secondary" variant="contained">
               Delete
             </Button>
           </DialogActions>

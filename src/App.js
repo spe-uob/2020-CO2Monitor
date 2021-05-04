@@ -35,6 +35,7 @@ const formatAPI = (db) => {
   for (const building of db) {
     for (const room of building.rooms) {
       room.building = building.name
+      room.buildingId = building.id
       for (const sensor of room.sensors) {
         for (const reading of sensor.readings) {
           reading.date = new Date(reading.date)
