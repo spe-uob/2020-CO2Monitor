@@ -219,16 +219,16 @@ function App () {
 
   const filterBySearchTerm = () => {
     setRoomCards(formatAPI(rooms.filter(room => checkTerm(room, searchTerm))).map((room) => (
-    <Grid
-      item
-      sm={12}
-      md={6}
-      lg={4}
-      key={room.id * 1000 + room.name}
-      className="PaddedCard"
-    >
-      <Room {...room} refresh={refresh} />
-    </Grid>
+      <Grid
+        item
+        sm={12}
+        md={6}
+        lg={4}
+        key={room.id * 1000 + room.name}
+        className="PaddedCard"
+      >
+        <Room {...room} refresh={refresh} />
+      </Grid>
     )))
   }
 

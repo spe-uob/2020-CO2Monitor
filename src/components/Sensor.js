@@ -68,8 +68,6 @@ export default function Sensor (props) {
 
       props.refresh()
     }).catch((error) => {
-      setEditOpen(false)
-
       setSnackSeverity('error')
       setSnackText('Could not edit sensor: ' + error.message)
       setSnackOpen(true)
@@ -79,94 +77,96 @@ export default function Sensor (props) {
   const graphMax = Math.max(...props.readings.map((entry) => (entry.co2)))
 
   return (
-    <Card>
-      <CardHeader title={`${props.description} ${props.id}`} />
-      <CardContent>
-        <FlexXYPlot height={300} xType="time">
-          <XAxis title="time" />
-          <YAxis title="CO2" />
-          <LineSeries data={props.readings.map((entry) => (
-            {
-              y: entry.co2,
-              x: entry.date
-            }
-          ))} />
-        </FlexXYPlot>
+    <>
+      <Card>
+        <CardHeader title={`${props.description} ${props.id}`} />
+        <CardContent>
+          <FlexXYPlot height={300} xType="time">
+            <XAxis title="time" />
+            <YAxis title="CO2" />
+            <LineSeries data={props.readings.map((entry) => (
+              {
+                y: entry.co2,
+                x: entry.date
+              }
+            ))} />
+          </FlexXYPlot>
         The 24h maximum is
         <b>
-          {' ' + graphMax}
-          <br />
-          {props.readings.length + ' '}
-        </b>
+            {' ' + graphMax}
+            <br />
+            {props.readings.length + ' '}
+          </b>
         data points recorded by this sensor
       </CardContent>
-      <CardActions>
-        <Button
-          onClick={() => setEditOpen(true)}
-        >
-          Edit sensor
+        <CardActions>
+          <Button
+            onClick={() => setEditOpen(true)}
+          >
+            Edit sensor
         </Button>
-        <Dialog
-          open={editOpen}
-          onClose={() => setEditOpen(false)}
-        >
-          <DialogTitle>
-            Editing:
+          <Dialog
+            open={editOpen}
+            onClose={() => setEditOpen(false)}
+          >
+            <DialogTitle>
+              Editing:
             <b>
-              {` ${props.id} `}
-            </b>
-          </DialogTitle>
-          <DialogContent>
-            <TextField
-              multiline
-              label="Name"
-              variant="outlined"
-              onChange={(event) => setEditName(event.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setEditOpen(false)}>
-              Cancel
+                {` ${props.id} `}
+              </b>
+            </DialogTitle>
+            <DialogContent>
+              <TextField
+                multiline
+                label="Name"
+                variant="outlined"
+                onChange={(event) => setEditName(event.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setEditOpen(false)}>
+                Cancel
             </Button>
-            <Button onClick={editSensor} color="primary" variant="contained">
-              Save
+              <Button onClick={editSensor} color="primary" variant="contained">
+                Save
             </Button>
-          </DialogActions>
-        </Dialog>
-        <Button
-          onClick={() => setDeleteOpen(true)}
-          color="secondary"
-          variant="contained"
-        >
-          Delete
+            </DialogActions>
+          </Dialog>
+          <Button
+            onClick={() => setDeleteOpen(true)}
+            color="secondary"
+            variant="contained"
+          >
+            Delete
         </Button>
-        <Dialog
-          open={deleteOpen}
-          onClose={() => setDeleteOpen(false)}
-        >
-          <DialogTitle>
-            Are you sure you want to delete:
+          <Dialog
+            open={deleteOpen}
+            onClose={() => setDeleteOpen(false)}
+          >
+            <DialogTitle>
+              Are you sure you want to delete:
             <b>
-              {props.id}
-            </b>
+                {props.id}
+              </b>
             ?
           </DialogTitle>
-          <DialogActions>
-            <Button onClick={() => setDeleteOpen(false)}>
-              Cancel
+            <DialogActions>
+              <Button onClick={() => setDeleteOpen(false)}>
+                Cancel
             </Button>
-            <Button onClick={deleteSensor} color="secondary" variant="contained">
-              Delete
+              <Button onClick={deleteSensor} color="secondary" variant="contained">
+                Delete
             </Button>
-          </DialogActions>
-        </Dialog>
-      </CardActions>
+            </DialogActions>
+          </Dialog>
+        </CardActions>
+      </Card>
 
       <Snackbar open={snackOpen} autoHideDuration={3000} onClose={() => setSnackOpen(false)}>
         <Alert onClose={() => setSnackOpen(false)} severity={snackSeverity}>
           {snackText}
         </Alert>
       </Snackbar>
-    </Card>
+    </>
   )
 }
