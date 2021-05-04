@@ -8,8 +8,10 @@ import {
   Grid,
   Paper,
   Slide,
-  TextField
+  TextField,
+  Snackbar
 } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import { Add, Close } from '@material-ui/icons'
 import axios from 'axios'
 import './Info.css'
@@ -22,12 +24,15 @@ const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={r
  * @return {React.Component}
  */
 export default function Info (props) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
+
+  // snackbar for errors and successes
+  const [snackSeverity, setSnackSeverity] = useState('error')
+  const [snackText, setSnackText] = useState('')
+  const [snackOpen, setSnackOpen] = useState(false)
 
   // adding sensor process
   const [openAddSensor, setOpenAddSensor] = useState(false)
-  // const [addSensorSuccess, setAddSensorSuccess] = useState(false)
-  // const [addSensorError, setAddSensorError] = useState(false)
   const [addSensorName, setAddSensorName] = useState('')
   const [addSensorId, setAddSensorId] = useState('')
 
@@ -36,13 +41,18 @@ export default function Info (props) {
       name: addSensorName,
       id: addSensorId
     }).then(() => {
-      // setAddSensorSuccess(true)
+      setSnackSeverity('success')
+      setSnackText('Added sensor!')
+      setSnackOpen(true)
+
       setAddSensorName('')
       setAddSensorId('')
       setOpenAddSensor(false)
       props.refresh()
     }).catch((error) => {
-      console.log(error)
+      setSnackSeverity('error')
+      setSnackText('Failed to add sensor: ' + error.message)
+      setSnackOpen(true)
     })
   }
 
@@ -151,6 +161,12 @@ export default function Info (props) {
           </Grid>
         </DialogContent>
       </Dialog>
+
+      <Snackbar open={snackOpen} autoHideDuration={3000} onClose={() => setSnackOpen(false)}>
+        <Alert onClose={() => setSnackOpen(false)} severity={snackSeverity}>
+          {snackText}
+        </Alert>
+      </Snackbar>
     </>
   )
 }

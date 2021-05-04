@@ -149,10 +149,13 @@ function App () {
     refreshRooms()
   }, [])
 
+  // snackbar for errors and successes
+  const [snackSeverity, setSnackSeverity] = useState('error')
+  const [snackText, setSnackText] = useState('')
+  const [snackOpen, setSnackOpen] = useState(false)
+
   // adding room process
   const [openAddRoom, setOpenAddRoom] = useState(false)
-  const [addRoomSuccess, setAddRoomSuccess] = useState(false)
-  const [addRoomError, setAddRoomError] = useState(false)
   const [addRoomName, setAddRoomName] = useState('')
   const [addRoomBuildingName, setAddRoomBuildingName] = useState('')
 
@@ -167,20 +170,25 @@ function App () {
             id: results[0].id
           }
         }).then(() => {
-          setAddRoomSuccess(true)
+          setSnackSeverity('success')
+          setSnackText('Added room!')
+          setSnackOpen(true)
+
           setAddRoomName('')
           setAddRoomBuildingName('')
           setOpenAddRoom(false)
           refreshRooms()
         })
       } else {
-        setAddRoomError(true)
-        console.log('Building not present')
+        setSnackSeverity('error')
+        setSnackText('Room could not be added: Building name error')
+        setSnackOpen(true)
       }
     }).catch((error) => {
       // could not get buildings
-      setAddRoomError(true)
-      console.log(error)
+      setSnackSeverity('error')
+      setSnackText('Could not add room: ' + error.message)
+      setSnackOpen(true)
     })
   }
 
@@ -313,15 +321,9 @@ function App () {
           </DialogActions>
         </Dialog>
 
-        <Snackbar open={addRoomSuccess} autoHideDuration={3000} onClose={() => setAddRoomSuccess(false)}>
-          <Alert onClose={() => setAddRoomSuccess(false)} severity="success">
-            Room Added! The update will be visible shortly.
-          </Alert>
-        </Snackbar>
-
-        <Snackbar open={addRoomError} autoHideDuration={3000} onClose={() => setAddRoomError(false)}>
-          <Alert onClose={() => setAddRoomError(false)} severity="error">
-            Room could not be added.
+        <Snackbar open={snackOpen} autoHideDuration={3000} onClose={() => setSnackOpen(false)}>
+          <Alert onClose={() => setSnackOpen(false)} severity={snackSeverity}>
+            {snackText}
           </Alert>
         </Snackbar>
       </div>

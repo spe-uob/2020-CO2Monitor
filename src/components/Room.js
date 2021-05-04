@@ -67,7 +67,7 @@ export default function Room (props) {
     const graphData = []
     let graphMax = 0
     const yIndices = props.sensors.map((sensor) => (sensor.readings.length - 1))
-    const latest = new Date(Math.max.apply(null, (props.sensors.map((sensor) => (
+    const latest = new Date(Math.max.apply(null, (props.sensors.filter((sensor) => sensor.readings.length > 0).map((sensor) => (
       sensor.readings[sensor.readings.length - 1].date
     )))))
 

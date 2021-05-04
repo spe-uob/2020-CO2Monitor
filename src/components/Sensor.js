@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -9,8 +9,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  Snackbar
 } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import {
   XAxis,
   YAxis,
@@ -27,15 +29,48 @@ const FlexXYPlot = makeWidthFlexible(XYPlot)
  * @return {React.Component}
  */
 export default function Sensor (props) {
-  const [deleteOpen, setDeleteOpen] = React.useState(false)
-  const [editOpen, setEditOpen] = React.useState(false)
+  // snackbar for errors and successes
+  const [snackSeverity, setSnackSeverity] = useState('error')
+  const [snackText, setSnackText] = useState('')
+  const [snackOpen, setSnackOpen] = useState(false)
+
+  // deleting the sensor
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   const deleteSensor = () => {
     axios.delete('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString()).then((response) => {
       setDeleteOpen(false)
+
+      setSnackSeverity('success')
+      setSnackText('Deleted sensor!')
+      setSnackOpen(true)
+
       props.refresh()
     }).catch((error) => {
-      console.log(error)
+      setSnackSeverity('error')
+      setSnackText('Could not delete sensor: ' + error.message)
+      setSnackOpen(true)
+    })
+  }
+
+  // editing the sensor
+  const [editOpen, setEditOpen] = useState(false)
+  const [editName, setEditName] = useState('')
+
+  const editSensor = () => {
+    axios.put('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString(), { name: editName }).then((response) => {
+      setEditOpen(false)
+      setEditName('')
+
+      setSnackSeverity('success')
+      setSnackText('Edited sensor ' + response.data.name)
+      setSnackOpen(true)
+
+      props.refresh()
+    }).catch((error) => {
+      setSnackSeverity('error')
+      setSnackText('Could not edit sensor: ' + error.message)
+      setSnackOpen(true)
     })
   }
 
@@ -56,11 +91,11 @@ export default function Sensor (props) {
           ))} />
         </FlexXYPlot>
         The 24h maximum is
-        {' '}
-        <b>{graphMax}</b>
-        <br />
-        <b>{props.readings.length}</b>
-        {' '}
+        <b>
+          {' ' + graphMax}
+          <br />
+          {props.readings.length + ' '}
+        </b>
         data points recorded by this sensor
       </CardContent>
       <CardActions>
@@ -80,13 +115,18 @@ export default function Sensor (props) {
             </b>
           </DialogTitle>
           <DialogContent>
-            <TextField multiline label="Name" variant="outlined" />
+            <TextField
+              multiline
+              label="Name"
+              variant="outlined"
+              onChange={(event) => setEditName(event.target.value)}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setEditOpen(false)}>
               Cancel
             </Button>
-            <Button color="primary" variant="contained">
+            <Button onClick={editSensor} color="primary" variant="contained">
               Save
             </Button>
           </DialogActions>
@@ -105,7 +145,7 @@ export default function Sensor (props) {
           <DialogTitle>
             Are you sure you want to delete:
             <b>
-              {` ${props.id} `}
+              {props.id}
             </b>
             ?
           </DialogTitle>
@@ -119,6 +159,12 @@ export default function Sensor (props) {
           </DialogActions>
         </Dialog>
       </CardActions>
+
+      <Snackbar open={snackOpen} autoHideDuration={3000} onClose={() => setSnackOpen(false)}>
+        <Alert onClose={() => setSnackOpen(false)} severity={snackSeverity}>
+          {snackText}
+        </Alert>
+      </Snackbar>
     </Card>
   )
 }
