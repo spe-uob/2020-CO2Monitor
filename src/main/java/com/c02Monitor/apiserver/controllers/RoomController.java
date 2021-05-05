@@ -73,13 +73,13 @@ public class RoomController extends ParentController{
     //TODO ERROR HANDLE
     @PostMapping()
     public RoomDTO createRoom (@RequestBody RoomDTO roomDTO, @PathVariable() Optional<Long> buildingId){
-        Room test = covertToEntity(roomDTO);
+        Room room = covertToEntity(roomDTO);
         if (buildingId.isPresent()) {
-            test.setBuilding(buildingService.getBuildingById(buildingId.get()).get());
+            room.setBuilding(buildingService.getBuildingById(buildingId.get()).get());
         }else{
-            test.setBuilding(buildingService.getBuildingById(test.getBuilding().getId()).get());
+            room.setBuilding(buildingService.getBuildingById(room.getBuilding().getId()).get());
         }
-        Room roomCreated = roomService.createRoom(test);
+        Room roomCreated = roomService.createRoom(room);
         return convertToDTO(roomCreated);
     }
 
@@ -87,12 +87,12 @@ public class RoomController extends ParentController{
     @PutMapping(value = "/{id}")
     public RoomDTO updateRoom (@PathVariable("id") Long id, @RequestBody RoomDTO roomDTO,
                             @PathVariable() Optional<Long> buildingId){
-        Room room = covertToEntity(roomDTO);
         if (buildingId.isPresent()) {
-            room.setBuilding(buildingService.getBuildingById(buildingId.get()).get());
+            roomDTO.setBuilding(buildingService.getBuildingById(buildingId.get()).get());
         }else{
-            room.setBuilding(buildingService.getBuildingById(room.getBuilding().getId()).get());
+            roomDTO.setBuilding(roomService.getRoomById(id).get().getBuilding());
         }
+        Room room = covertToEntity(roomDTO);
         room.setId(id);
         return convertToDTO(roomService.updateRoom(room));
 //        return getRoom;

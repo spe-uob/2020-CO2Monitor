@@ -72,13 +72,13 @@ public class SensorController extends ParentController{
     //TODO ERROR HANDLE
     @PostMapping()
     public SensorDTO createSensor (@RequestBody SensorDTO sensorDTO, @PathVariable() Optional<Long> roomId){
-        Sensor test = covertToEntity(sensorDTO);
+        Sensor sensor = covertToEntity(sensorDTO);
         if (roomId.isPresent()) {
-            test.setRoom(roomService.getRoomById(roomId.get()).get());
+            sensor.setRoom(roomService.getRoomById(roomId.get()).get());
         }else{
-            test.setRoom(roomService.getRoomById(test.getRoom().getId()).get());
+            sensor.setRoom(roomService.getRoomById(sensor.getRoom().getId()).get());
         }
-        Sensor sensorCreated = sensorService.createSensor(test);
+        Sensor sensorCreated = sensorService.createSensor(sensor);
         if (sensorCreated != null) {
             ApiServerApplication.DEVICE_IDS.add(sensorCreated.getId());
             System.out.println("NEW SENSOR :" + sensorCreated.getId());
@@ -90,12 +90,12 @@ public class SensorController extends ParentController{
     @PutMapping(value = "/{id}")
     public SensorDTO updateSensor (@PathVariable("id") Long id, @RequestBody SensorDTO sensorDTO,
                             @PathVariable() Optional<Long> roomId){
-        Sensor sensor = covertToEntity(sensorDTO);
         if (roomId.isPresent()) {
-            sensor.setRoom(roomService.getRoomById(roomId.get()).get());
+            sensorDTO.setRoom(roomService.getRoomById(roomId.get()).get());
         }else{
-            sensor.setRoom(roomService.getRoomById(sensor.getRoom().getId()).get());
+            sensorDTO.setRoom(sensorService.getSensorById(id).get().getRoom());
         }
+        Sensor sensor = covertToEntity(sensorDTO);
         sensor.setId(id);
         return convertToDTO(sensorService.updateSensor(sensor));
     }
