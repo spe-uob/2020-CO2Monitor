@@ -3,9 +3,11 @@ package com.c02Monitor.apiserver;
 import com.c02Monitor.apiserver.entity.Building;
 import com.c02Monitor.apiserver.entity.Room;
 import com.c02Monitor.apiserver.entity.Sensor;
+import com.c02Monitor.apiserver.entity.User;
 import com.c02Monitor.apiserver.service.BuildingService;
 import com.c02Monitor.apiserver.service.RoomService;
 import com.c02Monitor.apiserver.service.SensorService;
+import com.c02Monitor.apiserver.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,8 +33,11 @@ public class ApiServerApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(BuildingService buildingService, RoomService roomService, SensorService sensorService, ApiServerApplication bar){
+	CommandLineRunner runner(BuildingService buildingService, RoomService roomService, SensorService sensorService, UserService userService, ApiServerApplication bar){
 		return args -> {
+			User user = new User("foo", "bar");
+			userService.create(user);
+
 			Building building1 =  new Building("MVB");
 			Building building2 =  new Building("Queens");
 
