@@ -117,7 +117,6 @@ export default function Sensor (props) {
             </DialogTitle>
             <DialogContent>
               <TextField
-                multiline
                 label="Name"
                 variant="outlined"
                 onChange={(event) => setEditName(event.target.value)}

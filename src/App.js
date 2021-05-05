@@ -95,7 +95,7 @@ function App () {
   const classes = useStyles()
 
   // login
-  const [token, setToken] = useState('test')
+  const [token, setToken] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState(<React.Fragment />)
@@ -103,7 +103,7 @@ function App () {
 
   const requestToken = () => {
     setLoginButton(<CircularProgress />)
-    axios.put('https://100.25.147.253:8080/api/v1/login',
+    axios.post('https://100.25.147.253:8080/api/v1/auth',
       {
         username: username,
         password: password
@@ -179,6 +179,10 @@ function App () {
           setAddRoomBuildingName('')
           setOpenAddRoom(false)
           refresh()
+        }).catch((error) => {
+          setSnackSeverity('error')
+          setSnackText('Could not add room: ' + error.message)
+          setSnackOpen(true)
         })
       } else {
         setSnackSeverity('error')
