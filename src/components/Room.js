@@ -53,6 +53,7 @@ export default function Room (props) {
   }
 
   const deleteRoom = () => {
+    console.log('r' + props.token)
     axios.delete('https://100.25.147.253:8080/api/v1/rooms/' + props.id.toString(), {
       headers: {
         Authorization: props.token,

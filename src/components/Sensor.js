@@ -29,6 +29,7 @@ const FlexXYPlot = makeWidthFlexible(XYPlot)
  * @return {React.Component}
  */
 export default function Sensor (props) {
+  console.log(props)
   // snackbar for errors and successes
   const [snackSeverity, setSnackSeverity] = useState('error')
   const [snackText, setSnackText] = useState('')

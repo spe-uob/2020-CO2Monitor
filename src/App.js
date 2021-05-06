@@ -18,6 +18,7 @@ import {
 import { Add, Search } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Alert } from '@material-ui/lab'
+import { connect } from 'react-redux'
 import axios from 'axios'
 import './App.css'
 import Room from './components/Room.js'
@@ -91,7 +92,7 @@ for (let i = 0; i < roomNum; i++) {
 /**
  * @return {React.Component}
  */
-function App () {
+function App (props) {
   const classes = useStyles()
 
   // snackbar for errors and successes
@@ -104,12 +105,7 @@ function App () {
   const [rooms, setRooms] = useState([])
 
   const refresh = () => {
-    axios.get('https://100.25.147.253:8080/api/v1/buildings/?kids=1', {
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json'
-      }
-    }).then((response) => {
+    axios.get('https://100.25.147.253:8080/api/v1/buildings/?kids=1').then((response) => {
       setRooms(response.data)
       setRoomCards(formatAPI(response.data).map((room) => (
         <Grid
@@ -120,7 +116,7 @@ function App () {
           key={room.id * 1000 + room.name}
           className="PaddedCard"
         >
-          <Room {...room} refresh={refresh} token={token} />
+          <Room {...room} refresh={refresh} token={props.token} />
         </Grid>
       )))
     }).catch((error) => {
@@ -131,7 +127,6 @@ function App () {
   }
 
   // login
-  const [token, setToken] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState(<React.Fragment />)
@@ -139,21 +134,20 @@ function App () {
 
   const requestToken = () => {
     setLoginButton(<CircularProgress />)
-    axios.post('https://100.25.147.253:8080/api/v1/auth',
-      {
-        username: username,
-        password: password
-      }).then((response) => {
-      setToken(response.data.token)
+    axios.post('https://100.25.147.253:8080/api/v1/auth', {
+      username: username,
+      password: password
+    }).then((response) => {
+      props.dispatch({ type: 'SET', payload: response.data.token })
       refresh()
     }).catch((error) => {
       setLoginError(
-          <Alert severity="error">
-            Error: {error.message}
-          </Alert>
+            <Alert severity="error">
+              Error: {error.message}
+            </Alert>
       )
-      setLoginButton('Log in')
     })
+    setLoginButton('Log in')
   }
 
   // adding room process
@@ -164,7 +158,7 @@ function App () {
   const addRoom = () => {
     axios.get('https://100.25.147.253:8080/api/v1/buildings', {
       headers: {
-        Authorization: token,
+        Authorization: 'Bearer' + props.token,
         'Content-Type': 'application/json'
       }
     }).then((response) => {
@@ -178,7 +172,7 @@ function App () {
           }
         }, {
           headers: {
-            Authorization: token,
+            Authorization: props.token,
             'Content-Type': 'application/json'
           }
         }).then(() => {
@@ -242,12 +236,12 @@ function App () {
         key={room.id * 1000 + room.name}
         className="PaddedCard"
       >
-        <Room {...room} refresh={refresh} token={token} />
+        <Room {...room} refresh={refresh} token={props.token} />
       </Grid>
     )))
   }
 
-  if (token) {
+  if (props.token) {
     return (
       <div className="App">
         {/* Header bar */}
@@ -342,6 +336,7 @@ function App () {
             {snackText}
           </Alert>
         </Snackbar>
+        <p>token: {props.token}</p>
       </div>
     )
   } else {
@@ -384,4 +379,8 @@ function App () {
   }
 }
 
-export default App
+const mapStateToProps = (state) => ({
+  token: state.token
+})
+
+export default connect(mapStateToProps)(App)
