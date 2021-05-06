@@ -1,7 +1,8 @@
 import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/device.dart';
 import 'package:co2_monitor/widgets/graphs/baseGraph.dart';
-import 'package:co2_monitor/widgets/graphs/dataSet.dart';
+import 'package:co2_monitor/widgets/graphs/graphData.dart';
+import 'package:co2_monitor/widgets/graphs/lineData.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'group.dart';
 import 'link.dart';
@@ -11,7 +12,7 @@ part 'location.g.dart';
 /// A location is a collection of SCK devices in near proximity.
 /// The intention is that each area (e.g. a room, building) will be a location.
 @JsonSerializable()
-class Location {
+class Location implements IGraphable {
   @JsonKey(required: true)
   int id;
   String name;
@@ -48,7 +49,7 @@ class Location {
       case "MVB":
         return "Merchant Venturers Building";
       case "Queens":
-        return "Queens Building";
+        return "Queen's Building";
       default:
         return this._group.name;
     }
@@ -58,11 +59,12 @@ class Location {
     this._group = group;
     return this;
   }
-<<<<<<< HEAD
-=======
 
   @override
-  // TODO: Implement provideData
-  DataSet provideData() => DataSet.usingSampleSeries();
->>>>>>> 74a23023905c7368e4340cfaa7b95b1a496ec472
+  Future<GraphData> provideData() async {
+    var devices = await this.devices();
+    var lines = await Future.wait(devices.map((dev) => dev.provideData()));
+    var ret = GraphData(lines.map((l) => l.lines).expand((e) => e).toList());
+    return ret;
+  }
 }

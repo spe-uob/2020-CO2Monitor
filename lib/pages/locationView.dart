@@ -2,10 +2,11 @@ import 'dart:ui';
 
 import 'package:co2_monitor/api/types/device.dart';
 import 'package:co2_monitor/api/types/location.dart';
+import 'package:co2_monitor/widgets/graphs/graphData.dart';
 import 'package:co2_monitor/widgets/graphs/graphItem.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:co2_monitor/widgets/graphs/dataSet.dart';
+import 'package:co2_monitor/widgets/graphs/lineData.dart';
 
 import '../utils.dart';
 
@@ -26,15 +27,13 @@ class LocationView extends StatefulWidget {
 }
 
 class _LocationViewState extends State<LocationView> {
-  Future<List<dynamic>> fut;
+  Future<GraphData> fut;
 
   @override
   void initState() {
     super.initState();
-    var futDevs = widget.location.devices();
-    var futData =
-        widget.location.devices().then((devs) => devs[0].provideData());
-    fut = Future.wait([futDevs, futData]);
+    // var futLoc = widget.location.devices();
+    fut = widget.location.provideData();
   }
 
   Widget build(BuildContext context) {
@@ -47,8 +46,7 @@ class _LocationViewState extends State<LocationView> {
           else if (!snap.hasData)
             return Center(child: CircularProgressIndicator());
 
-          var devs = snap.data[0];
-          var data = snap.data[1];
+          var data = snap.data;
 
           return ListView(
               // mainAxisAlignment: MainAxisAlignment.center,
@@ -69,26 +67,26 @@ class _LocationViewState extends State<LocationView> {
                     // constraints: BoxConstraints.tight(Size(350, 550)),
                     alignment: Alignment.center,
                     key: Key('Graph Container'),
-                    child: GraphItem<Device>(devs[0])),
+                    child: GraphItem<Location>(widget.location)),
                 ListView(
                   shrinkWrap: true,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   children: [
-                    entryBuilder(
-                        '7-day Average:',
-                        data.query(from: Duration(days: 7)).mean(),
-                        'ppm',
-                        context,
-                        constraints),
-                    entryBuilder(
-                        '24-hour Peak:',
-                        data.query(from: Duration(hours: 7)).peak().levels,
-                        'ppm',
-                        context,
-                        constraints),
-                    entryBuilder('Danger Level:', data.checkDanger(), '',
-                        context, constraints)
+                    // entryBuilder(
+                    //     '7-day Average:',
+                    //     data.query(from: Duration(days: 7)).mean(),
+                    //     'ppm',
+                    //     context,
+                    //     constraints),
+                    // entryBuilder(
+                    //     '24-hour Peak:',
+                    //     data.query(from: Duration(hours: 7)).peak().levels,
+                    //     'ppm',
+                    //     context,
+                    //     constraints),
+                    // entryBuilder('Danger Level:', data.checkDanger(), '',
+                    //     context, constraints)
                   ],
                 ),
                 // ),

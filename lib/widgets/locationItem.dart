@@ -14,7 +14,7 @@ class LocationItem extends StatefulWidget {
 
 class _LocationItemState extends State<LocationItem> {
   Future<List<dynamic>> devFut;
-  Future<bool> subFut = Future.sync(() => false);
+  Future<bool> subFut;
 
   _LocationItemState();
 
@@ -53,7 +53,7 @@ class _LocationItemState extends State<LocationItem> {
       var route = MaterialPageRoute(
         builder: (context) => wrapRoute(
           LocationView(widget.location),
-          widget.location.name,
+          title: widget.location.name,
         ),
       );
       Navigator.push(context, route);
@@ -167,7 +167,7 @@ String locationAsset(String locName) {
   switch (locName) {
     case "Merchant Venturers Building":
       return "assets/mvb.png";
-    case "Queens Building":
+    case "Queen's Building":
       return "assets/queens.png";
     default:
       return null;

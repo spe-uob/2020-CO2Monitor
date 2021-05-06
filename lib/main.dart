@@ -7,6 +7,7 @@ import 'package:co2_monitor/logic/notificationProvider.dart';
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
 import 'package:co2_monitor/pages/codeEntry.dart';
 import 'package:co2_monitor/pages/criticalList.dart';
+import 'package:co2_monitor/pages/debug.dart';
 import 'package:co2_monitor/pages/locationList.dart';
 import 'package:co2_monitor/pages/subscriptionList.dart';
 import 'package:co2_monitor/theme.dart';
@@ -81,36 +82,6 @@ class _MainViewState extends State<MainView> {
       ),
     ),
     Tuple2(
-      ListView(
-        children: [
-          ElevatedButton(
-            child: Text("make an alert"),
-            onPressed: () async {
-              await alertAlways();
-            },
-          ),
-          ElevatedButton(
-            child: Text("clear subscriptions"),
-            onPressed: () async {
-              var provider = SubscriptionProvider();
-              await provider.unsubscribeAll();
-            },
-          ),
-          ElevatedButton(
-            child: Text("print subs file"),
-            onPressed: () async {
-              var provider = SubscriptionProvider();
-              log(await provider.debug());
-            },
-          ),
-        ],
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.warning),
-        label: "Critical Locations",
-      ),
-    ),
-    Tuple2(
       SubscriptionList(),
       BottomNavigationBarItem(
         icon: Icon(Icons.location_on),
@@ -129,6 +100,12 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () => NavigationProvider().navigateTo("/debug"),
+            )
+          ],
           title: Text("CO₂ Monitor"),
         ),
         body: _pages.elementAt(_index).item1,

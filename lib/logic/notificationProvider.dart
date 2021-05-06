@@ -39,7 +39,7 @@ class NotificationProvider {
     var route = MaterialPageRoute(
       builder: (context) => wrapRoute(
         CriticalList(),
-        "Critical Locations",
+        title: "Critical Locations",
       ),
     );
     var nav = NavigationProvider();

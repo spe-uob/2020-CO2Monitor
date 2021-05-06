@@ -48,7 +48,7 @@ Widget entryBuilder(String label, var data, String unit, BuildContext context,
 /// Flutter's concept of page navigation requires creating some boilerplate
 /// for each page (route?), which we do not want to do. This helper will do
 /// this in a consistent manner.
-Widget wrapRoute(Widget widget, String title) {
+Widget wrapRoute(Widget widget, {String title = "CO₂ Monitor"}) {
   return Scaffold(
     body: widget,
     appBar: AppBar(

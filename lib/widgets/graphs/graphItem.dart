@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:co2_monitor/widgets/graphs/dataSet.dart';
+import 'package:co2_monitor/widgets/graphs/graphData.dart';
+import 'package:co2_monitor/widgets/graphs/lineData.dart';
 import 'package:flutter/material.dart';
 import 'package:co2_monitor/widgets/graphs/baseGraph.dart';
 
@@ -13,7 +14,7 @@ class GraphItem<T extends IGraphable> extends StatefulWidget {
 }
 
 class _GraphItemState<T extends IGraphable> extends State<GraphItem<T>> {
-  Future<DataSet> fut;
+  Future<GraphData> fut;
   final bool _animate = true;
 
   @override
