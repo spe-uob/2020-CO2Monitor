@@ -3,6 +3,7 @@ import 'package:co2_monitor/api/types/device.dart';
 import 'package:co2_monitor/widgets/graphs/baseGraph.dart';
 import 'package:co2_monitor/widgets/graphs/dataSet.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'group.dart';
 import 'link.dart';
 
 part 'location.g.dart';
@@ -16,6 +17,8 @@ class Location extends IGraphable {
   String name;
   @JsonKey(required: true, name: "links")
   Link link;
+  @JsonKey(ignore: true)
+  Group _group;
   @JsonKey(ignore: true)
   ApiClient _client = ApiClient();
 
@@ -38,6 +41,22 @@ class Location extends IGraphable {
     var devices = await this.devices();
     for (var device in devices) if (await device.isCritical()) return true;
     return false;
+  }
+
+  String groupName() {
+    switch (this._group.name) {
+      case "MVB":
+        return "Merchant Venturers Building";
+      case "Queens":
+        return "Queens Building";
+      default:
+        return this._group.name;
+    }
+  }
+
+  Location withGroup(Group group) {
+    this._group = group;
+    return this;
   }
 
   @override

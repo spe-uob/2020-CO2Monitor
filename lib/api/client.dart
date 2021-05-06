@@ -1,8 +1,10 @@
-// Holds all network state and the HTTP client
+// The command you want is probably:
+// flutter pub run build_runner build
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:co2_monitor/api/types/group.dart';
 import 'package:co2_monitor/api/types/reading.dart';
 import 'package:http/http.dart';
 import 'package:co2_monitor/api/types/location.dart';
@@ -49,12 +51,26 @@ class ApiClient {
     return List.from(jsonDecode(res?.body).map((val) => fromJson(val)));
   }
 
-  Future<List<Location>> getLocations() =>
-      getMany((j) => Location.fromJson(j), "$_apiUrl/buildings/1/rooms");
+  Future<List<Location>> getLocations() async {
+    var res = <Location>[];
+    var groups = await getMany((g) => Group.fromJson(g), "$_apiUrl/buildings");
+    for (var group in groups) {
+      var locations = await group.locations();
+      res.addAll(locations.map((l) => l.withGroup(group)));
+    }
+    return res;
+  }
 
-  // Future<Location> getLocation(int id) => getOne("$_apiUrl/rooms/$id");
-  Future<Location> getLocation(int id) =>
-      getOne((j) => Location.fromJson(j), "$_apiUrl/rooms/$id");
+  Future<Location> getLocation(int id) async {
+    var groups = await getMany((g) => Group.fromJson(g), "$_apiUrl/buildings");
+    for (var group in groups) {
+      var locations = await group.locations();
+      for (var location in locations) {
+        if (location.id == id) return location.withGroup(group);
+      }
+    }
+    return null;
+  }
 
   Future<List<Device>> getDevices() =>
       getMany((j) => Device.fromJson(j), "$_apiUrl/sensors");

@@ -108,21 +108,24 @@ class _LocationItemState extends State<LocationItem> {
               width: 1,
             ),
           ),
+
           // Prevents the image from squaring the corners of the card
           clipBehavior: Clip.antiAliasWithSaveLayer,
+
           child: Column(
             children: [
               ListTile(
-                title: Text("Room ${widget.location.name}"),
-                subtitle: Text("Merchant Venturers Building"),
+                // Fix inconsistent naming
+                title: Text((() {
+                  var title = widget.location.name;
+                  if (title.toLowerCase().startsWith("room"))
+                    return title;
+                  else
+                    return "Room $title";
+                })()),
+                subtitle: Text(widget.location.groupName()),
               ),
-              Container(
-                child: Image(
-                  image: AssetImage("assets/mvb.png"),
-                  fit: BoxFit.fitHeight,
-                ),
-                height: 200,
-              ),
+              locationImage(widget.location),
               Row(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 // scrollDirection: Axis.horizontal,
@@ -133,5 +136,37 @@ class _LocationItemState extends State<LocationItem> {
         );
       },
     );
+  }
+}
+
+/// Return a container which can be displayed as an image representing a room
+/// or location, given said location.
+Container locationImage(Location location) {
+  var locName = location.groupName();
+  // This currently only looks at groups, but can be expanded to look at rooms.
+  var imgPath = locationAsset(locName);
+  if (imgPath != null)
+    return Container(
+      child: Image(
+        image: AssetImage(imgPath),
+        fit: BoxFit.fitHeight,
+      ),
+      height: 200,
+    );
+  else
+    return Container(
+      color: Colors.green[100],
+      height: 200,
+    );
+}
+
+String locationAsset(String locName) {
+  switch (locName) {
+    case "Merchant Venturers Building":
+      return "assets/mvb.png";
+    case "Queens Building":
+      return "assets/queens.png";
+    default:
+      return null;
   }
 }
