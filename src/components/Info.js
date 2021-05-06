@@ -73,7 +73,7 @@ export default function Info (props) {
       key={sensor.description + sensor.id}
       className="PaddedCard"
     >
-      <Sensor {...sensor} refresh={props.refresh} token={props.token} />
+      <Sensor {...sensor} refresh={props.refresh} token={props.token} serverURL={props.serverURL} />
     </Grid>
   ))
 
