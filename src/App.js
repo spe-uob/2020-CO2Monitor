@@ -158,7 +158,7 @@ function App (props) {
   const addRoom = () => {
     axios.get('https://100.25.147.253:8080/api/v1/buildings', {
       headers: {
-        Authorization: 'Bearer' + props.token,
+        Authorization: 'Bearer ' + props.token,
         'Content-Type': 'application/json'
       }
     }).then((response) => {
@@ -172,7 +172,7 @@ function App (props) {
           }
         }, {
           headers: {
-            Authorization: props.token,
+            Authorization: 'Bearer ' + props.token,
             'Content-Type': 'application/json'
           }
         }).then(() => {
@@ -336,7 +336,6 @@ function App (props) {
             {snackText}
           </Alert>
         </Snackbar>
-        <p>token: {props.token}</p>
       </div>
     )
   } else {

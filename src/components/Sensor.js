@@ -41,7 +41,7 @@ export default function Sensor (props) {
   const deleteSensor = () => {
     axios.delete('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString(), {
       headers: {
-        Authorization: props.token,
+        Authorization: 'Bearer ' + props.token,
         'Content-Type': 'application/json'
       }
     }).then((response) => {
@@ -68,7 +68,7 @@ export default function Sensor (props) {
       name: editName
     }, {
       headers: {
-        Authorization: props.token,
+        Authorization: 'Bearer ' + props.token,
         'Content-Type': 'application/json'
       }
     }).then((response) => {

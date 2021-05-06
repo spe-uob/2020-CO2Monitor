@@ -45,7 +45,7 @@ export default function Info (props) {
       }
     }, {
       headers: {
-        Authorization: props.token,
+        Authorization: 'Bearer ' + props.token,
         'Content-Type': 'application/json'
       }
     }).then(() => {
