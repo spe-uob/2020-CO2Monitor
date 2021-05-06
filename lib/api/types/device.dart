@@ -1,5 +1,7 @@
 import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/reading.dart';
+import 'package:co2_monitor/widgets/graphs/baseGraph.dart';
+import 'package:co2_monitor/widgets/graphs/dataSet.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'link.dart';
 
@@ -7,7 +9,7 @@ part 'device.g.dart';
 
 /// Represents a physical SCK device in a fixed location.
 @JsonSerializable()
-class Device {
+class Device extends IGraphable {
   @JsonKey(required: true)
   int id;
   String name;
@@ -61,4 +63,12 @@ class Device {
         else
           return false;
       });
+
+  // Provide a dataset based on up to the latest (up to) thousand readings.
+  @override
+  Future<DataSet> provideData() async {
+    var readings = await this.latestReadings(10000);
+    var levels = readings.map((r) => TimeSeriesLevels(r.takenAt, r.value));
+    return DataSet.fromSeriesList(levels.toList());
+  }
 }

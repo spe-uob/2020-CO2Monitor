@@ -7,7 +7,7 @@ import 'package:quiver/core.dart';
 class DataSet implements IGraphable {
   int _length;
   List<TimeSeriesLevels> _data;
-  Duration maxAge = Duration(hours: 5);
+  Duration maxAge = Duration(days: 90);
   int lowerThreshold = 1000;
   int upperThreshold = 5000;
   int dangerLevel = 0;
@@ -42,7 +42,8 @@ class DataSet implements IGraphable {
   /// Sorts the DataSet by most recent reading.
   void _sort() {
     if (_length > 0) {
-      _data.sort((TimeSeriesLevels element1, TimeSeriesLevels element2) => element2.time.compareTo(element1.time));
+      _data.sort((TimeSeriesLevels element1, TimeSeriesLevels element2) =>
+          element2.time.compareTo(element1.time));
     }
   }
 
@@ -93,7 +94,8 @@ class DataSet implements IGraphable {
   }
 
   /// Returns a new dataSet containing a subset of the readings based on the query. Can be queried by a period of time, and by whether the reading was a critical value.
-  DataSet query({Duration from, Duration to = Duration.zero, bool critical = false}) {
+  DataSet query(
+      {Duration from, Duration to = Duration.zero, bool critical = false}) {
     if (from == null) {
       from = maxAge;
     }
@@ -109,7 +111,7 @@ class DataSet implements IGraphable {
   }
 
   /// Calculates the mean level of CO2 from all of the readings in the dataSet
-  int mean(){
+  int mean() {
     if (_length > 0) {
       int sum = 0;
       for (TimeSeriesLevels entry in _data) {
@@ -134,7 +136,7 @@ class DataSet implements IGraphable {
   }
 
   /// Returns a series for use in a chart
-  List<charts.Series<TimeSeriesLevels,DateTime>> createSeries() {
+  List<charts.Series<TimeSeriesLevels, DateTime>> createSeries() {
     return [
       new charts.Series<TimeSeriesLevels, DateTime>(
         id: 'CO2 Levels',
@@ -171,7 +173,7 @@ class DataSet implements IGraphable {
   int get hashCode => hashObjects(_data);
 
   @override
-  DataSet provideData() => this;
+  Future<DataSet> provideData() => Future.sync(() => this);
 }
 
 /// TimeSeriesLevels contains a single data reading, usually stored in a list of data readings.

@@ -49,6 +49,16 @@ class _LocationItemState extends State<LocationItem> {
       },
     );
 
+    var openView = () {
+      var route = MaterialPageRoute(
+        builder: (context) => wrapRoute(
+          LocationView(widget.location),
+          widget.location.name,
+        ),
+      );
+      Navigator.push(context, route);
+    };
+
     return FutureBuilder(
       future: devFut,
       builder: (ctx, snap) {
@@ -63,15 +73,7 @@ class _LocationItemState extends State<LocationItem> {
         var horizChildren = [
           TextButton(
             child: Text("VIEW"),
-            onPressed: () {
-              var route = MaterialPageRoute(
-                builder: (context) => wrapRoute(
-                  LocationView(widget.location),
-                  widget.location.name,
-                ),
-              );
-              Navigator.push(context, route);
-            },
+            onPressed: openView,
           ),
           TextButton(
             child: subtext,
@@ -96,42 +98,43 @@ class _LocationItemState extends State<LocationItem> {
           Padding(padding: EdgeInsets.symmetric(horizontal: 8.0)),
         ];
 
-        widget.location.isCritical().then((crit) {
-          if (crit) horizChildren.addAll(additionalChildren);
-        });
+        if (criticalDevices > 0) horizChildren.addAll(additionalChildren);
 
-        return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-            side: BorderSide(
-              color: Colors.grey.withOpacity(0.2),
-              width: 1,
+        return InkWell(
+          onTap: openView,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+              side: BorderSide(
+                color: Colors.grey.withOpacity(0.2),
+                width: 1,
+              ),
             ),
-          ),
 
-          // Prevents the image from squaring the corners of the card
-          clipBehavior: Clip.antiAliasWithSaveLayer,
+            // Prevents the image from squaring the corners of the card
+            clipBehavior: Clip.antiAliasWithSaveLayer,
 
-          child: Column(
-            children: [
-              ListTile(
-                // Fix inconsistent naming
-                title: Text((() {
-                  var title = widget.location.name;
-                  if (title.toLowerCase().startsWith("room"))
-                    return title;
-                  else
-                    return "Room $title";
-                })()),
-                subtitle: Text(widget.location.groupName()),
-              ),
-              locationImage(widget.location),
-              Row(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // scrollDirection: Axis.horizontal,
-                children: horizChildren,
-              ),
-            ],
+            child: Column(
+              children: [
+                ListTile(
+                  // Fix inconsistent naming
+                  title: Text((() {
+                    var title = widget.location.name;
+                    if (title.toLowerCase().startsWith("room"))
+                      return title;
+                    else
+                      return "Room $title";
+                  })()),
+                  subtitle: Text(widget.location.groupName()),
+                ),
+                locationImage(widget.location),
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  // scrollDirection: Axis.horizontal,
+                  children: horizChildren,
+                ),
+              ],
+            ),
           ),
         );
       },

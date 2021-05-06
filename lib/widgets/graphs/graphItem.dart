@@ -13,11 +13,27 @@ class GraphItem<T extends IGraphable> extends StatefulWidget {
 }
 
 class _GraphItemState<T extends IGraphable> extends State<GraphItem<T>> {
+  Future<DataSet> fut;
   final bool _animate = true;
 
   @override
+  void initState() {
+    super.initState();
+    fut = widget.dataProvider.provideData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    DataSet data = widget.dataProvider.provideData();
-    return TimeSeriesChart(data.createSeries(), animate: _animate);
+    return FutureBuilder(
+      future: fut,
+      builder: (ctx, snap) {
+        if (snap.hasError)
+          return Text("${snap.error}");
+        else if (!snap.hasData)
+          return Center(child: CircularProgressIndicator());
+
+        return TimeSeriesChart(snap.data.createSeries(), animate: _animate);
+      },
+    );
   }
 }

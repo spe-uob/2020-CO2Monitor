@@ -11,7 +11,7 @@ part 'location.g.dart';
 /// A location is a collection of SCK devices in near proximity.
 /// The intention is that each area (e.g. a room, building) will be a location.
 @JsonSerializable()
-class Location extends IGraphable {
+class Location {
   @JsonKey(required: true)
   int id;
   String name;
@@ -58,8 +58,4 @@ class Location extends IGraphable {
     this._group = group;
     return this;
   }
-
-  @override
-  // TODO: Implement provideData
-  DataSet provideData() => DataSet.usingSampleSeries();
 }
