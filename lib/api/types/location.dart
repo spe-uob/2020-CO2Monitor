@@ -58,4 +58,11 @@ class Location {
     this._group = group;
     return this;
   }
+<<<<<<< HEAD
+=======
+
+  @override
+  // TODO: Implement provideData
+  DataSet provideData() => DataSet.usingSampleSeries();
+>>>>>>> 74a23023905c7368e4340cfaa7b95b1a496ec472
 }
