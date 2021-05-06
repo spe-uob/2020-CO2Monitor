@@ -1,5 +1,6 @@
 // Holds all network state and the HTTP client
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:co2_monitor/api/types/reading.dart';
@@ -22,6 +23,7 @@ class ApiClient {
 
   /// Safely perform a GET request on a given URL
   Future<Response> _getReq(String url) async {
+    log("GET: $url");
     var res = await _httpClient.get(url);
     switch (res.statusCode) {
       case HttpStatus.ok:
@@ -42,6 +44,7 @@ class ApiClient {
   /// Wraps _getReq and parses into an array of a given type
   Future<List<T>> getMany<T>(
       T Function(Map<String, dynamic> json) fromJson, String url) async {
+    log("GET (list): $url");
     var res = await _getReq(url);
     return List.from(jsonDecode(res?.body).map((val) => fromJson(val)));
   }

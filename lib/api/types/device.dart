@@ -45,12 +45,20 @@ class Device {
   Future<List<Reading>> latestReadings(int count) =>
       _client.getMany(_readingJson, "${_fix(link.child)}/latest?amt=$count");
 
-  Future<Reading> latestReading() => _client
-      .getMany(_readingJson, "${_fix(link.child)}/latest")
-      .then((arr) => arr[0]);
+  Future<Reading> latestReading() =>
+      _client.getMany(_readingJson, "${_fix(link.child)}/latest").then((arr) {
+        if (arr.length == 0)
+          return null;
+        else
+          return arr[0];
+      });
 
   /// Determine if this device is critical. A device is considered critical if
   /// its latest reading is also considered critical.
-  Future<bool> isCritical() =>
-      this.latestReading().then((read) => read.isCritical);
+  Future<bool> isCritical() => this.latestReading().then((read) {
+        if (read != null)
+          return read.isCritical;
+        else
+          return false;
+      });
 }

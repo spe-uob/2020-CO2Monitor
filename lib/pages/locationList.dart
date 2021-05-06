@@ -12,14 +12,31 @@ class LocationList extends StatefulWidget {
 
 /// ListView of all locations.
 class _LocationListState extends State<LocationList> {
-  List<Location> locations = List.empty();
+  Future<List<Location>> fut;
+
+  @override
+  void initState() {
+    super.initState();
+    fut = ApiClient().getLocations();
+  }
 
   @override
   Widget build(BuildContext context) {
-    ApiClient().getLocations().then((ls) => setState(() => locations = ls));
+    return FutureBuilder(
+      future: fut,
+      builder: (ctx, snap) {
+        if (snap.hasError)
+          return Text("${snap.error}");
+        else if (!snap.hasData)
+          return Center(child: CircularProgressIndicator());
 
-    return ListView(
-      children: locations.map((l) => LocationItem(l)).toList(),
+        if (snap.data.length == 0)
+          return Center(child: Text("Nothing to see here, yet."));
+        else
+          return ListView(
+            children: snap.data.map<Widget>((l) => LocationItem(l)).toList(),
+          );
+      },
     );
   }
 }

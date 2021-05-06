@@ -86,8 +86,6 @@ class _MainViewState extends State<MainView> {
           ElevatedButton(
             child: Text("make an alert"),
             onPressed: () async {
-              var provider = SubscriptionProvider();
-              var subs = await provider.subscriptions();
               await alertAlways();
             },
           ),

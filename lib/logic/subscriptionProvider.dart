@@ -82,8 +82,8 @@ class SubscriptionProvider {
     var client = ApiClient();
     var subIds = await subscriptionIds();
     var locations = await client.getLocations();
-    for (var loc in locations) log("${loc.id}");
-    return locations.where((loc) => subIds.contains(loc.id)).toList();
+    var ret = locations.where((loc) => subIds.contains(loc.id)).toList();
+    return ret;
   }
 
   Future<bool> isSubscribedTo(int id) async =>

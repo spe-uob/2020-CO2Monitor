@@ -14,16 +14,31 @@ class SubscriptionList extends StatefulWidget {
 /// ListView of all locations which the user is current subscribed to.
 /// This is a subset of all locations.
 class _SubscriptionListState extends State<SubscriptionList> {
-  List<Location> locations = List.empty();
+  Future<List<Location>> fut;
+
+  @override
+  void initState() {
+    super.initState();
+    fut = SubscriptionProvider().subscriptions();
+  }
 
   @override
   Widget build(BuildContext context) {
-    SubscriptionProvider()
-        .subscriptions()
-        .then((subs) => setState(() => locations = subs));
+    return FutureBuilder(
+      future: fut,
+      builder: (ctx, snap) {
+        if (snap.hasError)
+          return Text("${snap.error}");
+        else if (!snap.hasData)
+          return Center(child: CircularProgressIndicator());
 
-    return ListView(
-      children: locations.map((l) => LocationItem(l)).toList(),
+        if (snap.data.length == 0)
+          return Center(child: Text("Nothing to see here, yet."));
+        else
+          return ListView(
+            children: snap.data.map<Widget>((l) => LocationItem(l)).toList(),
+          );
+      },
     );
   }
 }

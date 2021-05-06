@@ -65,7 +65,7 @@ class NotificationProvider {
   /// Clicking on this notification will redirect the user to a designated page.
   /// This will allow them to see details of the alert via a CriticalList.
   Future alert(List<Location> critical) async {
-    if (critical.isEmpty) return;
+    // if (critical.isEmpty) return;
 
     var bigText =
         "Effective CO₂ levels have surpassed the recommended level in " +
