@@ -53,12 +53,8 @@ class _LocationViewState extends State<LocationView> {
               // mainAxisSize: MainAxisSize.min,
               shrinkWrap: true,
               children: <Widget>[
-                entryBuilder(
-                    'Current CO₂ Level:',
-                    data.createSeries()[0].data[0].levels,
-                    'ppm',
-                    context,
-                    constraints),
+                entryBuilder('Average CO₂ Level:', data.currentAverage(), 'ppm',
+                    context, constraints),
                 Container(
                     height: (constraints.maxHeight - 100),
                     padding:

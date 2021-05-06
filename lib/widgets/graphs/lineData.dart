@@ -64,8 +64,14 @@ class LineData implements IGraphable {
   /// Calculates the mean level of CO2 from all of the readings in the dataSet
   int mean() => _data.fold(0, (prev, x) => prev + x) ~/ _data.length;
 
-  /// Returns the reading with the highest value of all of the readings
+  /// Returns the value of the reading with the highest value of all of the readings
   int peak() => _data.fold(0, (prev, x) => max(x.levels, prev));
+
+  /// Returns the value of the current (most recent) reading.
+  int current() {
+    _sort();
+    return _data.last.levels;
+  }
 
   /// Returns a series for use in a chart
   List<Series<Point, DateTime>> createSeries() {

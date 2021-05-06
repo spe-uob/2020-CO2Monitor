@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:charts_flutter/flutter.dart';
 import 'package:co2_monitor/widgets/graphs/baseGraph.dart';
 
@@ -9,6 +7,11 @@ class GraphData implements IGraphable {
   List<LineData> _lines;
   List<LineData> get lines => _lines;
   GraphData(this._lines);
+
+  /// Average of the current reading from all lines.
+  int currentAverage() =>
+      _lines.map((l) => l.current()).fold(0, (prev, x) => prev + x) ~/
+      _lines.length;
 
   List<Series<Point, DateTime>> createSeries() {
     var colors = MaterialPalette.green.makeShades(_lines.length);
