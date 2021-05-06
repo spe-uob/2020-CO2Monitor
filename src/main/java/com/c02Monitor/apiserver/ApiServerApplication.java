@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import com.c02Monitor.apiserver.utils.SmartCit;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -82,7 +85,4 @@ public class ApiServerApplication {
 		b.failOnUnknownProperties(false);
 		return b;
 	}
-
-
-
 }
