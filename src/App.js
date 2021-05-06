@@ -94,6 +94,7 @@ for (let i = 0; i < roomNum; i++) {
  */
 function App (props) {
   const classes = useStyles()
+  const serverURL = 'https://3.95.32.162/api/v1/'
 
   // snackbar for errors and successes
   const [snackSeverity, setSnackSeverity] = useState('error')
@@ -105,7 +106,7 @@ function App (props) {
   const [rooms, setRooms] = useState([])
 
   const refresh = () => {
-    axios.get('https://100.25.147.253:8080/api/v1/buildings/?kids=1').then((response) => {
+    axios.get(serverURL + 'buildings/?kids=1').then((response) => {
       setRooms(response.data)
       setRoomCards(formatAPI(response.data).map((room) => (
         <Grid
@@ -116,7 +117,7 @@ function App (props) {
           key={room.id * 1000 + room.name}
           className="PaddedCard"
         >
-          <Room {...room} refresh={refresh} token={props.token} />
+          <Room {...room} refresh={refresh} token={props.token} serverURL={serverURL}/>
         </Grid>
       )))
     }).catch((error) => {
@@ -134,7 +135,7 @@ function App (props) {
 
   const requestToken = () => {
     setLoginButton(<CircularProgress />)
-    axios.post('https://100.25.147.253:8080/api/v1/auth', {
+    axios.post(serverURL + 'auth', {
       username: username,
       password: password
     }).then((response) => {
@@ -156,7 +157,7 @@ function App (props) {
   const [addRoomBuildingName, setAddRoomBuildingName] = useState('')
 
   const addRoom = () => {
-    axios.get('https://100.25.147.253:8080/api/v1/buildings', {
+    axios.get(serverURL + 'buildings', {
       headers: {
         Authorization: 'Bearer ' + props.token,
         'Content-Type': 'application/json'
@@ -165,7 +166,7 @@ function App (props) {
       // check for building
       const results = response.data.filter((buildingData) => buildingData.name === addRoomBuildingName)
       if (results.length === 1) {
-        axios.post('https://100.25.147.253:8080/api/v1/rooms', {
+        axios.post(serverURL + 'rooms', {
           name: addRoomName,
           building: {
             id: results[0].id
@@ -236,7 +237,7 @@ function App (props) {
         key={room.id * 1000 + room.name}
         className="PaddedCard"
       >
-        <Room {...room} refresh={refresh} token={props.token} />
+        <Room {...room} refresh={refresh} token={props.token} serverURL={serverURL}/>
       </Grid>
     )))
   }

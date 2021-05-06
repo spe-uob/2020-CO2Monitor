@@ -39,7 +39,7 @@ export default function Sensor (props) {
   const [deleteOpen, setDeleteOpen] = useState(false)
 
   const deleteSensor = () => {
-    axios.delete('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString(), {
+    axios.delete(props.serverURL + 'sensors/' + props.id.toString(), {
       headers: {
         Authorization: 'Bearer ' + props.token,
         'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ export default function Sensor (props) {
   const [editName, setEditName] = useState('')
 
   const editSensor = () => {
-    axios.put('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString(), {
+    axios.put(props.serverURL + 'sensors/' + props.id.toString(), {
       name: editName
     }, {
       headers: {
