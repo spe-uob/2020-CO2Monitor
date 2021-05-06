@@ -1,15 +1,11 @@
 package com.c02Monitor.apiserver.dto;
 
 import com.c02Monitor.apiserver.entity.Room;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Singular;
 
 import java.util.Map;
@@ -19,7 +15,6 @@ import java.util.Set;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = BuildingDTO.BuildingDTOBuilder.class)
-//@JsonIgnoreProperties({"hibernate_lazy_initializer", "handler"})
 public class BuildingDTO {
     private Long id;
     @JsonProperty("name")

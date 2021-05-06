@@ -1,13 +1,11 @@
 package com.c02Monitor.apiserver.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity

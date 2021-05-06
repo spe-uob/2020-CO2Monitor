@@ -1,6 +1,5 @@
 package com.c02Monitor.apiserver.dto;
 
-import com.c02Monitor.apiserver.entity.Building;
 import com.c02Monitor.apiserver.entity.Reading;
 import com.c02Monitor.apiserver.entity.Room;
 import com.fasterxml.jackson.annotation.JsonInclude;

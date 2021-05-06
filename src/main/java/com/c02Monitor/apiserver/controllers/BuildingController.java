@@ -3,15 +3,11 @@ package com.c02Monitor.apiserver.controllers;
 import com.c02Monitor.apiserver.dto.BuildingDTO;
 import com.c02Monitor.apiserver.entity.Building;
 import com.c02Monitor.apiserver.service.BuildingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
-import org.springframework.web.client.RestTemplate;
 
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;

@@ -1,9 +1,7 @@
 package com.c02Monitor.apiserver.service;
 
 import com.c02Monitor.apiserver.entity.Reading;
-import com.c02Monitor.apiserver.entity.Room;
 import com.c02Monitor.apiserver.repository.ReadingRepository;
-import com.c02Monitor.apiserver.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

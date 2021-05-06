@@ -1,16 +1,12 @@
 package com.c02Monitor.apiserver.service;
 
-import com.c02Monitor.apiserver.dto.RoomDTO;
-import com.c02Monitor.apiserver.entity.Building;
 import com.c02Monitor.apiserver.entity.Room;
 import com.c02Monitor.apiserver.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class RoomService {

@@ -1,17 +1,12 @@
 package com.c02Monitor.apiserver.service;
 
-import com.c02Monitor.apiserver.dto.BuildingDTO;
 import com.c02Monitor.apiserver.entity.Building;
 import com.c02Monitor.apiserver.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class BuildingService {

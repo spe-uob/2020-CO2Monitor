@@ -1,30 +1,21 @@
 package com.c02Monitor.apiserver.controllers;
 
-import com.c02Monitor.apiserver.dto.BuildingDTO;
 import com.c02Monitor.apiserver.dto.RoomDTO;
-import com.c02Monitor.apiserver.entity.Building;
 import com.c02Monitor.apiserver.entity.Room;
-import com.c02Monitor.apiserver.repository.BuildingRepository;
-import com.c02Monitor.apiserver.repository.RoomRepository;
 import com.c02Monitor.apiserver.service.BuildingService;
 import com.c02Monitor.apiserver.service.RoomService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//import static com.c02Monitor.apiserver.controllers.TestController.getRawJson;
-
 @RestController
 @RequestMapping({"/api/v1/buildings/{buildingId}/rooms", "/api/v1/rooms"})
-//@RequestMapping("/rooms")
 public class RoomController extends ParentController{
     private final RoomService roomService;
     private final BuildingService buildingService;

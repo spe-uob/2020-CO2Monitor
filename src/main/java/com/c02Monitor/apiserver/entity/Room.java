@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Room {
     @Id
     @Getter

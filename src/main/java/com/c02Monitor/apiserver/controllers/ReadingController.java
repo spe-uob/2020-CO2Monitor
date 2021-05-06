@@ -2,9 +2,7 @@ package com.c02Monitor.apiserver.controllers;
 
 import com.c02Monitor.apiserver.dto.ReadingDTO;
 import com.c02Monitor.apiserver.entity.Reading;
-import com.c02Monitor.apiserver.repository.ReadingRepository;
 import com.c02Monitor.apiserver.service.ReadingService;
-import com.c02Monitor.apiserver.service.SensorService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,8 +16,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-//import static com.c02Monitor.apiserver.utils.SmartCit.testy;
-
 @RestController
 @RequestMapping({"/api/v1/buildings/{buildingId}/rooms/{roomId}/sensors/{sensorId}/readings", "/api/v1/{sensorId}/readings"})
 public class ReadingController extends ParentController{
@@ -32,8 +28,6 @@ public class ReadingController extends ParentController{
     //TODO ERROR HANDLE (kids optional bool)
     @GetMapping()
     public List<ReadingDTO> getAllReadings(@PathVariable("sensorId") Long sensorId) {
-
-//        testy(1616);
         List<Reading> readings = readingService.getAllSensorReadingsById(sensorId);
 
         return readings.stream().map(mapToReadingDTO).collect(Collectors.toList());

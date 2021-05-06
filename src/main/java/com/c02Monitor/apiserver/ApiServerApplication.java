@@ -14,11 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import com.c02Monitor.apiserver.utils.SmartCit;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,10 +21,6 @@ import java.util.stream.Collectors;
 public class ApiServerApplication {
 
 	public static List<Long> DEVICE_IDS = new ArrayList<>();
-
-//	public static void addDeviceIds(Long deviceIds) {
-//		DEVICE_IDS.add(deviceIds);
-//	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiServerApplication.class, args);
@@ -61,20 +52,11 @@ public class ApiServerApplication {
 			Sensor sensor2 = new Sensor(9858, "test", room1);
 			sensorService.createSensor(sensor1);
 			sensorService.createSensor(sensor2);
-//			System.out.println("BAR1: " + DEVICE_IDS.toString());
-
-//			System.out.println("BAR2: " + sensorService.getAllSensors()
-//					.stream()
-//					.map(Sensor::getId)
-//					.collect(Collectors.toList()));
-//			System.out.println("BAR3: " + ApiServerApplication.DEVICE_IDS.add(12600L));
 
 			DEVICE_IDS.addAll(sensorService.getAllSensors()
                         .stream()
                         .map(Sensor::getId)
                         .collect(Collectors.toList()));
-
-//			System.out.println("BAR4: " + DEVICE_IDS.toString());
 
 		};
 	}

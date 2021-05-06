@@ -1,16 +1,11 @@
 package com.c02Monitor.apiserver.service;
 
-import com.c02Monitor.apiserver.dto.RoomDTO;
-import com.c02Monitor.apiserver.dto.SensorDTO;
-import com.c02Monitor.apiserver.entity.Room;
 import com.c02Monitor.apiserver.entity.Sensor;
 import com.c02Monitor.apiserver.repository.SensorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SensorService {

@@ -1,9 +1,7 @@
 package com.c02Monitor.apiserver.controllers;
 
 import com.c02Monitor.apiserver.ApiServerApplication;
-import com.c02Monitor.apiserver.dto.RoomDTO;
 import com.c02Monitor.apiserver.dto.SensorDTO;
-import com.c02Monitor.apiserver.entity.Room;
 import com.c02Monitor.apiserver.entity.Sensor;
 import com.c02Monitor.apiserver.service.RoomService;
 import com.c02Monitor.apiserver.service.SensorService;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

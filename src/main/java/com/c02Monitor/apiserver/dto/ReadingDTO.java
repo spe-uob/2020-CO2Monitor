@@ -1,15 +1,12 @@
 package com.c02Monitor.apiserver.dto;
 
 import com.c02Monitor.apiserver.entity.Sensor;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @Builder
