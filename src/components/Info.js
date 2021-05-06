@@ -43,6 +43,11 @@ export default function Info (props) {
       room: {
         id: props.id
       }
+    }, {
+      headers: {
+        Authorization: props.token,
+        'Content-Type': 'application/json'
+      }
     }).then(() => {
       setSnackSeverity('success')
       setSnackText('Added sensor!')

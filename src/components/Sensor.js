@@ -38,7 +38,12 @@ export default function Sensor (props) {
   const [deleteOpen, setDeleteOpen] = useState(false)
 
   const deleteSensor = () => {
-    axios.delete('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString()).then((response) => {
+    axios.delete('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString(), {
+      headers: {
+        Authorization: props.token,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
       setDeleteOpen(false)
 
       setSnackSeverity('success')
@@ -58,7 +63,14 @@ export default function Sensor (props) {
   const [editName, setEditName] = useState('')
 
   const editSensor = () => {
-    axios.put('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString(), { name: editName }).then((response) => {
+    axios.put('https://100.25.147.253:8080/api/v1/sensors/' + props.id.toString(), {
+      name: editName
+    }, {
+      headers: {
+        Authorization: props.token,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
       setEditOpen(false)
       setEditName('')
 

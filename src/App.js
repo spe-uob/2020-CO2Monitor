@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import '../node_modules/react-vis/dist/style.css'
 import {
   Button,
@@ -94,6 +94,42 @@ for (let i = 0; i < roomNum; i++) {
 function App () {
   const classes = useStyles()
 
+  // snackbar for errors and successes
+  const [snackSeverity, setSnackSeverity] = useState('error')
+  const [snackText, setSnackText] = useState('')
+  const [snackOpen, setSnackOpen] = useState(false)
+
+  // room global data
+  const [roomCards, setRoomCards] = useState('Loading...')
+  const [rooms, setRooms] = useState([])
+
+  const refresh = () => {
+    axios.get('https://100.25.147.253:8080/api/v1/buildings/?kids=1', {
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      setRooms(response.data)
+      setRoomCards(formatAPI(response.data).map((room) => (
+        <Grid
+          item
+          sm={12}
+          md={6}
+          lg={4}
+          key={room.id * 1000 + room.name}
+          className="PaddedCard"
+        >
+          <Room {...room} refresh={refresh} token={token} />
+        </Grid>
+      )))
+    }).catch((error) => {
+      setSnackSeverity('error')
+      setSnackText('Refresh error: ' + error.message)
+      setSnackOpen(true)
+    })
+  }
+
   // login
   const [token, setToken] = useState('')
   const [username, setUsername] = useState('')
@@ -109,6 +145,7 @@ function App () {
         password: password
       }).then((response) => {
       setToken(response.data.token)
+      refresh()
     }).catch((error) => {
       setLoginError(
           <Alert severity="error">
@@ -119,49 +156,18 @@ function App () {
     })
   }
 
-  // snackbar for errors and successes
-  const [snackSeverity, setSnackSeverity] = useState('error')
-  const [snackText, setSnackText] = useState('')
-  const [snackOpen, setSnackOpen] = useState(false)
-
-  // room global data
-  const [roomCards, setRoomCards] = useState('Loading...')
-  const [rooms, setRooms] = useState([])
-
-  const refresh = () => {
-    axios.get('https://100.25.147.253:8080/api/v1/buildings/?kids=1')
-      .then((response) => {
-        setRooms(response.data)
-        setRoomCards(formatAPI(response.data).map((room) => (
-          <Grid
-            item
-            sm={12}
-            md={6}
-            lg={4}
-            key={room.id * 1000 + room.name}
-            className="PaddedCard"
-          >
-            <Room {...room} refresh={refresh} />
-          </Grid>
-        )))
-      }).catch((error) => {
-        setSnackSeverity('error')
-        setSnackText('Refresh error: ' + error.message)
-        setSnackOpen(true)
-      })
-  }
-
-  useEffect(() => {
-    refresh()
-  }, [])
-
   // adding room process
   const [openAddRoom, setOpenAddRoom] = useState(false)
   const [addRoomName, setAddRoomName] = useState('')
   const [addRoomBuildingName, setAddRoomBuildingName] = useState('')
 
   const addRoom = () => {
-    axios.get('https://100.25.147.253:8080/api/v1/buildings').then((response) => {
+    axios.get('https://100.25.147.253:8080/api/v1/buildings', {
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
       // check for building
       const results = response.data.filter((buildingData) => buildingData.name === addRoomBuildingName)
       if (results.length === 1) {
@@ -169,6 +175,11 @@ function App () {
           name: addRoomName,
           building: {
             id: results[0].id
+          }
+        }, {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json'
           }
         }).then(() => {
           setSnackSeverity('success')
@@ -231,7 +242,7 @@ function App () {
         key={room.id * 1000 + room.name}
         className="PaddedCard"
       >
-        <Room {...room} refresh={refresh} />
+        <Room {...room} refresh={refresh} token={token} />
       </Grid>
     )))
   }

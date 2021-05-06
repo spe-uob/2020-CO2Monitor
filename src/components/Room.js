@@ -53,7 +53,12 @@ export default function Room (props) {
   }
 
   const deleteRoom = () => {
-    axios.delete('https://100.25.147.253:8080/api/v1/rooms/' + props.id.toString()).then(() => {
+    axios.delete('https://100.25.147.253:8080/api/v1/rooms/' + props.id.toString(), {
+      headers: {
+        Authorization: props.token,
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
       setDeleteRoomSuccess(true)
     }).catch(() => {
       console.log('could not delete room')
