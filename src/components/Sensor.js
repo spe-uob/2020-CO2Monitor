@@ -158,8 +158,8 @@ export default function Sensor (props) {
             <DialogTitle>
               Are you sure you want to delete:
             <b>
-                {props.id}
-              </b>
+              {' ' + props.id}
+            </b>
             ?
           </DialogTitle>
             <DialogActions>
