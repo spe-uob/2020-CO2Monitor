@@ -1,6 +1,4 @@
 import 'package:co2_monitor/api/client.dart';
-import 'package:co2_monitor/logic/subscriptionProvider.dart';
-import 'package:co2_monitor/widgets/deviceItem.dart';
 import 'package:co2_monitor/widgets/locationItem.dart';
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +32,16 @@ class _LocationListState extends State<LocationList> {
           return Center(child: Text("Nothing to see here, yet."));
         else
           return ListView(
-            children: snap.data.map<Widget>((l) => LocationItem(l)).toList(),
+            children: [
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Text(
+              //     "Choose locations",
+              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              // Divider(),
+            ]..addAll(snap.data.map<Widget>((l) => LocationItem(l)).toList()),
           );
       },
     );
