@@ -1,19 +1,40 @@
 import React from 'react'
 import { render, screen, cleanup, fireEvent, waitForElementToBeRemoved } from '@testing-library/react'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 // import renderer from 'react-test-renderer'
 import App from '../App'
+
+const initialState = {
+  token: 'testing'
+}
+function reducer (state = initialState, action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+const store = createStore(reducer)
 
 afterEach(() => {
   cleanup()
 })
 
 test('should render title bar', () => {
-  render(<App />)
+  render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+  )
   expect(screen.getByText('CO2 Monitor Control Panel')).toBeInTheDocument()
 })
 
 test('open and close add room dialog', async () => {
-  render(<App />)
+  render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+  )
   const addRoom = screen.getByTestId('add-room-button')
   expect(addRoom).toBeInTheDocument()
 

@@ -29,7 +29,6 @@ const FlexXYPlot = makeWidthFlexible(XYPlot)
  * @return {React.Component}
  */
 export default function Sensor (props) {
-  console.log(props)
   // snackbar for errors and successes
   const [snackSeverity, setSnackSeverity] = useState('error')
   const [snackText, setSnackText] = useState('')
@@ -106,10 +105,12 @@ export default function Sensor (props) {
           </FlexXYPlot>
         The 24h maximum is
         <b>
-            {' ' + graphMax}
-            <br />
-            {props.readings.length + ' '}
-          </b>
+          {' ' + graphMax}
+        </b>
+        <br />
+        <b>
+          {props.readings.length + ' '}
+        </b>
         data points recorded by this sensor
       </CardContent>
         <CardActions>

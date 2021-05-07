@@ -351,8 +351,10 @@ function App (props) {
           <DialogContent>
             <TextField
               label="username"
+              aria-label="username"
               variant="outlined"
               onChange={(e) => setUsername(e.target.value)}
+              inputProps={{ 'data-testid': 'username' }}
             />
             <div className="PaddedCard" />
             <TextField
@@ -365,6 +367,7 @@ function App (props) {
                   requestToken()
                 }
               }}
+              inputProps={{ 'data-testid': 'password' }}
             />
           </DialogContent>
           <DialogActions>
