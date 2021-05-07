@@ -5,8 +5,6 @@ import 'package:co2_monitor/logic/notificationProvider.dart';
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
 import 'package:workmanager/workmanager.dart';
 
-const int THRESHHOLD = 200;
-
 /// This function is designed to be periodically called by the android system.
 /// When this occurs, it checks to see which locations have critical status.
 void callbackDispatcher() {

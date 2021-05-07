@@ -2,7 +2,7 @@ import 'package:co2_monitor/api/client.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'reading.g.dart';
 
-const CRITICAL_THRESHHOLD = 1000;
+const CRITICAL_THRESHHOLD = 1200;
 
 /// A single eCO2 reading taken by a designated device.
 @JsonSerializable()
@@ -25,7 +25,7 @@ class Reading {
   }
 
   /// Mock value, can be used for testing and mocking UI
-  factory Reading.mock() => Reading(DateTime.now(), 100);
+  // factory Reading.mock() => Reading(DateTime.now(), 100);
 
   Map<String, dynamic> toJson() => _$ReadingToJson(this);
 }

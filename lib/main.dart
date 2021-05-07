@@ -1,23 +1,18 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:co2_monitor/logic/callbackDispatcher.dart';
 import 'package:co2_monitor/logic/navigationProvider.dart';
 import 'package:co2_monitor/logic/notificationProvider.dart';
-import 'package:co2_monitor/logic/subscriptionProvider.dart';
 import 'package:co2_monitor/pages/codeEntry.dart';
-import 'package:co2_monitor/pages/criticalList.dart';
-import 'package:co2_monitor/pages/debug.dart';
 import 'package:co2_monitor/pages/locationList.dart';
 import 'package:co2_monitor/pages/subscriptionList.dart';
 import 'package:co2_monitor/theme.dart';
-import 'package:co2_monitor/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:workmanager/workmanager.dart';
 
 void main() {
-  HttpOverrides.global = new AllowSelfSignedCerts();
+  // HttpOverrides.global = new AllowSelfSignedCerts();
   runApp(App());
 
   Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
@@ -32,16 +27,16 @@ void main() {
   NotificationProvider();
 }
 
-/// As of the time of writing, the experimental API server has a self-signed
-/// HTTPS certificate, so we need to work around that.
-class AllowSelfSignedCerts extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
-}
+// /// As of the time of writing, the experimental API server has a self-signed
+// /// HTTPS certificate, so we need to work around that.
+// class AllowSelfSignedCerts extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext context) {
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback =
+//           (X509Certificate cert, String host, int port) => true;
+//   }
+// }
 
 class App extends StatelessWidget {
   static const String _title = "Air Monitor";

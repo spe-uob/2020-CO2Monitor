@@ -21,7 +21,7 @@ class ApiClient {
   }
 
   /// API URL base endpoint
-  static String _apiUrl = "https://100.25.147.253:8080/api/v1";
+  static String _apiUrl = "http://co2.icedcoffee.dev/api/v1";
 
   /// Safely perform a GET request on a given URL
   Future<Response> _getReq(String url) async {

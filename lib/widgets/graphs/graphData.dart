@@ -9,9 +9,13 @@ class GraphData implements IGraphable {
   GraphData(this._lines);
 
   /// Average of the current reading from all lines.
-  int currentAverage() =>
-      _lines.map((l) => l.current()).fold(0, (prev, x) => prev + x) ~/
-      _lines.length;
+  int currentAverage() {
+    var sum = _lines.map((l) => l.current()).fold(0, (prev, x) => prev + x);
+    if (sum == 0)
+      return 0;
+    else
+      return sum ~/ _lines.length;
+  }
 
   List<Series<Point, DateTime>> createSeries() {
     var colors = MaterialPalette.green.makeShades(_lines.length);
