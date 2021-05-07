@@ -26,7 +26,7 @@ class _LocationItemState extends State<LocationItem> {
     var totalDevices = widget.location.devices().then((devs) => devs.length);
     var criticalDevices = widget.location.devices().then((devs) =>
         Future.wait(devs.map((dev) => dev.isCritical()))
-            .then((bools) => bools.length));
+            .then((bools) => bools.where((e) => e).length));
 
     devFut = Future.wait([totalDevices, criticalDevices]);
 

@@ -40,8 +40,8 @@ class Location implements IGraphable {
   /// sensors is itself considered critical.
   Future<bool> isCritical() async {
     var devices = await this.devices();
-    for (var device in devices) if (await device.isCritical()) return true;
-    return false;
+    var crits = await Future.wait(devices.map((dev) => dev.isCritical()));
+    return crits.any((e) => e);
   }
 
   String groupName() {
