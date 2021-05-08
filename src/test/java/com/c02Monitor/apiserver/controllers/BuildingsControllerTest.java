@@ -40,19 +40,25 @@ class BuildingsControllerTest {
         );
     }
 
-    //add building then delete test
+    // tests get set post and delete for Buildings
     @Test
     public void addAndRemoveBuildingTest() {
         Building mvb = new Building("mvb");
         BuildingDTO mvbDTO = controller.convertToDTO(mvb);
+        Building queens = new Building("queens");
+        BuildingDTO queensDTO = controller.convertToDTO(queens);
         this.restTemplate.postForLocation("http://localhost:" + port + "/api/v1/buildings", mvbDTO);
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
                 .contains(mvbDTO)
         );
-
-        this.restTemplate.delete("http://localhost:" + port + "/api/v1/buildings/" + mvb.getId());
+        this.restTemplate.put("http://localhost:" + port + "/api/v1/buildings", queensDTO, mvbDTO);
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
+                .contains(queensDTO));
         assertThat(!(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
                 .contains(mvbDTO)));
+        this.restTemplate.delete("http://localhost:" + port + "/api/v1/buildings/" + queens.getId());
+        assertThat(!(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
+                .contains(queensDTO)));
     }
 
 /*
