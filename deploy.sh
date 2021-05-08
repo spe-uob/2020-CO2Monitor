@@ -8,8 +8,10 @@ ip = $(curl ifconfig.me)
 # Get mysql port
 port = $(lsof -i -P -n | grep LISTEN | grep mysql | grep \*)
 
-echo "My public ip = " $ip /n
+echo "My public ip = "
+echo $ip
 
-echo "Info about mysql port:/n" $port
+echo "Info about mysql port:/n"
+echo $port
 # Run the Spring-Boot program (should change this for final build)
 ./mvnw spring-boot:run
