@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../node_modules/react-vis/dist/style.css'
 import {
   Button,
@@ -117,7 +117,7 @@ function App (props) {
           key={room.id * 1000 + room.name}
           className="PaddedCard"
         >
-          <Room {...room} refresh={refresh} token={props.token} serverURL={serverURL}/>
+          <Room {...room} refresh={refresh} token={props.token} serverURL={serverURL} />
         </Grid>
       )))
     }).catch((error) => {
@@ -126,6 +126,11 @@ function App (props) {
       setSnackOpen(true)
     })
   }
+
+  useEffect(() => {
+    // wait for token to be set before calling refresh function
+    refresh()
+  }, [props.token])
 
   // login
   const [username, setUsername] = useState('')
@@ -140,7 +145,6 @@ function App (props) {
       password: password
     }).then((response) => {
       props.dispatch({ type: 'SET', payload: response.data.token })
-      refresh()
     }).catch((error) => {
       setLoginError(
             <Alert severity="error">
