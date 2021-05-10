@@ -94,7 +94,7 @@ for (let i = 0; i < roomNum; i++) {
  */
 function App (props) {
   const classes = useStyles()
-  const serverURL = 'https://3.95.32.162/api/v1/'
+  const serverURL = 'https://co2.icedcoffee.dev/api/v1/'
 
   // snackbar for errors and successes
   const [snackSeverity, setSnackSeverity] = useState('error')
