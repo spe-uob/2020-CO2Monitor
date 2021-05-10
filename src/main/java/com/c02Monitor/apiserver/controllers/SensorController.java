@@ -121,12 +121,12 @@ public class SensorController extends ParentController{
             .links(getLinks(x.getId(), "sensors"))
             .build();
 
-    private Sensor covertToEntity(SensorDTO sensorDTO){
+    public Sensor covertToEntity(SensorDTO sensorDTO){
         return new Sensor(sensorDTO.getId(), sensorDTO.getDescription(), sensorDTO.getRoom());
     }
 
     //TODO :: Clean up
-    private SensorDTO convertToDTO(Sensor sensor){
+    public SensorDTO convertToDTO(Sensor sensor){
         return SensorDTO.builder()
                 .id(sensor.getId())
                 .description(sensor.getDescription())

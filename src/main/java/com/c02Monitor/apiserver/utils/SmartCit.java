@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 @Component
@@ -94,6 +95,8 @@ public class SmartCit {
                     try {
                         reading = objectMapper.readValue(args[0].toString(), SmartReading.class);
                     } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     if (reading.getData().getSensors().stream().anyMatch(x -> x.getId() == 112)) {

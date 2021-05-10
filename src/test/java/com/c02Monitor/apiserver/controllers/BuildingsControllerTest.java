@@ -2,77 +2,170 @@ package com.c02Monitor.apiserver.controllers;
 
 import com.c02Monitor.apiserver.dto.BuildingDTO;
 import com.c02Monitor.apiserver.entity.Building;
+import com.c02Monitor.apiserver.controllers.ParentController;
 import com.c02Monitor.apiserver.entity.Room;
 import com.c02Monitor.apiserver.entity.Sensor;
 import com.c02Monitor.apiserver.entity.Reading;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@TestPropertySource(
+        locations = "classpath:application-integrationtest.properties")
 class BuildingsControllerTest {
+
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
-
-    @LocalServerPort
-    private int port;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private BuildingController controller;
 
 
 
-    //no default buildings test
-    @Test
-    public void getAllBuildingsTest() throws Exception {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
-                .isEmpty()
-        );
+    private String obtainAccessToken(String username, String password) throws Exception {
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "password");
+        params.add("client_id", "fooClientIdPassword");
+        params.add("username", username);
+        params.add("password", password);
+
+        ResultActions result
+                = mockMvc.perform(post("/api/v1/auth")
+                .params(params)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"foo\",\"password\":\"bar\"}")
+                .accept("application/json;charset=UTF-8"));
+
+        String resultString = result.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser jsonParser = new JacksonJsonParser();
+        return jsonParser.parseMap(resultString).get("token").toString();
     }
 
-    // tests get set post and delete for Buildings
+
     @Test
-    public void addAndRemoveBuildingTest() {
-        Building mvb = new Building("mvb");
+    public void createBuildingNoAuthTest() throws Exception {
+        Building mvb = new Building("test");
         BuildingDTO mvbDTO = controller.convertToDTO(mvb);
-        Building queens = new Building("queens");
-        BuildingDTO queensDTO = controller.convertToDTO(queens);
-        this.restTemplate.postForLocation("http://localhost:" + port + "/api/v1/buildings", mvbDTO);
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
-                .contains(mvbDTO)
-        );
-        this.restTemplate.put("http://localhost:" + port + "/api/v1/buildings", queensDTO, mvbDTO);
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
-                .contains(queensDTO));
-        assertThat(!(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
-                .contains(mvbDTO)));
-        this.restTemplate.delete("http://localhost:" + port + "/api/v1/buildings/" + queens.getId());
-        assertThat(!(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/buildings", List.class)
-                .contains(queensDTO)));
+        this.mockMvc.perform(post("/api/v1/buildings/")
+                .header("Authorization", "Bearer " + "invalidtoken..")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(mvbDTO)))
+                .andExpect(status().isForbidden());
+
     }
 
-/*
-    //duplicate id test
     @Test
-    public void getRoomDetailSensorDuplicateIdTest() {
-        controller.getAllBuildings().forEach(y -> {
-            Set<Long> ids = new HashSet<Long>();
-            assertTrue(controller.getBuildingDetail(y.getId()).getRooms().stream()
-                    .map(Room::getId)
-                    .filter(x -> !ids.add(x))
-                    .collect(Collectors.toSet())
-                    .isEmpty());
-        });
-    }*/
-}
+    public void updateBuildingNoAuthTest() throws Exception {
+        Building mvb = new Building("test");
+        BuildingDTO mvbDTO = controller.convertToDTO(mvb);
+        this.mockMvc.perform(put("/api/v1/buildings/" + mvb.getId())
+                .header("Authorization", "Bearer " + "invalidtoken..")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(mvbDTO)))
+                .andExpect(status().isForbidden());
+    }
 
+    @Test
+    public void deleteBuildingNoAuthTest() throws Exception {
+        this.mockMvc.perform(delete("/api/v1/buildings/")
+                .header("Authorization", "Bearer " + "invalidtoken..")
+                .content("") )
+                .andExpect(status().isForbidden());
+
+    }
+
+
+    @Test
+    public void createBuildingAuthTest() throws Exception {
+        String accessToken = obtainAccessToken("foo", "bar");
+        Building mvb = new Building("test");
+        BuildingDTO mvbDTO = controller.convertToDTO(mvb);
+        this.mockMvc.perform(post("/api/v1/buildings/")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(mvbDTO))
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateBuildingAuthTest() throws Exception {
+        String accessToken = obtainAccessToken("foo", "bar");
+        Building mvb = new Building("test");
+        BuildingDTO mvbDTO = controller.convertToDTO(mvb);
+        Building queens = new Building("test2");
+        BuildingDTO queensDTO = controller.convertToDTO(queens);
+
+        this.mockMvc.perform(post("/api/v1/buildings/")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(mvbDTO))
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+
+        this.mockMvc.perform(put("/api/v1/buildings/" + mvb.getId())
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(queensDTO))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void deleteBuildingAuthTest() throws Exception {
+        String accessToken = obtainAccessToken("foo", "bar");
+        Building mvb = new Building("test");
+        BuildingDTO mvbDTO = controller.convertToDTO(mvb);
+
+        this.mockMvc.perform(post("/api/v1/buildings/")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(mvbDTO))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        this.mockMvc.perform(delete("/api/v1/buildings/")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(mvbDTO))
+                .accept(MediaType.APPLICATION_JSON));
+
+        this.mockMvc.perform(get("/api/v1/buildings")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)));
+    }
+
+}

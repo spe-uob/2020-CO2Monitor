@@ -1,5 +1,6 @@
 package com.c02Monitor.apiserver.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,4 +29,5 @@ public class ParentController {
             super(cause);
         }
     }
+
 }

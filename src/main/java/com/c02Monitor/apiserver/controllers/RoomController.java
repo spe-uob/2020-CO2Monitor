@@ -108,12 +108,12 @@ public class RoomController extends ParentController{
             .links(getLinks(x.getId(), "sensors"))
             .build();
 
-    private Room covertToEntity(RoomDTO roomDTO){
+    public Room covertToEntity(RoomDTO roomDTO){
         return new Room(roomDTO.getName(), roomDTO.getBuilding());
     }
 
     //TODO :: Clean up
-    private RoomDTO convertToDTO(Room room){
+    public RoomDTO convertToDTO(Room room){
         return RoomDTO.builder()
                 .id(room.getId())
                 .name(room.getName())
