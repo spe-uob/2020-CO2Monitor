@@ -163,9 +163,10 @@ class BuildingsControllerTest {
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(mvbDTO))
-                .accept(MediaType.APPLICATION_JSON));
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
-        this.mockMvc.perform(get("/api/v1/buildings")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)));
+
     }
 
 }
