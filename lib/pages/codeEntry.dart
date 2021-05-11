@@ -51,18 +51,19 @@ class _CodeEntryState extends State<CodeEntry> {
     ScaffoldMessenger.of(context).showSnackBar(bar);
   }
 
-  void _onQRViewCreated(QRViewController controller) {
+  void _onQRViewCreated(QRViewController controller) async {
     setState(() {
       this.controller = controller;
     });
+    // await controller.flipCamera();
     controller.scannedDataStream.listen((scanData) async {
-      if (scanData == result) return;
+      // if (scanData == result) return;
       setState(() {
         result = scanData;
       });
       if (scanned) return;
       scanned = true;
-      Timer(Duration(seconds: 3), () => scanned = false);
+      Timer(Duration(seconds: 5), () => scanned = false);
 
       var client = ApiClient();
       var subs = SubscriptionProvider();

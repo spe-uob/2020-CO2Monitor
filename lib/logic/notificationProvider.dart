@@ -48,7 +48,10 @@ class NotificationProvider {
   }
 
   /// Enable or disable sending criticality alerts.
-  void setAbility(bool enable) => _enabled = enable;
+  void setAbility(bool enable) {
+    _enabled = enable;
+  }
+
   bool get isEnabled => _enabled;
 
   /// Passthrough for
