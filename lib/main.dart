@@ -45,6 +45,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     var nav = NavigationProvider();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       // Removed in favour of route-based navigation, see NavigationProvider.
       // home: MainView(),
       title: _title,
@@ -98,7 +99,7 @@ class _MainViewState extends State<MainView> {
           actions: [
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => NavigationProvider().navigateTo("/debug"),
+              onPressed: () => NavigationProvider().navigateTo("/settings"),
             )
           ],
           title: Text("CO₂ Monitor"),

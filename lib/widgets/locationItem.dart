@@ -42,8 +42,7 @@ class _LocationItemState extends State<LocationItem> {
       builder: (ctx, snap) {
         if (snap.hasError)
           return Text("${snap.error}");
-        else if (!snap.hasData)
-          return Center(child: CircularProgressIndicator());
+        else if (!snap.hasData) return Container(color: Colors.white);
 
         return Text(snap.data ? "UNREGISTER" : "REGISTER");
       },

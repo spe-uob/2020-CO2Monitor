@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:co2_monitor/api/client.dart';
 import 'package:co2_monitor/api/types/location.dart';
 import 'package:co2_monitor/logic/subscriptionProvider.dart';
+import 'package:co2_monitor/pages/locationView.dart';
+import 'package:co2_monitor/pages/subscriptionList.dart';
+import 'package:co2_monitor/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
@@ -15,6 +20,9 @@ class CodeEntry extends StatefulWidget {
 class _CodeEntryState extends State<CodeEntry> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController controller;
+  // We had an issue where the scanner would find the QR many times in a row.
+  // We use this as a flag for a cooldown on QR recognition.
+  bool scanned = false;
   Barcode result;
 
   @override
@@ -35,8 +43,11 @@ class _CodeEntryState extends State<CodeEntry> {
     super.dispose();
   }
 
-  void showToast(String errorMessage) {
-    var bar = SnackBar(content: Text(errorMessage));
+  void showToast(String errorMessage, {Function action}) {
+    var act = SnackBarAction(label: "View", onPressed: action);
+    var bar = (action != null)
+        ? SnackBar(content: Text(errorMessage), action: act)
+        : SnackBar(content: Text(errorMessage));
     ScaffoldMessenger.of(context).showSnackBar(bar);
   }
 
@@ -49,7 +60,9 @@ class _CodeEntryState extends State<CodeEntry> {
       setState(() {
         result = scanData;
       });
-      if (result == null) return;
+      if (scanned) return;
+      scanned = true;
+      Timer(Duration(seconds: 3), () => scanned = false);
 
       var client = ApiClient();
       var subs = SubscriptionProvider();
@@ -91,7 +104,15 @@ class _CodeEntryState extends State<CodeEntry> {
           showToast("Location contains no devices.");
           return;
         }
-        showToast("Subscribed to all locations in ${flag.groupName()}.");
+        showToast(
+          "Subscribed to all locations in ${flag.groupName()}.",
+          action: () {
+            var route = MaterialPageRoute(
+              builder: (context) => wrapRoute(SubscriptionList()),
+            );
+            Navigator.of(context).push(route);
+          },
+        );
       } else if (type == "room") {
         Location loc;
         try {
@@ -102,7 +123,16 @@ class _CodeEntryState extends State<CodeEntry> {
           return;
         }
         await subs.subscribeTo(parsedData);
-        showToast("Subscribed to ${loc.name}.");
+        showToast(
+          "Subscribed to ${loc.name}.",
+          action: () {
+            var route = MaterialPageRoute(
+              builder: (context) =>
+                  wrapRoute(LocationView(loc), title: "${loc.name}"),
+            );
+            Navigator.of(context).push(route);
+          },
+        );
       } else {
         showToast("Malformed QR code.");
         return;

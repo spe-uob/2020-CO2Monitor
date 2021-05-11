@@ -20,6 +20,7 @@ class GraphData implements IGraphable {
   List<Series<Point, DateTime>> createSeries() {
     var colors = MaterialPalette.green.makeShades(_lines.length);
 
+    if (_lines.length == 0) return [];
     return _lines
         .asMap()
         .map((idx, line) {

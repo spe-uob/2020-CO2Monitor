@@ -17,6 +17,7 @@ class NotificationProvider {
   /// Singleton instance.
   static final NotificationProvider _instance =
       NotificationProvider._internal();
+  static bool _enabled = true;
 
   factory NotificationProvider() => _instance;
 
@@ -46,6 +47,10 @@ class NotificationProvider {
     await nav.navigateTo("/critical");
   }
 
+  /// Enable or disable sending criticality alerts.
+  void setAbility(bool enable) => _enabled = enable;
+  bool get isEnabled => _enabled;
+
   /// Passthrough for
   /// FlutterLocalNotificationsPlugin.getNotificationAppLaunchDetails
   Future<NotificationAppLaunchDetails> launchDetails() =>
@@ -65,7 +70,7 @@ class NotificationProvider {
   /// Clicking on this notification will redirect the user to a designated page.
   /// This will allow them to see details of the alert via a CriticalList.
   Future alert(List<Location> critical) async {
-    // if (critical.isEmpty) return;
+    if (!_enabled) return;
 
     var bigText =
         "Effective CO₂ levels have surpassed the recommended level in " +

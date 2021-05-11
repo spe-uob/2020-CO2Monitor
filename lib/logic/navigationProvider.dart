@@ -1,5 +1,6 @@
 import 'package:co2_monitor/pages/criticalList.dart';
 import 'package:co2_monitor/pages/debug.dart';
+import 'package:co2_monitor/pages/settings.dart';
 import 'package:flutter/widgets.dart';
 
 import '../main.dart';
@@ -17,6 +18,7 @@ class NavigationProvider {
   final Map<String, Widget Function(BuildContext)> routes = {
     "/": (context) => MainView(),
     "/critical": (context) => wrapRoute(CriticalList()),
+    "/settings": (context) => wrapRoute(Settings(), title: "Settings"),
     "/debug": (context) => wrapRoute(Debug()),
   };
   final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
