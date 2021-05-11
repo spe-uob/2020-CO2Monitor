@@ -47,6 +47,7 @@ export default function Room (props) {
       onClick={() => setOpen(true)}
       color="secondary"
       variant="contained"
+      data-testid={props.name + '_delete_button'}
     >
       Delete
     </Button>
@@ -60,6 +61,7 @@ export default function Room (props) {
       }
     }).then(() => {
       setDeleteRoomSuccess(true)
+      props.refresh()
     }).catch(() => {
       console.log('could not delete room')
       setDeleteRoomError(true)
@@ -146,7 +148,12 @@ export default function Room (props) {
             <Button onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={deleteRoom} color="secondary" variant="contained">
+            <Button
+              onClick={deleteRoom}
+              color="secondary"
+              variant="contained"
+              data-testid={props.name + '_confirm_delete_button'}
+            >
               Delete
             </Button>
           </DialogActions>
@@ -161,11 +168,10 @@ export default function Room (props) {
         <Alert
           onClose={() => {
             setDeleteRoomSuccess(false)
-            props.refresh()
           }}
           severity="success"
         >
-          Room Deleted. Close me to refresh panel.
+          Room Deleted.{/* Close me to refresh panel. */}
         </Alert>
       </Snackbar>
 

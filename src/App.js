@@ -313,6 +313,7 @@ function App (props) {
               label="name"
               variant="outlined"
               onChange={(event) => setAddRoomName(event.target.value)}
+              inputProps={{ 'data-testid': 'room_name' }}
             />
             <div className="PaddedCard" />
             <TextField
@@ -324,6 +325,7 @@ function App (props) {
                   addRoom()
                 }
               }}
+              inputProps={{ 'data-testid': 'building_name' }}
             />
           </DialogContent>
           <DialogActions>
