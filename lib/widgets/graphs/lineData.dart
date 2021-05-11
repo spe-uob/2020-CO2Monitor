@@ -70,7 +70,10 @@ class LineData implements IGraphable {
   /// Returns the value of the current (most recent) reading.
   int current() {
     _sort();
-    return _data.last.levels;
+    if (_data.length == 0)
+      return 0;
+    else
+      return _data.last.levels;
   }
 
   /// Returns a series for use in a chart

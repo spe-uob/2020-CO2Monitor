@@ -55,6 +55,8 @@ class Location implements IGraphable {
     }
   }
 
+  int get groupId => this._group.id;
+
   Location withGroup(Group group) {
     this._group = group;
     return this;
