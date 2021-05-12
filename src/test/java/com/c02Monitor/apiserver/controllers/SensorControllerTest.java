@@ -80,27 +80,30 @@ class SensorControllerTest {
         return jsonParser.parseMap(resultString).get("token").toString();
     }
 
-
     @Test
     public void createSensorNoAuthTest() throws Exception {
-        Sensor test = new Sensor();
-        SensorDTO testDTO = controller3.convertToDTO(test);
+        Building mvb = new Building("test");
+        Room testRoom = new Room("testRoom", mvb);
+        Sensor testSensor = new Sensor(2000, "testSensor", testRoom);
+        SensorDTO testSensorDTO = controller3.convertToDTO(testSensor);
         this.mockMvc.perform(post("/api/v1/sensors")
                 .header("Authorization", "Bearer " + "invalidtoken..")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testDTO)))
+                .content(objectMapper.writeValueAsString(testSensorDTO)))
                 .andExpect(status().isForbidden());
 
     }
 
     @Test
     public void updateSensorNoAuthTest() throws Exception {
-        Sensor test = new Sensor();
-        SensorDTO testDTO = controller3.convertToDTO(test);
-        this.mockMvc.perform(put("/api/v1/sensors/" + test.getId())
+        Building mvb = new Building("test");
+        Room testRoom = new Room("testRoom", mvb);
+        Sensor testSensor = new Sensor(2000, "testSensor", testRoom);
+        SensorDTO testSensorDTO = controller3.convertToDTO(testSensor);
+        this.mockMvc.perform(put("/api/v1/sensors/")
                 .header("Authorization", "Bearer " + "invalidtoken..")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testDTO)))
+                .content(objectMapper.writeValueAsString(testSensorDTO)))
                 .andExpect(status().isForbidden());
     }
 
@@ -113,40 +116,9 @@ class SensorControllerTest {
     }
 
     @Test
-    public void createSensorAuthTest() throws Exception {//TODO
+    public void createSensorAuthTest() throws Exception {
         String accessToken = obtainAccessToken("foo", "bar");
         Building mvb = new Building("test");
-        mvb.setId(123123);
-        BuildingDTO mvbDTO = controller.convertToDTO(mvb);
-
-        MvcResult result = mockMvc.perform(post("/api/v1/buildings/")
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(mvbDTO))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        String content = result.getResponse().getContentAsString();
-        JacksonJsonParser jsonParser = new JacksonJsonParser();
-        String id = jsonParser.parseMap(content).get("id").toString();
-
-        mvb.setId(Long.parseLong(id));
-        System.out.println(mvb.getId()+ "\n\n\n\n\n\n\n");
-        Room test = new Room("test", mvb);
-        RoomDTO testDTO = controller2.convertToDTO(test);
-        this.mockMvc.perform(post("/api/v1/buildings/" + id + "/rooms")
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testDTO))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void updateSensorAuthTest() throws Exception {//TODO
-        String accessToken = obtainAccessToken("foo", "bar");
-        Building mvb = new Building("test");
-        mvb.setId(123123);
         BuildingDTO mvbDTO = controller.convertToDTO(mvb);
 
         MvcResult result = mockMvc.perform(post("/api/v1/buildings/")
@@ -171,16 +143,77 @@ class SensorControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        String content2 = result.getResponse().getContentAsString();
-        String id2 = jsonParser.parseMap(content).get("id").toString();
+        String content2 = result2.getResponse().getContentAsString();
+        String id2 = jsonParser.parseMap(content2).get("id").toString();
+        test.setId(Long.parseLong(id2));
+        Sensor testSensor = new Sensor(3000, "testSensor", test);
+        SensorDTO testSensorDTO = controller3.convertToDTO(testSensor);
 
-        mockMvc.perform(put("/api/v1/buildings/" + id + "/rooms/" + id2)
+        mockMvc.perform(post("/api/v1/buildings/" + id + "/rooms/" + id2 + "/sensors")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testSensorDTO))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateSensorAuthTest() throws Exception {
+        String accessToken = obtainAccessToken("foo", "bar");
+        Building mvb = new Building("test");
+        mvb.setId(123123);
+        BuildingDTO mvbDTO = controller.convertToDTO(mvb);
+
+        MvcResult result = mockMvc.perform(post("/api/v1/buildings/")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(mvbDTO))
                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        JacksonJsonParser jsonParser = new JacksonJsonParser();
+        String id = jsonParser.parseMap(content).get("id").toString();
+
+        mvb.setId(Long.parseLong(id));
+        System.out.println(mvb.getId()+ "\n\n\n\n\n\n\n");
+        mvb.setId(Long.parseLong(id));
+        Room test = new Room("test", mvb);
+        RoomDTO testDTO = controller2.convertToDTO(test);
+        MvcResult result2 = mockMvc.perform(post("/api/v1/buildings/" + id + "/rooms/")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testDTO))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String content2 = result2.getResponse().getContentAsString();
+        String id2 = jsonParser.parseMap(content2).get("id").toString();
+
+        Sensor testSensor = new Sensor(2000, "testSensor", test);
+        SensorDTO testSensorDTO = controller3.convertToDTO(testSensor);
+        MvcResult result3 = mockMvc.perform(post("/api/v1/buildings/" + id + "/rooms/" + id2 + "/sensors/")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testSensorDTO))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String content3 = result3.getResponse().getContentAsString();
+        String id3 = jsonParser.parseMap(content3).get("id").toString();
+        test.setId(Long.parseLong(id2));
+        Sensor testSensor2 = new Sensor(2001, "testSensor2", test);
+        SensorDTO testSensor2DTO = controller3.convertToDTO(testSensor2);
+
+        mockMvc.perform(put("/api/v1/buildings/" + id + "/rooms/" + id2 + "/sensors/" + id3)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testSensor2DTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
     @Test
     public void deleteSensorAuthTest() throws Exception { //TODO
         String accessToken = obtainAccessToken("foo", "bar");
@@ -200,7 +233,6 @@ class SensorControllerTest {
         String id = jsonParser.parseMap(content).get("id").toString();
 
         mvb.setId(Long.parseLong(id));
-        System.out.println(mvb.getId()+ "\n\n\n\n\n\n\n");
         Room test = new Room("test", mvb);
         RoomDTO testDTO = controller2.convertToDTO(test);
         MvcResult result2 = mockMvc.perform(post("/api/v1/buildings/" + id + "/rooms/")
@@ -210,13 +242,27 @@ class SensorControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        String content2 = result.getResponse().getContentAsString();
-        String id2 = jsonParser.parseMap(content).get("id").toString();
+        String content2 = result2.getResponse().getContentAsString();
+        String id2 = jsonParser.parseMap(content2).get("id").toString();
 
-        mockMvc.perform(delete("/api/v1/buildings/" + id + "/rooms/" + id2)
+        Sensor testSensor = new Sensor(2000, "testSensor", test);
+        SensorDTO testSensorDTO = controller3.convertToDTO(testSensor);
+        test.setId(Long.parseLong(id2));
+        MvcResult result3 = mockMvc.perform(post("/api/v1/buildings/" + id + "/rooms/" + id2 + "/sensors/")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(mvbDTO))
+                .content(objectMapper.writeValueAsString(testSensorDTO))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String content3 = result3.getResponse().getContentAsString();
+        String id3 = jsonParser.parseMap(content3).get("id").toString();
+
+        mockMvc.perform(delete("/api/v1/buildings/" + id + "/rooms/" + id2 + "/sensors/" + id3)
+                .header("Authorization", "Bearer " + accessToken)
+
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testSensorDTO))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
