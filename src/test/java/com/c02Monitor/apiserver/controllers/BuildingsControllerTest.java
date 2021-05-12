@@ -159,7 +159,7 @@ class BuildingsControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        this.mockMvc.perform(delete("/api/v1/buildings/")
+        this.mockMvc.perform(delete("/api/v1/buildings/" + mvb.getId())
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(mvbDTO))
