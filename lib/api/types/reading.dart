@@ -2,7 +2,7 @@ import 'package:co2_monitor/api/client.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'reading.g.dart';
 
-const HIGH_THRESHHOLD = 5000;
+const HIGH_THRESHHOLD = 10000;
 const LOW_THRESHHOLD = 100;
 
 /// A single eCO2 reading taken by a designated device.
