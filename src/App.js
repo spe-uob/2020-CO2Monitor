@@ -50,45 +50,6 @@ const formatAPI = (db) => {
   return flattened
 }
 
-// --- GET RID OF THIS LATER ---
-
-// Populate some fake data
-/*
-const roomNum = Math.floor(Math.random() * 10)
-let rooms = []
-
-for (let i = 0; i < roomNum; i++) {
-  const sensors = []
-  const sensorNum = Math.floor(Math.random() * 20)
-  for (let is = 0; is < sensorNum; is++) {
-    const dataGen = []
-    // 1440 minutes in a day but that is too slow
-    for (let ix = 0; ix < 144; ix++) {
-      dataGen.push({ x: ix, y: Math.floor(Math.random() * ix) + ix })
-    }
-    sensors.push(
-      {
-        id: i * 1000 + is,
-        sensorId: `${i.toString()}: ${is.toString()}`,
-        description: 'Well...',
-        data: dataGen
-      }
-    )
-  }
-  rooms.push(
-    {
-      id: i,
-      name: `${i.toString()} room`,
-      sensors
-    }
-  )
-}
-*/
-
-// console.log(rooms)
-
-// -----------------------------
-
 /**
  * @return {React.Component}
  */
